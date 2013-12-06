@@ -1,0 +1,56 @@
+.row
+	.col-xs-12
+		h1 {{show.date | formatDate:"MM-DD-YYYY"}} 
+			small {{show.duration | humanizeTime:true}}
+
+		ol.breadcrumb
+			li
+				a(href='/')= site.artist_name
+			li
+				a(href='/years/{{show.year}}') {{show.year}}
+			li.active {{show.date | formatDate:"MM-DD-YYYY"}} 
+.row
+	.col-xs-4
+		.block(ng-show="show.description != ''")
+			h3 Description
+			.well.show-description
+				p(ng-bind-html-unsafe="line_broken_description")
+
+		.block(ng-show="show.source != ''")
+			h3 Source
+			p {{show.source}}
+
+		.block(ng-show="show.lineage != ''")
+			h3 Lineage
+			p {{show.lineage}}
+
+		.block(ng-show="show.taper != ''")
+			h3 Taper
+			p {{show.taper}}
+
+		.block
+			h3 Venue
+			p {{show.venue.name}}, {{show.venue.city}}
+	.col-xs-8
+		table.table.table-striped.table-hover.sortable
+			thead
+				th(data-defaultsort="asc") #
+				th Title
+				th Length
+			tbody
+				tr(ng-repeat="track in show.tracks")
+					td(data-value="{{track.track}}") {{track.track}}
+					td(data-value="{{track.title}}").nopadding
+						a(href='/years/{{show.year}}/shows/{{show.date | formatDate:"YYYY-MM-DD"}}/{{track.id}}/{{track.slug}}', ng-click="playTrack($event, $index)").no-follow.block {{track.title}}
+					td(data-value="{{track.length}}") {{track.length | humanizeTime:true}}
+
+		.review-container(ng-show="show.reviews.length != 0")
+			h3 Reviews
+			p.lead {{show.average_rating | round:2}} ({{show.reviews_count}} reviews)
+			ul.reviews
+				li(ng-repeat="review in show.reviews")
+					h4 {{review.reviewtitle}}
+						small {{review.reviewdate}}
+					p Rated {{review.stars}}/5 stars by 
+						cite {{review.reviewer}}
+					blockquote {{review.reviewbody}}

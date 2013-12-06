@@ -1,0 +1,98 @@
+doctype
+//if lt IE 7
+	<html class="no-js lt-ie9 lt-ie8 lt-ie7">
+//if IE 7
+	<html class="no-js lt-ie9 lt-ie8">
+//if IE 8
+	<html class="no-js lt-ie9">
+//[if gt IE 8]><!
+html.no-js(ng-app='percival')
+	//<![endif]
+	head
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		title(site.name) {{title}} – 
+			= site.name
+		meta(name='description', content='')
+		meta(name='fragment', content='!')
+		base(href='/')
+		//- meta(name='viewport', content='width=device-width, initial-scale=1')
+		// Place favicon.ico and apple-touch-icon.png in the root directory
+
+		// build:css(.tmp) styles/main.css
+		link(rel="stylesheet", href="styles/bootstrap.css")
+		link(rel="stylesheet", href="styles/bootstrap-sortable.css")
+		link(rel="stylesheet", href="styles/percival.css")
+		// endbuild
+	
+	body
+		//if lt IE 7
+			p.browsehappy
+				| You are using an <strong>outdated</strong> browser.
+				| Please <a href="http://browsehappy.com/">upgrade your browser</a>
+				| to improve your experience.
+
+		// if lt IE 9
+			script(src='bower_components/es5-shim/es5-shim.js')
+			script(src='bower_components/json3/lib/json3.min.js')
+
+		include blocks/topbar
+
+		// Add your site or application content here 
+		.container(ng-view='')
+			block content
+
+		footer
+			.container
+				.row-xs-12.well
+					p Site by Alec Gorge. Music streamed from archive.org
+
+		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+		script.
+			window.jQuery || document.write('<script src="javascripts/vendor/jquery-1.10.2.min.js"><\/script>')
+
+		//- Google Analytics: change UA-XXXXX-X to be your site's ID.
+		script.
+			(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+			function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+			e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+			e.src='//www.google-analytics.com/analytics.js';
+			r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+			ga('create','UA-XXXXX-X');ga('send','pageview');
+
+		script(src='bower_components/jquery/jquery.js')
+		script(src='bower_components/angular/angular.js')
+
+		// build:js scripts/plugins.js 
+		script(src='bower_components/bootstrap-sass/js/bootstrap-affix.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-alert.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-dropdown.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-tooltip.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-modal.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-transition.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-button.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-popover.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-typeahead.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-carousel.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-scrollspy.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-collapse.js')
+		script(src='bower_components/bootstrap-sass/js/bootstrap-tab.js')
+		// endbuild
+
+		// build:js scripts/modules.js 
+		script(src='bower_components/angular-resource/angular-resource.js')
+		script(src='bower_components/angular-cookies/angular-cookies.js')
+		script(src='bower_components/angular-sanitize/angular-sanitize.js')
+		script(src='bower_components/angular-audio-playlist/dist/angular-audio-player.js')
+		// endbuild 
+
+		// build:js({.tmp,app}) scripts/scripts.js 
+		script(src='bower_components/momentjs/moment.js')
+		script(src='scripts/bootstrap-sortable.js')
+		script(src='scripts/config.js')
+		script(src='scripts/app.js')
+		script(src='scripts/controllers/main.js')
+		script(src='scripts/controllers/home.js')
+		script(src='scripts/controllers/year.js')
+		script(src='scripts/controllers/show.js')
+		// endbuild 

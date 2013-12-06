@@ -1,0 +1,38 @@
+#topbar
+	//- .primary-bg
+	nav.navbar.navbar-default.navbar-fixed-top
+		.container
+			.row(ng-controller="player")
+				.col-xs-3
+					.navbar-header
+						.navbar-brand
+							h2
+								a(href='/')= site.name
+				.col-xs-6
+					.center-player
+						.song-info(ng-show="show")
+							.song-name {{show.tracks[audioPlayer.currentTrack - 1].title}}
+							.song-album {{show.date | formatDate: "MM-DD-YYYY"}} - {{show.venue.name}}, {{show.venue.city}}
+						.progress-wrapper(ng-show="show")
+							span.elapsed {{ audioPlayer.formatTime }}
+							span.duration {{ audioPlayer.formatDuration }}
+							.progress
+								.progress-bar(role='progressbar', aria-valuemin="0", aria-valuemax="0", ng-style="{ width: audioPlayer.currentTime*100/audioPlayer.duration + '%' }")
+				.col-xs-3
+					audio(player-control="audioPlayer", playlist="audioPlaylist", audio-player)
+					.center-player-controls
+						.btn(ng-click="audioPlayer.prev()")
+							span.glyphicon.glyphicon-backward
+						.btn(ng-click="audioPlayer.playPause()")
+							span.glyphicon(ng-class="{ 'glyphicon-pause': audioPlayer.playing, 'glyphicon-play': !audioPlayer.playing }")
+						.btn(ng-click="audioPlayer.next()")
+							span.glyphicon.glyphicon-forward
+			.row
+				//- .col-sm-2
+				//- 	p Venues
+				.col-xs-12(ng-controller='years').years
+					ul.pagination
+						li(ng-repeat='year in years')
+							a(href='/years/{{year.year}}') {{year.year}}
+				//- .col-sm-2
+				//- 	p Search
