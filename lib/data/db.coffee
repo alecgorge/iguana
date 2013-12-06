@@ -1,7 +1,7 @@
 
 Sequelize = require('sequelize-mysql').sequelize
 
-sequelize = new Sequelize 'lotusod', 'lotusod', 'snowman42', dialect: 'mysql'
+sequelize = new Sequelize 'lotusod', 'root', 'snowman42', dialect: 'mysql'
 
 module.exports = 
 	seq: sequelize
