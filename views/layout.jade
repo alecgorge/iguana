@@ -49,6 +49,14 @@ html.no-js(ng-app='percival')
 		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 		script.
 			window.jQuery || document.write('<script src="bower_components/jquery/jquery.min.js"><\/script>')
+		
+		script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js')
+		script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.js')
+		script.
+			if(!window.angular) {
+				document.write('<script src="bower_components/angular/angular.min.js"><\/script>')
+				document.write('<script src="bower_components/angular-route/angular-route.min.js"><\/script>')
+			}
 
 		//- Google Analytics: change UA-XXXXX-X to be your site's ID.
 		script.
@@ -59,37 +67,16 @@ html.no-js(ng-app='percival')
 			r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
 			ga('create','UA-XXXXX-X');ga('send','pageview');
 
-		script(src='bower_components/jquery/jquery.js')
-		script(src='bower_components/angular/angular.js')
-
-		// build:js scripts/plugins.js 
-		script(src='bower_components/bootstrap-sass/js/bootstrap-affix.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-alert.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-dropdown.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-tooltip.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-modal.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-transition.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-button.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-popover.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-typeahead.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-carousel.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-scrollspy.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-collapse.js')
-		script(src='bower_components/bootstrap-sass/js/bootstrap-tab.js')
-		// endbuild
-
-		// build:js scripts/modules.js 
-		script(src='bower_components/angular-resource/angular-resource.js')
-		script(src='bower_components/angular-cookies/angular-cookies.js')
-		script(src='bower_components/angular-sanitize/angular-sanitize.js')
-		script(src='bower_components/angular-audio-playlist/dist/angular-audio-player.js')
-		// endbuild 
-
 		script(src='configure.js')
 
-		// build:js({.tmp,app}) scripts/scripts.js 
+		// build:js scripts/deps.js
+		script(src='bower_components/angular-sanitize/angular-sanitize.js')
+		script(src='bower_components/angular-audio-playlist/dist/angular-audio-player.js')
 		script(src='bower_components/momentjs/moment.js')
 		script(src='scripts/bootstrap-sortable.js')
+		// endbuild
+
+		// build:js(.tmp) scripts/scripts.js
 		script(src='scripts/config.js')
 		script(src='scripts/app.js')
 		script(src='scripts/controllers/main.js')

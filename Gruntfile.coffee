@@ -84,7 +84,7 @@ module.exports = (grunt) ->
     stylus:
       compile:
         options:
-          paths: ["<%= yeoman.app %>/bower_components/bootstrap-stylus/stylus/"]
+          paths: ["<%= yeoman.app %>/bower_components/bootstrap-stylus/stylus"]
           define: config.get('stylus')
         expand: true
         cwd: ".tmp/styles/"
@@ -281,6 +281,6 @@ module.exports = (grunt) ->
     grunt.task.run ["clean:server", "concurrent:server", "autoprefixer", "stylus", "express:dev", "open", "watch"]
 
   grunt.registerTask "test", ["clean:server", "concurrent:test", "autoprefixer", "stylus", "karma"]
-  grunt.registerTask "build", ["clean:dist", "jade", "useminPrepare", "concurrent:dist", "autoprefixer", "stylus", "copy:dist", "concat", "cdnify", "ngmin", "uglify", "rev", "usemin"]
+  grunt.registerTask "build", ["clean:dist", "jade", "concurrent:dist", "useminPrepare", "autoprefixer", "stylus", "copy:dist", "concat", "cssmin", "cdnify", "ngmin", "rev", "usemin"]
   grunt.registerTask "heroku", ["build", "clean:heroku", "copy:heroku"]
   grunt.registerTask "default", ["jshint", "test", "build"]

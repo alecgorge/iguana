@@ -1,9 +1,8 @@
 'use strict'
 
 angular.module('percival', [
-  'ngCookies',
-  'ngResource',
   'ngSanitize',
+  'ngRoute',
   'audioPlayer'
 ])
   .filter('formatSeconds', ->
