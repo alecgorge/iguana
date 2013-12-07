@@ -47,7 +47,7 @@ angular.module('percival')
 	.controller('search', ['$scope', '$location', ($scope, $location) ->
 		$scope.q = $location.search().q || ""
 		$scope.search = ->
-			$location.path('/search').search(q: encodeURIComponent $scope.q)
+			$location.path('/search').search(q: $scope.q)
 	])
 	.controller('MainCtrl', ['$scope', 'years', '$http', ($scope, years, $http) ->
 		$http.get(Config.apiPath('top_shows')).success (top_shows) ->
