@@ -1,3 +1,5 @@
+environment = process.env.NODE_ENV
+
 # Module dependencies.
 express     = require "express"
 path        = require "path"
@@ -78,7 +80,11 @@ app.get '/configure.js', (req, res) ->
   res.send "window.app_config = " + JSON.stringify app_config
 
 app.get '/', (req, res) -> res.render 'index'
-app.get '*', (req, res) -> res.render 'index'
+app.get '*', (req, res) ->
+  if environment is "production"
+    res.sendFile __dirname + '/public/index.html'
+  else
+    res.render 'index'
 
 # Start server
 port = process.env.PORT or 3000
