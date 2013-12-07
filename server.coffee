@@ -67,6 +67,7 @@ app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3
 # app.get '/api/artists/:artist_slug/venues/:venue_id/', api.single_venue
 
 app.get '/configure.js', (req, res) ->
+  res.set 'Cache-Control', 'no-cache'
   res.set 'Content-Type', 'text/javascript'
 
   app_config = {}
