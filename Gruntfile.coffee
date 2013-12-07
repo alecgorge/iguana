@@ -33,6 +33,20 @@ module.exports = (grunt) ->
           script: "server.coffee"
           node_env: "production"
 
+    jade:
+      compile:
+        options:
+          pretty: true
+        files: [
+            expand: true
+            src: "views/**/*.jade"
+            dest: "app"
+            ext: ".html"
+          ,
+            src: "views/index.jade"
+            dest: "app/index.html"
+          ]
+
     open:
       server:
         url: "http://localhost:<%= express.options.port %>"
@@ -267,6 +281,6 @@ module.exports = (grunt) ->
     grunt.task.run ["clean:server", "concurrent:server", "autoprefixer", "stylus", "express:dev", "open", "watch"]
 
   grunt.registerTask "test", ["clean:server", "concurrent:test", "autoprefixer", "stylus", "karma"]
-  grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "autoprefixer", "stylus", "copy:dist", "cdnify", "ngmin", "uglify", "rev", "usemin"]
+  grunt.registerTask "build", ["clean:dist", "jade", "useminPrepare", "concurrent:dist", "autoprefixer", "stylus", "copy:dist", "concat", "cdnify", "ngmin", "uglify", "rev", "usemin"]
   grunt.registerTask "heroku", ["build", "clean:heroku", "copy:heroku"]
   grunt.registerTask "default", ["jshint", "test", "build"]
