@@ -11,8 +11,7 @@ html.no-js(ng-app='percival')
 	head
 		meta(charset='utf-8')
 		meta(http-equiv='X-UA-Compatible', content='IE=edge')
-		title(site.name) {{title}} – 
-			= site.name
+		title {{title}} – {{$root.config.name}}
 		meta(name='description', content='')
 		meta(name='fragment', content='!')
 		base(href='/')
@@ -49,7 +48,7 @@ html.no-js(ng-app='percival')
 
 		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 		script.
-			window.jQuery || document.write('<script src="javascripts/vendor/jquery-1.10.2.min.js"><\/script>')
+			window.jQuery || document.write('<script src="bower_components/jquery/jquery.min.js"><\/script>')
 
 		//- Google Analytics: change UA-XXXXX-X to be your site's ID.
 		script.
@@ -85,6 +84,8 @@ html.no-js(ng-app='percival')
 		script(src='bower_components/angular-sanitize/angular-sanitize.js')
 		script(src='bower_components/angular-audio-playlist/dist/angular-audio-player.js')
 		// endbuild 
+
+		script(src='configure.js')
 
 		// build:js({.tmp,app}) scripts/scripts.js 
 		script(src='bower_components/momentjs/moment.js')

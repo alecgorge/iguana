@@ -17,6 +17,7 @@ Show = sequelize.define 'Show',
 	average_rating 		: Sequelize.FLOAT
 	duration 			: Sequelize.INTEGER
 	track_count 		: Sequelize.INTEGER
+	is_soundboard 		: Sequelize.BOOLEAN
 
 Venue = sequelize.define 'Venue',
 	name	: Sequelize.STRING

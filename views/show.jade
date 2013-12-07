@@ -5,7 +5,7 @@
 
 		ol.breadcrumb
 			li
-				a(href='/')= site.artist_name
+				a(href='/') {{$root.config.artist_name}}
 			li
 				a(href='/years/{{show.year}}') {{show.year}}
 			li.active {{show.date | formatDate:"MM-DD-YYYY"}} 
@@ -14,7 +14,7 @@
 		.block(ng-show="show.description != ''")
 			h3 Description
 			.well.show-description
-				p(ng-bind-html-unsafe="line_broken_description")
+				p(ng-bind-html="show.description | nl2br")
 
 		.block(ng-show="show.source != ''")
 			h3 Source
@@ -53,4 +53,4 @@
 						small {{review.reviewdate}}
 					p Rated {{review.stars}}/5 stars by 
 						cite {{review.reviewer}}
-					blockquote {{review.reviewbody}}
+					blockquote(ng-bind-html="review.reviewbody | nl2br")

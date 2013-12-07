@@ -3,7 +3,7 @@
 		h1 {{years.length}} Years
 
 		ol.breadcrumb
-			li.active= site.artist_name
+			li.active {{$root.config.artist_name}}
 		table.table.table-striped.table-hover.sortable
 			thead
 				th(data-defaultsort='asc') Year

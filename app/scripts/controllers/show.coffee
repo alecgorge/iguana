@@ -6,7 +6,6 @@ angular.module('percival')
 		$rootScope.title = [$routeParams.show_date, $routeParams.year].join(" – ")
 		$http.get(Config.apiPath(['years', $routeParams.year, 'shows', $routeParams.show_date])).success (show) ->
 			$scope.show = show.data
-			$scope.line_broken_description = show.data.description.replace(/\n\r|\n|\r/g, "<br/>")
 			$scope.$evalAsync -> $.bootstrapSortable false, 'reversed'
 
 			if $routeParams.track_id

@@ -113,6 +113,11 @@ loadShow = (artist, small_show, cb) ->
 				reviews_count 		: if body.reviews then body.reviews.info.num_reviews else 0
 				average_rating 		: if body.reviews then body.reviews.info.avg_rating else 0.0
 
+			showProps.is_soundboard = showProps.archive_identifier.indexOf('sbd') isnt -1 or
+									  showProps.title.indexOf('sbd') isnt -1 or
+									  showProps.source.indexOf('sbd') isnt -1 or
+									  showProps.lineage.indexOf('sbd') isnt -1
+
 			venueProps =
 				name 				: if body.metadata.venue then body.metadata.venue[0] else "Unknown"
 				city 				: if body.metadata.coverage then body.metadata.coverage[0] else "Unknown"

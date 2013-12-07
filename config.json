@@ -7,12 +7,29 @@
 			"password": "snowman42"
 		}
 	},
-	"site": {
-		"name": "LotusOD",
-		"artist_name": "Lotus",
-		"archive_link": "",
-		"domain_name": "lotusod.com"
-	},
+	"site": [
+		{
+			"name": "Marco All Day",
+			"api_slug": "marco",
+			"artist_name": "Marco Benevento",
+			"archive_link": "",
+			"domain_names": ["marcoallday.com", "localhost", "marcoallday.alecgorge.com"]
+		},
+		{
+			"name": "LotusOD",
+			"api_slug": "lotus",
+			"artist_name": "Lotus",
+			"archive_link": "",
+			"domain_names": ["lotusod.com", "lotusod.alecgorge.com"]
+		},
+		{
+			"name": "STS9OD",
+			"api_slug": "sts9",
+			"artist_name": "STS9",
+			"archive_link": "",
+			"domain_names": ["sts9od.com", "sts9od.alecgorge.com"]
+		}
+	],
 	"stylus": {
 		"color_primary": "#0078C4",
 		"color_accent": "#FFE545"

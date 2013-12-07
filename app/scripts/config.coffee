@@ -1,5 +1,5 @@
 class window.Config
-	@ARTIST_SLUG: "lotus"
+	@ARTIST_SLUG: window.app_config.api_slug
 
 	@mp3: (id) ->
 		return Config.apiPath(['mp3', id])

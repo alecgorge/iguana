@@ -10,6 +10,10 @@ angular.module('percival', [
     return (seconds, _as) ->
       return moment.duration(seconds, 'seconds').as(_as)
     )
+  .filter('nl2br', ->
+    return (content) ->
+      return (content+"").replace /\n\r|\n|\r/g, "<br/>"
+    )
   .filter('formatDate', ->
     return (date, _as) ->
       return moment.utc(date).format(_as)
@@ -79,6 +83,8 @@ angular.module('percival', [
     $locationProvider.hashPrefix '!'
   ])
   .run(['$location', '$rootScope', ($location, $$rootScope) ->
+    $$rootScope.config = window.app_config
+
     $$rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
       if current.$$route.title
         $$rootScope.title = current.$$route.title

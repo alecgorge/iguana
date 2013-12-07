@@ -100,3 +100,45 @@ exports.artist_mp3 = (req, res) ->
 	models.Track.find(where: id: req.param('track_id')).error(error(res)).success (track) ->
 		res.redirect track.file
 	
+exports.search_data = (req, res) ->
+	oup = []
+	models.Show.findAll().error(error(res)).success (shows) ->
+		shows = cleanup_shows shows
+
+		oup = oup.concat shows.map (v) ->
+			v = v.toJSON()
+			v._index = 'search'
+			v._type = 'show'
+			v._id = v.id
+
+			delete v.id
+			return v
+
+		models.Venue.findAll().error(error(res)).success (venues) ->
+			oup = oup.concat venues.map (v) ->
+				v = v.toJSON()
+				v._index = 'search'
+				v._type = 'venue'
+				v._id = v.id
+
+				delete v.id
+				return v
+
+			models.Track.findAll().error(error(res)).success (venues) ->
+				oup = oup.concat venues.map (v) ->
+					v = v.toJSON()
+					v._index = 'search'
+					v._type = 'track'
+					v._id = v.id
+
+					delete v.id
+					return v
+
+				final = []
+				oup.forEach (v) ->
+					final.push JSON.stringify index: {_index: v._index, _type: v._type, _id: v._id}
+					final.push JSON.stringify v
+
+				res.send final.join("\n")
+
+

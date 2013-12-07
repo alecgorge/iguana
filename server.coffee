@@ -7,10 +7,10 @@ app         = express()
 models      = require './lib/models'
 config      = require './lib/config'
 
-# models.sync(force: false).
-#        error((err) -> throw err if err).
-#        success () ->
-#         console.log 'synced'
+models.sync(force: false).
+       error((err) -> throw err if err).
+       success () ->
+        console.log 'synced'
 
 # Controllers
 api         = require "./lib/controllers/api"
@@ -32,6 +32,7 @@ app.configure ->
 
   app.locals site: config.get 'site'
   app.set 'view engine', 'jade'
+  app.set 'trust proxy', true
 
 app.configure "development", ->
   app.use express.static(path.join(__dirname, ".tmp"))
@@ -48,6 +49,7 @@ app.use app.router
 app.get "/api/awesomeThings", api.awesomeThings
 app.get "/importer/:artist/rebuild_index", importer.rebuild_index
 app.get "/importer/reslug", importer.reslug
+app.get "/importer/search_data", api.search_data
 
 app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
 
@@ -60,8 +62,20 @@ app.get '/api/artists/:artist_slug/top_shows', api.top_shows
 app.get '/api/artists/:artist_slug/shows', api.artist_shows
 app.get '/api/artists/:artist_slug/shows/:show_id', api.single_show
 app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3
+app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3
 # app.get '/api/artists/:artist_slug/venues/', api.venues
 # app.get '/api/artists/:artist_slug/venues/:venue_id/', api.single_venue
+
+app.get '/configure.js', (req, res) ->
+  res.set 'Cache-Control', 'no-cache'
+  res.set 'Content-Type', 'text/javascript'
+
+  app_config = {}
+  for single_config in config.get('site')
+    if single_config.domain_names.filter((v) -> req.host.indexOf(v) isnt -1).length > 0
+      app_config = single_config
+
+  res.send "window.app_config = " + JSON.stringify app_config
 
 app.get '/', (req, res) -> res.render 'index'
 app.get '*', (req, res) -> res.render 'index'

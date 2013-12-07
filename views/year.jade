@@ -5,7 +5,7 @@
 
 		ol.breadcrumb
 			li
-				a(href='/')= site.artist_name
+				a(href='/') {{$root.config.artist_name}}
 			li.active {{year.year}}
 		table.table.table-striped.table-hover.sortable
 			thead
