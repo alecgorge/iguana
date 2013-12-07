@@ -82,7 +82,7 @@ app.get '/configure.js', (req, res) ->
 app.get '/', (req, res) -> res.render 'index'
 app.get '*', (req, res) ->
   if environment is "production"
-    res.sendFile __dirname + '/public/index.html'
+    res.sendfile __dirname + '/public/index.html'
   else
     res.render 'index'
 
