@@ -5,57 +5,6 @@ angular.module('percival', [
   'ngRoute',
   'audioPlayer'
 ])
-  .filter('formatSeconds', ->
-    return (seconds, _as) ->
-      return moment.duration(seconds, 'seconds').as(_as)
-    )
-  .filter('nl2br', ->
-    return (content) ->
-      return (content+"").replace /\n\r|\n|\r/g, "<br/>"
-    )
-  .filter('formatDate', ->
-    return (date, _as) ->
-      return moment.utc(date).format(_as)
-    )
-  .filter('round', ->
-    return (number, places=3) ->
-      pow = Math.pow 10, places
-      return (Math.round(number * pow) / pow).toFixed(places)
-    )
-  .filter('humanizeTime', ->
-    return (seconds, short=false) ->
-      dur = moment.duration(seconds, 'seconds')
-      time =
-        years: Math.round(dur.years())
-        months: Math.round(dur.months())
-        days: Math.round(dur.days())
-        hours: Math.round(dur.hours())
-        minutes: Math.round(dur.minutes())
-        seconds: Math.round(dur.seconds())
-
-      if short
-        if time.hours > 0
-          return time.hours + ":" + ("00" + time.minutes).slice(-2) + ":" + ("00" + time.seconds).slice(-2)
-        return time.minutes + ":" + ("00" + time.seconds).slice(-2)
-
-      if time.years > 0
-        return time.years + " years and " + time.months + " months"
-
-      if time.months > 0
-        return time.months + " months and " + time.days + " days"
-
-      if time.days > 0
-        return time.days + " days and " + time.hours + " hours"
-
-      if time.hours > 0
-        return time.hours + " hours and " + time.minutes + " minutes"
-
-      if time.minutes > 0
-        return time.minutes + " minutes and " + time.seconds + " seconds"
-
-      if time.seconds > 0
-        return time.seconds + " seconds"
-  )
   .config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
     $routeProvider
       .when '/',
@@ -66,13 +15,31 @@ angular.module('percival', [
         title: 'Home'
         templateUrl: 'views/home.html'
         controller: 'HomeCtrl'
+      .when '/about',
+        title: 'About'
+        templateUrl: 'views/about.html'
+      .when '/search',
+        title: 'Search'
+        templateUrl: 'views/search.html'
+        controller: 'Search'
+      .when '/venues',
+        title: 'Venues'
+        templateUrl: 'views/venues.html'
+        controller: 'Venues'
+      .when '/venues/:venue_id',
+        title: 'Venue'
+        templateUrl: 'views/venue.html'
+        controller: 'Venue'
       .when '/years/:year',
+        title: 'Year'
         templateUrl: 'views/year.html'
         controller: 'Year'
       .when '/years/:year/shows/:show_date',
+        title: 'Show'
         templateUrl: 'views/show.html'
         controller: 'Show'
       .when '/years/:year/shows/:show_date/:track_id/:track_slug',
+        title: 'Show'
         templateUrl: 'views/show.html'
         controller: 'Show'
       .otherwise
@@ -84,10 +51,23 @@ angular.module('percival', [
   .run(['$location', '$rootScope', ($location, $$rootScope) ->
     $$rootScope.config = window.app_config
 
+    $$rootScope.isActive = (loc) ->
+      if loc is '/' and ($location.path() is '/' or $location.path()[0...6] is '/years')
+        return true
+      else if loc isnt '/' and loc isnt $location.path() and $location.path()[0...loc.length] is loc
+        return true
+
+      return loc is $location.path()
+
     $$rootScope.$on '$routeChangeSuccess', (event, current, previous) ->
-      if current.$$route.title
+      if current.$$route?.title
         $$rootScope.title = current.$$route.title
   ])
+
+angular.$externalBroadcast = (selector, event, message) ->
+  scope = angular.element(selector).scope()
+
+  scope.$apply -> scope.$broadcast event, message
 
 $ ->
   $(document).on 'click', 'a.no-follow', (e) ->

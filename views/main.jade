@@ -1,6 +1,6 @@
 .row
 	.col-xs-12
-		h1 {{years.length}} Years
+		h1 {{years.length}} Years of {{$root.config.artist_name}}
 
 		ol.breadcrumb
 			li.active {{$root.config.artist_name}}
@@ -21,7 +21,7 @@
 					td(data-value="{{year.avg_rating}}") {{year.avg_rating | round:2}}
 
 	.col-xs-12
-		h1 Top Rated Shows
+		h1 {{$root.config.artist_name}}'s Top Rated Shows
 		table.table.table-striped.table-hover.sortable
 			thead
 				th Date

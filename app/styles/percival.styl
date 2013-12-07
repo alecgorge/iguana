@@ -3,7 +3,7 @@ color_accent = #FFE545
 color_primary_dark = darken(color_primary, 20%)
 
 body
-	padding-top 150px
+	padding-top 20px
 
 .primary-bg
 	background color_primary
@@ -17,6 +17,9 @@ body
 		margin 0
 		padding 0
 
+	.pull-right
+		float right
+
 	.years
 		text-align center
 
@@ -26,7 +29,19 @@ body
 
 		.song-album
 			padding-bottom 10px
+
 	.progress-wrapper
+		position relative
+
+		.playhead
+			position absolute
+			left 0
+			top 0
+			height 20px
+			width 4px
+			background #444
+			display none
+
 		.progress
 			margin 0 50px
 
@@ -45,7 +60,7 @@ body
 
 	.center-player-controls
 		text-align center
-		padding-top 10px
+		padding-top 21px
 
 		.btn
 			font-size 2em

@@ -1,12 +1,14 @@
 .row
 	.col-xs-12
-		h1 {{year.year}} 
-			small {{year.shows.length}} shows, {{year.duration | formatSeconds:'hours' | round:2}} hours
+		h1 Shows at {{venue.name}} 
+			small {{venue.city}}
 
 		ol.breadcrumb
 			li
 				a(href='/') {{$root.config.artist_name}}
-			li.active {{year.year}}
+			li
+				a(href='/venues') Venues
+			li.active {{venue.name}}
 		table.table.table-striped.table-hover.sortable
 			thead
 				th(data-defaultsort='asc') Date
@@ -15,7 +17,7 @@
 				th Avg. Rating
 				th Reviews
 			tbody
-				tr(ng-repeat="show in year.shows")
+				tr(ng-repeat="show in venue.shows")
 					td(data-value="{{show.date}}").nopadding
 						a(href='/years/{{show.year}}/shows/{{show.date | formatDate:"YYYY-MM-DD"}}').block {{show.date | formatDate:"MM-DD-YYYY"}}
 					td(data-value="{{show.track_count}}") {{show.track_count}}

@@ -1,0 +1,61 @@
+.row
+	.col-xs-12
+		h1 Searching for “{{search_term}}” 
+			small {{results.tracks.length + results.shows.length + results.venues.length}}
+
+		ol.breadcrumb
+			li
+				a(href='/') {{$root.config.artist_name}}
+			li.active “{{search_term}}”
+
+		.block(ng-show="results.shows.length > 0")
+			h2 Shows 
+				small {{results.shows.length}}
+			table.table.table-striped.table-hover.sortable
+				thead
+					th(data-defaultsort='asc') Date
+					th Tracks
+					th Duration
+					th Avg. Rating
+					th Reviews
+				tbody
+					tr(ng-repeat="show in results.shows")
+						td(data-value="{{show.date}}").nopadding
+							a(href='/years/{{show.year}}/shows/{{show.date | formatDate:"YYYY-MM-DD"}}').block {{show.date | formatDate:"MM-DD-YYYY"}}
+						td(data-value="{{show.track_count}}") {{show.track_count}}
+						td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
+						td(data-value="{{show.average_rating}}") {{show.average_rating}}
+						td(data-value="{{show.reviews_count}}") {{show.reviews_count}}
+
+		.block(ng-show="results.tracks.length > 0")
+			h2 Tracks 
+				small {{results.tracks.length}}
+			table.table.table-striped.table-hover.sortable
+				thead
+					th #
+					th Title
+					th Show
+					th Length
+				tbody
+					tr(ng-repeat="track in results.tracks")
+						td(data-value="{{track.track}}") {{track.track}}
+						td(data-value="{{track.title}}").nopadding
+							a(href='/years/{{track.year}}/shows/{{track.date | formatDate:"YYYY-MM-DD"}}/{{track.id}}/{{track.slug}}').block {{track.title}}
+						td(data-value="{{track.date}}").nopadding
+							a(href='/years/{{track.year}}/shows/{{track.date | formatDate:"YYYY-MM-DD"}}').block {{track.date | formatDate:"MM-DD-YYYY"}}
+						td(data-value="{{track.length}}") {{track.length | humanizeTime:true}}
+
+		.block(ng-show="results.venues.length > 0")
+			h2 Venues 
+				small {{results.venues.length}}
+			table.table.table-striped.table-hover.sortable
+				thead
+					th Name
+					th City
+					th Show Count
+				tbody
+					tr(ng-repeat="venue in results.venues")
+						td(data-value="{{venue.name}}").nopadding
+							a(href='/venues/{{venue.id}}').block {{venue.name}}
+						td(data-value="{{venue.city}}") {{venue.city}}
+						td(data-value="{{venue.show_count}}") {{venue.show_count}}

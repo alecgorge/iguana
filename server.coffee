@@ -24,7 +24,7 @@ app.configure ->
 
   app.use (req, res, next) ->
     res.renderView = (viewName, viewModel) ->
-      suffix = if req.xhr then "" else "_full"
+      suffix = "" # if req.xhr then "" else "_full"
       res.render viewName + suffix, viewModel
 
     next()
@@ -64,9 +64,9 @@ app.get '/api/artists/:artist_slug/top_shows', api.top_shows
 app.get '/api/artists/:artist_slug/shows', api.artist_shows
 app.get '/api/artists/:artist_slug/shows/:show_id', api.single_show
 app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3
-app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3
-# app.get '/api/artists/:artist_slug/venues/', api.venues
-# app.get '/api/artists/:artist_slug/venues/:venue_id/', api.single_venue
+app.get '/api/artists/:artist_slug/venues', api.artist_venues
+app.get '/api/artists/:artist_slug/venues/:venue_id', api.single_venue
+app.get '/api/artists/:artist_slug/search', api.search
 
 app.get '/configure.js', (req, res) ->
   res.set 'Cache-Control', 'no-cache'

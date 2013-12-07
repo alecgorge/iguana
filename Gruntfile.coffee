@@ -277,10 +277,10 @@ module.exports = (grunt) ->
     @async()
 
   grunt.registerTask "server", (target) ->
-    return grunt.task.run(["build", "express:prod", "open", "express-keepalive"])  if target is "dist"
+    return grunt.task.run(["jade", "build", "express:prod", "open", "express-keepalive"])  if target is "dist"
     grunt.task.run ["clean:server", "concurrent:server", "autoprefixer", "stylus", "express:dev", "open", "watch"]
 
   grunt.registerTask "test", ["clean:server", "concurrent:test", "autoprefixer", "stylus", "karma"]
-  grunt.registerTask "build", ["clean:dist", "jade", "concurrent:dist", "useminPrepare", "autoprefixer", "stylus", "copy:dist", "concat", "cssmin", "cdnify", "ngmin", "rev", "usemin"]
+  grunt.registerTask "build", ["clean:dist", "concurrent:dist", "useminPrepare", "autoprefixer", "stylus", "copy:dist", "concat", "cssmin", "cdnify", "ngmin", "rev", "usemin"]
   grunt.registerTask "heroku", ["build", "clean:heroku", "copy:heroku"]
   grunt.registerTask "default", ["jshint", "test", "build"]
