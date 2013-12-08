@@ -1,11 +1,13 @@
 'use strict'
 
-angular.module('percival', [
+app = angular.module('percival', [
   'ngSanitize',
   'ngRoute',
   'audioPlayer'
 ])
-  .config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
+
+app
+  .config(['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvider, $locationProvider, $httpProvider) ->
     $routeProvider
       .when '/',
         title: 'Home'
@@ -47,6 +49,48 @@ angular.module('percival', [
 
     $locationProvider.html5Mode true
     $locationProvider.hashPrefix '!'
+
+    $http = undefined
+    interceptor = ["$q", "$injector", ($q, $injector) ->
+      success = (response) ->
+        
+        # get $http via $injector because of circular dependency problem
+        $http = $http or $injector.get("$http")
+        
+        # don't send notification until all requests are complete
+        if $http.pendingRequests.length < 1
+          
+          # get requestNotificationChannel via $injector because of circular dependency problem
+          notificationChannel = notificationChannel or $injector.get("requestNotificationChannel")
+          
+          # send a notification requests are complete
+          notificationChannel.requestEnded()
+        response
+      error = (response) ->
+        
+        # get $http via $injector because of circular dependency problem
+        $http = $http or $injector.get("$http")
+        
+        # don't send notification until all requests are complete
+        if $http.pendingRequests.length < 1
+          
+          # get requestNotificationChannel via $injector because of circular dependency problem
+          notificationChannel = notificationChannel or $injector.get("requestNotificationChannel")
+          
+          # send a notification requests are complete
+          notificationChannel.requestEnded()
+        $q.reject response
+      notificationChannel = undefined
+      (promise) ->
+        
+        # get requestNotificationChannel via $injector because of circular dependency problem
+        notificationChannel = notificationChannel or $injector.get("requestNotificationChannel")
+        
+        # send a notification requests are complete
+        notificationChannel.requestStarted()
+        promise.then success, error
+    ]
+    $httpProvider.responseInterceptors.push interceptor
   ])
   .run(['$location', '$rootScope', ($location, $$rootScope) ->
     $$rootScope.config = window.app_config
@@ -63,6 +107,66 @@ angular.module('percival', [
       if current.$$route?.title
         $$rootScope.title = current.$$route.title
   ])
+
+app.factory "requestNotificationChannel", ["$rootScope", ($rootScope) ->
+  
+  # private notification messages
+  _START_REQUEST_ = "_START_REQUEST_"
+  _END_REQUEST_ = "_END_REQUEST_"
+  
+  # publish start request notification
+  requestStarted = ->
+    $rootScope.$broadcast _START_REQUEST_
+
+  
+  # publish end request notification
+  requestEnded = ->
+    $rootScope.$broadcast _END_REQUEST_
+
+  
+  # subscribe to start request notification
+  onRequestStarted = ($scope, handler) ->
+    $scope.$on _START_REQUEST_, (event) ->
+      handler()
+
+
+  
+  # subscribe to end request notification
+  onRequestEnded = ($scope, handler) ->
+    $scope.$on _END_REQUEST_, (event) ->
+      handler()
+
+
+  requestStarted: requestStarted
+  requestEnded: requestEnded
+  onRequestStarted: onRequestStarted
+  onRequestEnded: onRequestEnded
+]
+
+app.directive "loadingWidget", ["requestNotificationChannel", (requestNotificationChannel) ->
+  restrict: "A"
+  link: (scope, element) ->
+    
+    # hide the element initially
+    element.hide()
+    startRequestHandler = ->
+      
+      # got the request start notification, show the element
+      element.show()
+
+    endRequestHandler = ->
+      
+      # got the request start notification, show the element
+      element.hide()
+
+    requestNotificationChannel.onRequestStarted scope, startRequestHandler
+    requestNotificationChannel.onRequestEnded scope, endRequestHandler
+]
+
+app.filter "startFrom", ->
+  (input, start) ->
+    start = +start #parse to int
+    input.slice start
 
 angular.$externalBroadcast = (selector, event, message) ->
   scope = angular.element(selector).scope()

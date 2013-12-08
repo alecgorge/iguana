@@ -16,6 +16,10 @@ angular.module('percival')
       pow = Math.pow 10, places
       return (Math.round(number * pow) / pow).toFixed(places)
     )
+  .filter('humanizeBoolean', ->
+    return (bool) ->
+      return if !!bool then "Yes" else "No"
+    )
   .filter('humanizeTime', ->
     return (seconds, short=false) ->
       dur = moment.duration(seconds, 'seconds')

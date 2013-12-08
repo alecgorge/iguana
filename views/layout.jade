@@ -41,10 +41,18 @@ html.no-js(ng-app='percival')
 		.container(ng-view='')
 			block content
 
+		#loadingWidget(loading-widget)
+			.loadingContent
+				p
+					img(alt='Loading Content', src='img/running-dog.gif')
+					| Fetching...
+
 		footer
 			.container
 				.row-xs-12.well
-					p Site by Alec Gorge. Music streamed from archive.org
+					p Site by Alec Gorge. Music streamed from archive.org. 
+						a(href='/') More info
+						| .
 
 		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 		script.

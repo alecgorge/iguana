@@ -1,7 +1,8 @@
 .row
 	.col-xs-12
 		h1 {{show.date | formatDate:"MM-DD-YYYY"}} 
-			small {{show.duration | humanizeTime:true}}
+			small {{show.duration | humanizeTime:true}} at 
+				a(href='/venues/{{show.venue.id}}') {{show.venue.name}}, {{show.venue.city}}
 
 		ol.breadcrumb
 			li
@@ -26,10 +27,6 @@
 		.block(ng-show="show.taper != ''")
 			h3 Taper
 			p {{show.taper}}
-
-		.block
-			h3 Venue
-			p {{show.venue.name}}, {{show.venue.city}}
 	.col-xs-8
 		table.table.table-striped.table-hover.sortable
 			thead

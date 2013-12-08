@@ -8,6 +8,9 @@
 				a(href='/') {{$root.config.artist_name}}
 			li.active “{{search_term}}”
 
+		.block(ng-show="results.tracks.length + results.shows.length + results.venues.length == 0")
+			h2 No results
+
 		.block(ng-show="results.shows.length > 0")
 			h2 Shows 
 				small {{results.shows.length}}
