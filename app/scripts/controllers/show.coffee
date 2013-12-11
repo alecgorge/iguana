@@ -3,7 +3,11 @@
 angular.module('percival')
 	.controller('Show', ['$scope', '$http', '$routeParams', '$rootScope', ($scope, $http, $routeParams, $rootScope) ->
 		$rootScope.title = [$routeParams.show_date, $routeParams.year].join(" – ")
+
+		$scope.startedLoading()
 		$http.get(Config.apiPath(['years', $routeParams.year, 'shows', $routeParams.show_date])).success (show) ->
+			$scope.finishedLoading()
+			
 			$scope.show = show.data
 			$scope.$evalAsync -> $.bootstrapSortable false, 'reversed'
 

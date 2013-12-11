@@ -3,7 +3,8 @@
 app = angular.module('percival', [
   'ngSanitize',
   'ngRoute',
-  'audioPlayer'
+  'audioPlayer',
+  'seo'
 ])
 
 app
