@@ -15,25 +15,25 @@
 			h2 Shows 
 				small {{results.shows.length}}
 			table.table.table-striped.table-hover.sortable
-			thead
-				th(data-defaultsort='asc') Date
-				th Tracks
-				th Duration
-				th Avg. Rating
-				th Reviews
-				th SBD
-				th Venue
-			tbody
-				tr(ng-repeat="show in results.shows")
-					td(data-value="{{show.date}}").nopadding.min-width-160
-						a(href='/years/{{show.year}}/shows/{{show.date | formatDate:"YYYY-MM-DD"}}').block {{show.date | formatDate:"MM-DD-YYYY"}}
-					td(data-value="{{show.track_count}}") {{show.track_count}}
-					td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
-					td(data-value="{{show.average_rating}}") {{show.average_rating}}
-					td(data-value="{{show.reviews_count}}") {{show.reviews_count}}
-					td(data-value="{{show.is_soundboard}}") {{show.is_soundboard | humanizeBoolean}}
-					td(data-value="{{show.date}}").nopadding
-						a(href='/venues/{{show.VenueId}}').block {{show.venue_name}}, {{show.venue_city}}
+				thead
+					th(data-defaultsort='asc') Date
+					th Tracks
+					th Duration
+					th Avg. Rating
+					th Reviews
+					th SBD
+					th Venue
+				tbody
+					tr(ng-repeat="show in results.shows")
+						td(data-value="{{show.date}}").nopadding.min-width-160
+							a(href='/years/{{show.year}}/shows/{{show.date | formatDate:"YYYY-MM-DD"}}').block {{show.date | formatDate:"MM-DD-YYYY"}}
+						td(data-value="{{show.track_count}}") {{show.track_count}}
+						td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
+						td(data-value="{{show.average_rating}}") {{show.average_rating}}
+						td(data-value="{{show.reviews_count}}") {{show.reviews_count}}
+						td(data-value="{{show.is_soundboard}}") {{show.is_soundboard | humanizeBoolean}}
+						td(data-value="{{show.date}}").nopadding
+							a(href='/venues/{{show.VenueId}}').block {{show.venue_name}}, {{show.venue_city}}
 
 		.block(ng-show="results.tracks.length > 0")
 			h2 Tracks 
