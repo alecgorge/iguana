@@ -13,21 +13,30 @@
 			"api_slug": "marco",
 			"artist_name": "Marco Benevento",
 			"archive_link": "",
-			"domain_names": ["marcoallday.com", "localhost", "marcoallday.alecgorge.com"]
+			"domain_names": ["marcoallday.com", "localhost", "marcoallday.alecgorge.com"],
+			"google_analytics": {
+				"id": "UA-46363228-2"
+			}
 		},
 		{
 			"name": "LotusOD",
 			"api_slug": "lotus",
 			"artist_name": "Lotus",
 			"archive_link": "",
-			"domain_names": ["lotusod.com", "lotusod.alecgorge.com"]
+			"domain_names": ["lotusod.com", "lotusod.alecgorge.com"],
+			"google_analytics": {
+				"id": "UA-46363228-1"
+			}
 		},
 		{
 			"name": "STS9OD",
 			"api_slug": "sts9",
 			"artist_name": "STS9",
 			"archive_link": "",
-			"domain_names": ["sts9od.com", "sts9od.alecgorge.com"]
+			"domain_names": ["sts9od.com", "sts9od.alecgorge.com"],
+			"google_analytics": {
+				"id": "UA-46363228-3"
+			}
 		}
 	],
 	"stylus": {

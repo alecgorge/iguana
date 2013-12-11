@@ -77,7 +77,8 @@ app.get '/configure.js', (req, res) ->
     if single_config.domain_names.filter((v) -> req.host.indexOf(v) isnt -1).length > 0
       app_config = single_config
 
-  res.send "window.app_config = " + JSON.stringify app_config
+  json = "window.app_config = " + JSON.stringify(app_config) + ";"
+  res.send json + config.googleAnalyticsCode(app_config.google_analytics.id)
 
 app.get '/', (req, res) -> res.render 'index'
 app.get '*', (req, res) ->
