@@ -85,8 +85,15 @@ exports.top_shows = (req, res) ->
 	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
 		return not_found(res) if not artist
 
-		artist.getShows(order: 'average_rating DESC, reviews_count DESC', limit: 15, where: ['reviews_count > ?', 1]).error(error(res)).success (top_shows) ->
-			res.json success cleanup_shows top_shows
+		models.sequelize.query("""SELECT `Shows`.*, `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
+									FROM `Shows`
+										INNER JOIN `Venues` on `Shows`.`VenueId` = `Venues`.`id`
+									WHERE `ArtistId` = ? AND reviews_count > ?
+									ORDER BY average_rating DESC, reviews_count DESC
+									""", null, {raw: true}, [artist.id, 1])
+						.error(error(res))
+						.success (shows) ->
+							res.json success shows
 
 exports.single_show = (req, res) ->
 	models.Show.find(where: id: req.param('show_id')).error(error(res)).success (show) ->
