@@ -1,3 +1,4 @@
+# defaults to production
 environment = process.env.NODE_ENV
 
 # Module dependencies.
