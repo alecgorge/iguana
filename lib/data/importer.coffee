@@ -135,8 +135,10 @@ loadShow = (artist, small_show, cb) ->
 
 				total_duration += parseTime file.length
 
+				t = t.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '')
+
 				return models.Track.build {
-					title 	: t.replace(/\\'/g, "'").replace(/\\>/g, ">")
+					title 	: t
 					md5 	: file.md5
 					track 	: if file.track then parseInt file.track else track_i
 					bitrate : parseInt file.bitrate
