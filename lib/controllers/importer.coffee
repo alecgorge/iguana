@@ -4,6 +4,7 @@ importer 	= require '../data/importer'
 winston 	= require 'winston'
 
 exports.rebuild_index = (req, res) ->
+	res.set 'Cache-Control', 'no-cache'
 	res.json success: true
 
 	models.Artist.
@@ -16,6 +17,7 @@ exports.rebuild_index = (req, res) ->
 					winston.info "Done rebuilding index for #{artist.name}"
 
 exports.reslug = (req, res) ->
+	res.set 'Cache-Control', 'no-cache'
 	res.json success: true
 
 	importer.reslug (err) ->
