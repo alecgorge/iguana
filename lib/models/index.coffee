@@ -37,6 +37,8 @@ Artist = sequelize.define 'Artist',
 	name 				: Sequelize.STRING
 	archive_collection 	: Sequelize.STRING
 	slug 				: type: Sequelize.STRING, unique: true
+	from_archive 		: Sequelize.BOOLEAN
+	extended_features	: Sequelize.INTEGER
 
 Year = sequelize.define 'Year',
 	year 				: Sequelize.INTEGER

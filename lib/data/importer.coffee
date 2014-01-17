@@ -58,22 +58,22 @@ SELECT year, ArtistId, COUNT(*) FROM Shows GROUP BY ArtistId, year
 ###
 cache_year_stats = (done) ->
 	winston.info "Caching year information"
-	models.sequelize.query("""
-		TRUNCATE TABLE Years; 
-		INSERT INTO Years (ArtistId, year, show_count, duration, avg_duration, avg_rating,createdAt,updatedAt)
-			SELECT ArtistId, year, COUNT(*), SUM(Shows.duration), AVG(Shows.duration), AVG(Shows.average_rating), NOW(), NOW()
-			FROM Shows
-			GROUP BY ArtistId, year;
-		""").error(done).success(done)
+	models.sequelize.query("TRUNCATE TABLE Years").error(done).success () ->
+		models.sequelize.query("""
+			INSERT INTO Years (ArtistId, year, show_count, duration, avg_duration, avg_rating,createdAt,updatedAt)
+				SELECT ArtistId, year, COUNT(*), SUM(Shows.duration), AVG(Shows.duration), AVG(Shows.average_rating), NOW(), NOW()
+				FROM Shows
+				GROUP BY ArtistId, year
+			""").error(done).success(done)
 
 loadShow = (artist, small_show, cb) ->
 	models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
 		return cb() if pre_existing_show isnt null 
 	
 		request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
-			body = JSON.parse body
-
 			winston.info "GET " + SINGLE_URL(small_show.identifier)
+
+			body = JSON.parse body
 
 			files = body.files
 			mp3_tracks = Object.keys(files).
@@ -152,7 +152,7 @@ loadShow = (artist, small_show, cb) ->
 			showProps.track_count = tracks.length
 
 			winston.info "looking for show in db"
-			models.Show.findOrCreate(date: showProps.date, showProps).error(cb).success (show, created) ->
+			models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id}, showProps).error(cb).success (show, created) ->
 				return cb() unless created
 
 				winston.info "show created! looking for venue"
