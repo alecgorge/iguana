@@ -61,6 +61,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "start": "bower install && grunt server:dist"
+    "start": "./node_modules/.bin/bower install && grunt server:dist"
   }
 }
