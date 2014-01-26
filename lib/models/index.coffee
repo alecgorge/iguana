@@ -6,8 +6,9 @@ mysql 	 		= require('sequelize-mysql').mysql
 Show = sequelize.define 'Show',
 	title				: Sequelize.STRING
 	date 				: Sequelize.DATE
+	display_date		: Sequelize.STRING
 	year 				: Sequelize.INTEGER
-	source 				: Sequelize.TEXT
+	source 				: 'MEDIUMTEXT' # Sequelize.TEXT
 	lineage 			: Sequelize.TEXT
 	taper 				: Sequelize.TEXT
 	description 		: Sequelize.TEXT
@@ -43,11 +44,15 @@ Artist = sequelize.define 'Artist',
 Year = sequelize.define 'Year',
 	year 				: Sequelize.INTEGER
 	show_count 			: Sequelize.INTEGER
+	recording_count		: Sequelize.INTEGER
 	duration 			: Sequelize.INTEGER
 	avg_duration 		: Sequelize.FLOAT
 	avg_rating 			: Sequelize.FLOAT
 
+## IMPORTANT
+## for performance, don't forget to add a non-unique index to VenueId
 Show.belongsTo Venue
+
 Show.belongsTo Artist
 Venue.hasMany Show
 Artist.hasMany Show

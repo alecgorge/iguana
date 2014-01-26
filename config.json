@@ -13,7 +13,7 @@
 			"api_slug": "marco",
 			"artist_name": "Marco Benevento",
 			"archive_link": "",
-			"domain_names": ["marcoallday.com", "localhost", "marcoallday.alecgorge.com"],
+			"domain_names": ["marcoallday.local", "marcoallday.com", "localhost", "marcoallday.alecgorge.com"],
 			"google_analytics": {
 				"id": "UA-46363228-2"
 			}
@@ -23,7 +23,7 @@
 			"api_slug": "lotus",
 			"artist_name": "Lotus",
 			"archive_link": "",
-			"domain_names": ["lotusod.com", "lotusod.alecgorge.com"],
+			"domain_names": ["lotusod.local", "lotusod.com", "lotusod.alecgorge.com"],
 			"google_analytics": {
 				"id": "UA-46363228-1"
 			}
@@ -33,9 +33,19 @@
 			"api_slug": "sts9",
 			"artist_name": "STS9",
 			"archive_link": "",
-			"domain_names": ["sts9od.com", "sts9od.alecgorge.com"],
+			"domain_names": ["sts9od.local", "sts9od.com", "sts9od.alecgorge.com"],
 			"google_analytics": {
 				"id": "UA-46363228-3"
+			}
+		},
+		{
+			"name": "DeadOD",
+			"api_slug": "gd",
+			"artist_name": "Grateful Dead",
+			"archive_link": "",
+			"domain_names": ["thedeadondemand.local", "thedeadondemand.com", "thedeadondemand.alecgorge.com"],
+			"google_analytics": {
+				"id": "UA-46363228-4"
 			}
 		}
 	],

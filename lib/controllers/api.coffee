@@ -70,10 +70,14 @@ exports.artist_year_shows = (req, res) ->
 			return not_found(res) if not years or years.length is 0
 
 			year = years[0].toJSON()
-			models.sequelize.query("""SELECT `Shows`.*, `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
+			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.*,
+											   AVG(Shows.duration) as duration, 
+											   SUM(Shows.reviews_count) as reviews_count, MAX(Shows.average_rating) as average_rating,
+											   `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
 										FROM `Shows`
 											INNER JOIN `Venues` on `Shows`.`VenueId` = `Venues`.`id`
 										WHERE `ArtistId` = ? AND `year` = ?
+										GROUP BY `Shows`.`display_date`
 										ORDER BY date ASC
 										""", null, {raw: true}, [artist.id, year.year])
 							.error(error(res))
@@ -90,6 +94,7 @@ exports.top_shows = (req, res) ->
 										INNER JOIN `Venues` on `Shows`.`VenueId` = `Venues`.`id`
 									WHERE `ArtistId` = ? AND reviews_count > ?
 									ORDER BY average_rating DESC, reviews_count DESC
+									LIMIT 20
 									""", null, {raw: true}, [artist.id, 1])
 						.error(error(res))
 						.success (shows) ->
@@ -114,20 +119,32 @@ exports.artist_show_by_date = (req, res) ->
 		return not_found(res) if not artist
 
 		artist.getShows(
-			where: ['date = ?', new Date req.param 'show_date']
+			where: ['display_date = ?', req.param 'show_date']
 		).error(error(res)).success (shows) ->
 			return not_found(res) if not shows or shows.length is 0
 
-			show = shows[0]
-			show.getTracks().error(error(res)).success (tracks) ->
-				show.getVenue().error(error(res)).success (venue) ->
-					show = show.toJSON()
-					show.tracks = tracks
+			json = []
+			async.each shows, (show, cb) ->
+				show.getTracks(order: 'track ASC').error((err) -> cb(err)).success (tracks) ->
+					show.getVenue().error((err) -> cb(err)).success (venue) ->
+						show = show.toJSON()
+						show.tracks = tracks
 
-					delete show.VenueId
-					show.venue = venue
+						delete show.VenueId
+						show.venue = venue
 
-					res.json success cleanup_shows show
+						json.push cleanup_shows show
+
+						cb null
+			, (err) ->
+				return error(res)(err) if err
+
+				json = json.sort (a, b) ->
+					diff = b.average_rating - a.average_rating
+					return b.reviews_count - a.reviews_count if diff is 0
+					return diff
+
+				res.json success json
 
 exports.artist_venues = (req, res) ->
 	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->

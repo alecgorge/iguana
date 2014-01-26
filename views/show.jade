@@ -1,32 +1,59 @@
 .row
 	.col-xs-12
-		h1 {{show.date | formatDate:"MM-DD-YYYY"}} 
-			small {{show.duration | humanizeTime:true}} at 
-				a(href='/venues/{{show.venue.id}}') {{show.venue.name}}, {{show.venue.city}}
+		h1 {{current_show.display_date}} 
+			small {{current_show.duration | humanizeTime:true}} at 
+				a(href='/venues/{{current_show.venue.id}}') {{current_show.venue.name}}, {{current_show.venue.city}}
 
 		ol.breadcrumb
 			li
 				a(href='/') {{$root.config.artist_name}}
 			li
-				a(href='/years/{{show.year}}') {{show.year}}
-			li.active {{show.date | formatDate:"MM-DD-YYYY"}} 
+				a(href='/years/{{current_show.year}}') {{current_show.year}}
+			li.active {{current_show.display_date}} 
 .row
 	.col-xs-4
-		.block(ng-show="show.description != ''")
-			.well.show-description
-				p(ng-bind-html="show.description | nl2br")
+		.block
+			h3(style='margin-top:0') {{shows.length}} Source(s)
+			ul.nav.nav-pills.nav-stacked
+				li.active.dropdown
+					a(data-toggle='dropdown', data-target='#', href='javascript:;')
+						span.badge.pull-right {{current_show.average_rating | round:2}}/5.00 ({{current_show.reviews_count}})
+						small 
+							strong {{current_show.duration | humanizeTime:true}}
+							|  &mdash; {{current_show.source}}
+					ul.dropdown-menu(role='menu')
+						li(ng-repeat="show in shows", ng-class='{disabled: show.id==current_show.id}')
+							a(href='/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}', ng-click="changeSource($event, $index)").no-follow
+								span.badge.pull-right {{show.average_rating | round:2}}/5.00 ({{show.reviews_count}})
+								small 
+									strong {{show.duration | humanizeTime:true}}
+									|  &mdash; {{show.source}}
+		br
+		.block(ng-show="current_show.description != ''")
+			.well.current_show-description
+				p(ng-bind-html="current_show.description | nl2br")
 
-		.block(ng-show="show.source != ''")
+		.block(ng-show="current_show.source != ''")
 			h3 Source
-			p {{show.source}}
+			p {{current_show.source}}
 
-		.block(ng-show="show.lineage != ''")
+		.block(ng-show="current_show.lineage != ''")
 			h3 Lineage
-			p {{show.lineage}}
+			p {{current_show.lineage}}
 
-		.block(ng-show="show.taper != ''")
+		.block(ng-show="current_show.taper != ''")
 			h3 Taper
-			p {{show.taper}}
+			p {{current_show.taper}}
+		.block(ng-show="current_show.archive_identifier != ''")
+			h3 Links
+			ul.nav.nav-pills.nav-stacked
+				li
+					a(href='https://archive.org/details/{{current_show.archive_identifier}}') Complete show details on archive.org
+				li
+					a(href='https://archive.org/download/{{current_show.archive_identifier}}/{{current_show.archive_identifier}}_vbr_mp3.zip') VBR MP3 ZIP (via archive.org)
+				li
+					a(href='https://archive.org/details/{{current_show.archive_identifier}}/{{current_show.archive_identifier}}_vbr.m3u') VBR MP3 M3U Stream (via archive.org)
+
 	.col-xs-8
 		table.table.table-striped.table-hover.sortable
 			thead
@@ -34,17 +61,17 @@
 				th Title
 				th Length
 			tbody
-				tr(ng-repeat="track in show.tracks")
+				tr(ng-repeat="track in current_show.tracks")
 					td(data-value="{{track.track}}") {{track.track}}
 					td(data-value="{{track.title}}").nopadding
-						a(href='/years/{{show.year}}/shows/{{show.date | formatDate:"YYYY-MM-DD"}}/{{track.id}}/{{track.slug}}', ng-click="playTrack($event, $index)").no-follow.block {{track.title}}
+						a(href='/years/{{current_show.year}}/shows/{{current_show.display_date}}/sources/{{current_show.id}}/tracks/{{track.id}}/{{track.slug}}', ng-click="playTrack($event, $index)").no-follow.block {{track.title}}
 					td(data-value="{{track.length}}") {{track.length | humanizeTime:true}}
 
-		.review-container(ng-show="show.reviews.length != 0")
+		.review-container(ng-show="current_show.reviews.length != 0")
 			h3 Reviews
-			p.lead {{show.average_rating | round:2}} ({{show.reviews_count}} reviews)
+			p.lead {{current_show.average_rating | round:2}} ({{current_show.reviews_count}} reviews)
 			ul.reviews
-				li(ng-repeat="review in show.reviews")
+				li(ng-repeat="review in current_show.reviews")
 					h4 {{review.reviewtitle}}
 						small {{review.reviewdate}}
 					p Rated {{review.stars}}/5 stars by 

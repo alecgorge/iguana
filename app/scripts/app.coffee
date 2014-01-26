@@ -43,7 +43,11 @@ app
         title: 'Show'
         templateUrl: 'views/show.html'
         controller: 'Show'
-      .when '/years/:year/shows/:show_date/:track_id/:track_slug',
+      .when '/years/:year/shows/:show_date/sources/:show_id',
+        title: 'Show'
+        templateUrl: 'views/show.html'
+        controller: 'Show'
+      .when '/years/:year/shows/:show_date/sources/:show_id/tracks/:track_id/:track_slug',
         title: 'Show'
         templateUrl: 'views/show.html'
         controller: 'Show'

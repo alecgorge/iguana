@@ -60,20 +60,27 @@ cache_year_stats = (done) ->
 	winston.info "Caching year information"
 	models.sequelize.query("TRUNCATE TABLE Years").error(done).success () ->
 		models.sequelize.query("""
-			INSERT INTO Years (ArtistId, year, show_count, duration, avg_duration, avg_rating,createdAt,updatedAt)
-				SELECT ArtistId, year, COUNT(*), SUM(Shows.duration), AVG(Shows.duration), AVG(Shows.average_rating), NOW(), NOW()
+			INSERT INTO Years (ArtistId, year, show_count, recording_count, duration, avg_duration, avg_rating,createdAt,updatedAt)
+				SELECT ArtistId, year, COUNT(DISTINCT Shows.`display_date`), COUNT(*), SUM(Shows.duration), AVG(Shows.duration), AVG(Shows.average_rating), NOW(), NOW()
 				FROM Shows
 				GROUP BY ArtistId, year
 			""").error(done).success(done)
 
 loadShow = (artist, small_show, cb) ->
 	models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
-		return cb() if pre_existing_show isnt null 
+		if pre_existing_show isnt null 
+			winston.info "this archive identifier is already in the db"
+			return cb()
 	
 		request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
 			winston.info "GET " + SINGLE_URL(small_show.identifier)
 
-			body = JSON.parse body
+			try
+				body = JSON.parse body
+			catch e
+				# invalid json
+				console.log e
+				return cb()
 
 			files = body.files
 			mp3_tracks = Object.keys(files).
@@ -98,11 +105,23 @@ loadShow = (artist, small_show, cb) ->
 
 			if isNaN(d.getTime())
 				parts = body.metadata.date[0].split('-')
+				parts[1] = '01' if parts[1] == '00'
+				parts[2] = '01' if parts[2] == '00'
+
+				if parseInt(parts[2], 10) > 31
+					parts[2] = '31'
+				if parseInt(parts[1], 10) > 12
+					parts[2] = '12'
+
 				d = new Date "#{parts[0]}-#{parts[2]}-#{parts[1]}"
+
+				if isNaN(d.getTime())
+					d = new Date 0
 
 			showProps =
 				title				: body.metadata.title
 				date 				: d
+				display_date 		: body.metadata.date[0]
 				year 				: parseInt body.metadata.year[0]
 				source 				: if body.metadata.source then body.metadata.source[0] else "Unknown"
 				lineage 			: if body.metadata.lineage then body.metadata.lineage[0] else "Unknown"
@@ -140,7 +159,7 @@ loadShow = (artist, small_show, cb) ->
 				return models.Track.build {
 					title 	: t
 					md5 	: file.md5
-					track 	: if file.track then parseInt file.track else track_i
+					track 	: if file.track then parseInt file.track.replace(/[^0-9]+/, '') else track_i
 					bitrate : parseInt file.bitrate
 					size 	: parseInt file.size
 					length 	: parseTime file.length
@@ -152,8 +171,10 @@ loadShow = (artist, small_show, cb) ->
 			showProps.track_count = tracks.length
 
 			winston.info "looking for show in db"
-			models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id}, showProps).error(cb).success (show, created) ->
-				return cb() unless created
+			models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id, archive_identifier: showProps.archive_identifier}, showProps).error(cb).success (show, created) ->
+				unless created
+					winston.info "this show is already in the db"
+					return cb()
 
 				winston.info "show created! looking for venue"
 				models.Venue.findOrCreate(venueProps, venueProps).error(cb).success (venue, created) ->

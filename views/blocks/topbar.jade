@@ -13,7 +13,7 @@
 						.song-info(ng-show="show")
 							.song-name {{show.tracks[audioPlayer.currentTrack - 1].title}}
 							.song-album
-								a(href='/years/{{show.year}}/shows/{{show.date | formatDate: "YYYY-MM-DD"}}') {{show.date | formatDate: "MM-DD-YYYY"}}
+								a(href='/years/{{show.year}}/shows/{{show.display_date}}') {{show.display_date | formatDate: "MM-DD-YYYY"}}
 								|  — 
 								a(href='/venues/{{show.venue.id}}') {{show.venue.name}}, {{show.venue.city}}
 						.progress-wrapper(ng-show="show")

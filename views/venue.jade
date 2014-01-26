@@ -19,7 +19,7 @@
 			tbody
 				tr(ng-repeat="show in venue.shows")
 					td(data-value="{{show.date}}").nopadding
-						a(href='/years/{{show.year}}/shows/{{show.date | formatDate:"YYYY-MM-DD"}}').block {{show.date | formatDate:"MM-DD-YYYY"}}
+						a(href='/years/{{show.year}}/shows/{{show.display_date}}').block {{show.display_date}}
 					td(data-value="{{show.track_count}}") {{show.track_count}}
 					td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
 					td(data-value="{{show.average_rating}}") {{show.average_rating}}
