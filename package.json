@@ -13,7 +13,8 @@
     "winston": "~0.7.2",
     "nconf": "~0.6.9",
     "stylus": "~0.40.3",
-    "connect-assets": "~2.5.3"
+    "connect-assets": "~2.5.3",
+    "bower": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -60,6 +61,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "start": "grunt server:dist"
+    "start": "bower install && grunt server:dist"
   }
 }
