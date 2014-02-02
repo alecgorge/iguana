@@ -36,7 +36,7 @@
 			tbody
 				tr(ng-repeat="show in top_shows")
 					td(data-value="{{show.date}}").nopadding.min-width-160
-						a(href='/years/{{show.year}}/shows/{{show.display_date}}').block {{show.display_date}}
+						a(href='/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}').block {{show.display_date}}
 					td(data-value="{{show.track_count}}") {{show.track_count}}
 					td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
 					td(data-value="{{show.average_rating}}") {{show.average_rating}}

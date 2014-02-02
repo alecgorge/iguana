@@ -10,10 +10,10 @@ app         = express()
 models      = require './lib/models'
 config      = require './lib/config'
 
-# models.sync(force: false).
-#        error((err) -> throw err if err).
-#        success () ->
-#         console.log 'synced'
+models.sync(force: false).
+       error((err) -> throw err if err).
+       success () ->
+        console.log 'synced'
 
 # Controllers
 api         = require "./lib/controllers/api"
@@ -51,6 +51,7 @@ app.use app.router
 # Routes
 app.get "/api/awesomeThings", api.awesomeThings
 app.get "/importer/:artist/rebuild_index", importer.rebuild_index
+app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
 app.get "/importer/reslug", importer.reslug
 app.get "/importer/search_data", api.search_data
 
@@ -68,6 +69,10 @@ app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3
 app.get '/api/artists/:artist_slug/venues', api.artist_venues
 app.get '/api/artists/:artist_slug/venues/:venue_id', api.single_venue
 app.get '/api/artists/:artist_slug/search', api.search
+
+app.get '/api/artists/:artist_slug/setlists', api.setlist.setlist
+app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
+app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 
 app.get '/configure.js', (req, res) ->
   res.set 'Cache-Control', 'no-cache'

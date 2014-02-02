@@ -14,7 +14,8 @@
     "nconf": "~0.6.9",
     "stylus": "~0.40.3",
     "connect-assets": "~2.5.3",
-    "bower": "*"
+    "bower": "*",
+    "moment": "~2.5.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

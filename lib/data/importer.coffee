@@ -16,7 +16,7 @@ refreshData = (artist, done) ->
 
 		body = JSON.parse body
 
-		winston.info 'got serach results'
+		winston.info 'got search results'
 		shows = body['response']['docs']
 
 		async.mapLimit shows, 1, (small_show, cb) ->
@@ -61,7 +61,8 @@ cache_year_stats = (done) ->
 	models.sequelize.query("TRUNCATE TABLE Years").error(done).success () ->
 		models.sequelize.query("""
 			INSERT INTO Years (ArtistId, year, show_count, recording_count, duration, avg_duration, avg_rating,createdAt,updatedAt)
-				SELECT ArtistId, year, COUNT(DISTINCT Shows.`display_date`), COUNT(*), SUM(Shows.duration), AVG(Shows.duration), AVG(Shows.average_rating), NOW(), NOW()
+				SELECT ArtistId, year, COUNT(DISTINCT Shows.`display_date`), COUNT(*), SUM(Shows.duration),
+						AVG(Shows.duration), AVG(NULLIF(Shows.average_rating, 0)), NOW(), NOW()
 				FROM Shows
 				GROUP BY ArtistId, year
 			""").error(done).success(done)

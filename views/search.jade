@@ -26,7 +26,7 @@
 				tbody
 					tr(ng-repeat="show in results.shows")
 						td(data-value="{{show.date}}").nopadding.min-width-160
-							a(href='/years/{{show.year}}/shows/{{show.display_date}}').block {{show.display_date}}
+							a(href='/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}').block {{show.display_date}}
 						td(data-value="{{show.track_count}}") {{show.track_count}}
 						td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
 						td(data-value="{{show.average_rating}}") {{show.average_rating}}
@@ -48,9 +48,9 @@
 					tr(ng-repeat="track in results.tracks")
 						td(data-value="{{track.track}}") {{track.track}}
 						td(data-value="{{track.title}}").nopadding
-							a(href='/years/{{track.year}}/shows/{{track.display_date}}/{{track.id}}/{{track.slug}}').block {{track.title}}
+							a(href='/years/{{track.year}}/shows/{{track.display_date}}/sources/{{show.id}}/tracks/{{track.id}}/{{track.slug}}').block {{track.title}}
 						td(data-value="{{track.date}}").nopadding
-							a(href='/years/{{track.year}}/shows/{{track.display_date}}').block {{track.display_date}}
+							a(href='/years/{{track.year}}/shows/{{track.display_date}}/sources/{{show.id}}').block {{track.display_date}}
 						td(data-value="{{track.length}}") {{track.length | humanizeTime:true}}
 
 		.block(ng-show="results.venues.length > 0")

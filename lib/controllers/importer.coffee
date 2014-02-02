@@ -1,7 +1,8 @@
 
-models 		= require '../models'
-importer 	= require '../data/importer'
-winston 	= require 'winston'
+models 				= require '../models'
+importer 			= require '../data/importer'
+setlist_importer 	= require '../data/setlist_importer'
+winston 			= require 'winston'
 
 exports.rebuild_index = (req, res) ->
 	res.set 'Cache-Control', 'no-cache'
@@ -24,3 +25,16 @@ exports.reslug = (req, res) ->
 		throw err if err
 
 		winston.info "Done resluging"
+
+exports.rebuild_setlists = (req, res) ->
+	res.set 'Cache-Control', 'no-cache'
+	res.json success: true
+
+	models.Artist.
+			find(where: slug: req.param('artist')).
+			error((err) -> throw err if err).
+			success (artist) ->
+				setlist_importer.refreshSetlists artist, (err) ->
+					throw err if err
+
+					winston.info "Done rebuilding setlists for #{artist.name}"

@@ -3,6 +3,8 @@ models 		= require '../models'
 winston 	= require 'winston'
 async 		= require 'async'
 
+exports.setlist = require './setlist'
+
 exports.awesomeThings = (req, res) ->
 	res.json [
 		'HTML5 Boilerplate',
