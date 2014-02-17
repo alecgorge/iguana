@@ -48,6 +48,29 @@ exports.show_id = (req, res) ->
 
 						res.json success setlist_json
 
+
+exports.on_date = (req, res) ->
+	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+		return not_found(res) if not artist
+
+		models.Setlist.find(where: display_date: req.param('show_date')).error(error(res)).success (setlist) ->
+			setlist.getSetlistSets().error(error(res)).success (sets) ->
+				setlist_json = setlist.toJSON()
+				setlist_json.sets = []
+				async.eachLimit sets, 1, (set, cb) ->
+					set_json = set.toJSON()
+					set.getSetlistTracks().error(error(res)).success (tracks) ->
+						set_json.tracks = tracks.map (v) -> v.toJSON()
+
+						setlist_json.sets.push set_json
+
+						cb()
+				, (err) ->
+					setlist.getSetlistVenue().error(error(res)).success (venue) ->
+						setlist_json.venue = venue.toJSON()
+
+						res.json success setlist_json
+
 exports.song_stats = (req, res) ->
 	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
 		return not_found(res) if not artist
