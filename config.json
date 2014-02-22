@@ -39,6 +39,16 @@
 			}
 		},
 		{
+			"name": "SCIOD",
+			"api_slug": "sci",
+			"artist_name": "String Cheese Incident",
+			"archive_link": "",
+			"domain_names": ["sciod.local", "sciod.com", "sciod.alecgorge.com"],
+			"google_analytics": {
+				"id": "UA-46363228-5"
+			}
+		},
+		{
 			"name": "DeadOD",
 			"api_slug": "gd",
 			"artist_name": "Grateful Dead",
