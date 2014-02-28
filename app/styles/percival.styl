@@ -2,8 +2,17 @@ color_primary = #0078C4
 color_accent = #FFE545
 color_primary_dark = darken(color_primary, 20%)
 
+color_sidebar_background = #f2f3f5
+color_sidebar_hover = #e8e8e8
+color_background = #fff
+color_borders = #8e8f90
+color_text = #666
+color_player_bar = #666
+color_player_buttons = #666
+color_player_bar_head = #000
+
 body
-	padding-top 20px
+	padding 0px
 
 .primary-bg
 	background color_primary
@@ -14,8 +23,23 @@ body
 table td.min-width-160
 	min-width 160px
 
-#topbar
+.row
+	margin 0
 
+.sidebar
+	padding 0
+	background color_sidebar_background
+
+#content
+	border-left 1px color_borders solid
+
+	.innerContent
+		padding-left 0
+		background color_background
+
+#topbar
+	border-bottom 1px color_borders solid
+	
 	h2
 		margin 0
 		padding 0
@@ -26,12 +50,9 @@ table td.min-width-160
 	.years
 		text-align center
 
-	.song-info
-		.song-name, .song-album
-			text-align center
-
-		.song-album
-			padding-bottom 10px
+	.song-name, .song-album
+		text-align center
+		line-height 54px
 
 	.progress-wrapper
 		position relative
@@ -39,14 +60,18 @@ table td.min-width-160
 		.playhead
 			position absolute
 			left 0
-			top 0
+			bottom 0
 			height 20px
 			width 4px
 			background #444
 			display none
 
 		.progress
-			margin 0 50px
+			margin 0
+			clear both
+			border-radius 0
+			box-shadow none
+			-webkit-box-shadow none
 
 		.elapsed
 			float left
@@ -63,7 +88,7 @@ table td.min-width-160
 
 	.center-player-controls
 		text-align center
-		padding-top 21px
+		padding-top 0
 
 		.btn
 			font-size 2em

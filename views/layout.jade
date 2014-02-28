@@ -19,11 +19,14 @@ html.no-js(ng-app='percival')
 		// Place favicon.ico and apple-touch-icon.png in the root directory
 
 		// build:css styles/bootstrap.css
-		link(rel="stylesheet", href="bower_components/bootstrap/dist/css/bootstrap.css")
+		//- link(rel="stylesheet", href="bower_components/bootstrap/dist/css/bootstrap.css")
+		//- link(href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/yeti/bootstrap.min.css", rel="stylesheet")
 		// endbuild
 
 		// build:css(.tmp) styles/main.css
 		link(rel="stylesheet", href="styles/bootstrap-sortable.css")
+		link(rel="stylesheet", href="styles/bootstrap.css")
+		link(rel="stylesheet", href="styles/bootstrap-theme.css")
 		link(rel="stylesheet", href="styles/percival.css")
 		// endbuild
 	
@@ -38,11 +41,16 @@ html.no-js(ng-app='percival')
 			script(src='bower_components/es5-shim/es5-shim.js')
 			script(src='bower_components/json3/lib/json3.min.js')
 
-		include blocks/topbar
+		//- include blocks/topbar
 
-		// Add your site or application content here 
-		.container(ng-view='')
-			block content
+		.container-fluid
+			.row
+				.col-sm-2
+					include blocks/sidebar
+				.col-sm-10#content
+					include blocks/player
+					.container-fluid(ng-view='').innerContent
+						block content
 
 		#loadingWidget(loading-widget)
 			.loadingContent

@@ -1,0 +1,26 @@
+.container-fluid(ng-controller="player")#topbar
+	.row
+		.col-xs-4
+			.song-name(ng-show="show") {{show.tracks[audioPlayer.currentTrack - 1].title}}
+		.col-xs-4
+			audio(player-control="audioPlayer", playlist="audioPlaylist", audio-player)
+			.center-player-controls(ng-show="show")
+				.btn(ng-click="audioPlayer.prev()")
+					span.glyphicon.glyphicon-backward
+				.btn(ng-click="audioPlayer.playPause()")
+					span.glyphicon(ng-class="{ 'glyphicon-pause': audioPlayer.playing, 'glyphicon-play': !audioPlayer.playing }")
+				.btn(ng-click="audioPlayer.next()")
+					span.glyphicon.glyphicon-forward
+		.col-xs-4
+			.song-album(ng-show="show")
+				a(href='/years/{{show.year}}/shows/{{show.display_date}}') {{show.display_date | formatDate: "MM-DD-YYYY"}}
+				|  — 
+				a(href='/venues/{{show.venue.id}}') {{show.venue.name}}, {{show.venue.city}}
+	.row
+		.col-xs-12
+			.progress-wrapper(ng-show="show")
+				span.elapsed {{ audioPlayer.formatTime }}
+				span.duration {{ audioPlayer.formatDuration }}
+				.progress
+					.progress-bar(role='progressbar', aria-valuemin="0", aria-valuemax="0", ng-style="{ width: audioPlayer.currentTime*100/audioPlayer.duration + '%' }")
+					span#playhead.playhead

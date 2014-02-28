@@ -1,0 +1,22 @@
+.sidebar
+	h1
+		a(href='/') {{$root.config.name}}
+	hr
+	h2 Filter
+	.nav.nav-pills.nav-stacked
+		li(ng-class="{active: $root.isActive('/')}")
+			a(href='/') Years
+		li(ng-class="{active: $root.isActive('/venues')}")
+			a(href='/venues') Venues
+		li(ng-class="{active: $root.isActive('/about')}")
+			a(href='/about') About
+	hr
+	.form-wrapper(ng-controller="search")
+		form(role='form', ng-submit="search()").form-inline
+			.form-group
+				label(for='q').sr-only Search
+				.input-group
+					input(type='search', id='q', ng-model='q', value='{{q}}', placeholder='Search...')#search.form-control
+					span.input-group-addon
+						a(href='#').glyphicon.glyphicon-search
+			button(type="submit").btn.btn-default.sr-only Search
