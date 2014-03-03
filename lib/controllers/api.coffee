@@ -33,11 +33,13 @@ success = (data) ->
 
 cleanup_shows = (shows) ->
 	if not Array.isArray shows
-		shows.reviews = JSON.parse shows.reviews
+		if shows.reviews
+			shows.reviews = JSON.parse shows.reviews
 		return shows
 
 	return shows.map (v) ->
-				v.reviews = JSON.parse(v.reviews)
+				if v.reviews
+					v.reviews = JSON.parse(v.reviews)
 				return v
 
 exports.artists = (req, res) ->
@@ -72,7 +74,9 @@ exports.artist_year_shows = (req, res) ->
 			return not_found(res) if not years or years.length is 0
 
 			year = years[0].toJSON()
-			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.*,
+			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
+													Shows.year,
+													Shows.archive_identifier, Shows.id, Shows.VenueId, Shows.ArtistId, Shows.is_soundboard,
 											   AVG(Shows.duration) as duration, 
 											   SUM(Shows.reviews_count) as reviews_count, MAX(Shows.average_rating) as average_rating,
 											   `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
