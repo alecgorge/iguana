@@ -49,7 +49,6 @@ app.configure "production", ->
 app.use app.router
 
 # Routes
-app.get "/api/awesomeThings", api.awesomeThings
 app.get "/importer/:artist/rebuild_index", importer.rebuild_index
 app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
 app.get "/importer/reslug", importer.reslug
@@ -63,6 +62,7 @@ app.get '/api/artists/:artist_slug/years', api.artist_years
 app.get '/api/artists/:artist_slug/years/:year', api.artist_year_shows
 app.get '/api/artists/:artist_slug/years/:year/shows/:show_date', api.artist_show_by_date
 app.get '/api/artists/:artist_slug/top_shows', api.top_shows
+app.get '/api/artists/:artist_slug/random_show', api.random_show
 app.get '/api/artists/:artist_slug/shows', api.artist_shows
 app.get '/api/artists/:artist_slug/shows/:show_id', api.single_show
 app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3

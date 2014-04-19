@@ -30,19 +30,26 @@ slugify = (t) ->
 	if l[0...2] is "E:"
 		l = l[2..]
 
-	return l.trim().replace(/[^a-z0-9]+/g, '-')
+	return l.trim().replace(/[^A-Za-z0-9-]+/g, '-')
+
+venue_slugify = (t) -> t.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '')
 
 reslug = (done) ->
-	chainer = new Sequelize.Utils.QueryChainer
-	models.Track.all().error(done).success (tracks) ->
-		for track in tracks
-			title = track.title.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '').trim()
-			chainer.add track.updateAttributes({
-				"slug" : slugify(title)
-				"title": title
-			})
+	done "this doesn't work any more"
+	# chainer = new Sequelize.Utils.QueryChainer
+	# models.Track.all().error(done).success (tracks) ->
+	# 	for track in tracks
+	# 		title = track.title.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '').trim()
+	# 		chainer.add track.updateAttributes({
+	# 			"slug" : slugify(title)
+	# 			"title": title
+	# 		})
 
-		chainer.run().error(done).success -> done()
+	# models.Venue.all().error(done).success (venues) ->
+	# 	for venue in venues
+	# 		chainer.add venue.updateAttributes slug: venue_slugify(venue.name)
+
+	# 	chainer.run().error(done).success -> done()
 
 ###
 
@@ -142,6 +149,8 @@ loadShow = (artist, small_show, cb) ->
 				name 				: if body.metadata.venue then body.metadata.venue[0] else "Unknown"
 				city 				: if body.metadata.coverage then body.metadata.coverage[0] else "Unknown"
 
+			venueProps.slug = venue_slugify venueProps.name
+
 			track_i = 0
 			total_duration = 0
 			tracks = mp3_tracks.sort().
@@ -178,7 +187,7 @@ loadShow = (artist, small_show, cb) ->
 					return cb()
 
 				winston.info "show created! looking for venue"
-				models.Venue.findOrCreate(venueProps, venueProps).error(cb).success (venue, created) ->
+				models.Venue.findOrCreate({slug: venueProps.slug}, venueProps).error(cb).success (venue, created) ->
 					winston.info "building tracks"
 
 					winston.info "setting venue and tracks"

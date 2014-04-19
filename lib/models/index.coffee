@@ -23,6 +23,7 @@ Show = sequelize.define 'Show',
 Venue = sequelize.define 'Venue',
 	name	: Sequelize.STRING
 	city 	: Sequelize.STRING
+	slug 	: Sequelize.STRING
 
 Track = sequelize.define 'Track',
 	title 	: Sequelize.STRING
