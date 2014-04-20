@@ -143,6 +143,7 @@ exports.random_show = (req, res) ->
 							return b.reviews_count - a.reviews_count if diff is 0
 							return diff
 
+						res.set 'Cache-Control', 'no-cache'
 						res.json success json
 
 exports.single_show = (req, res) ->
