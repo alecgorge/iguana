@@ -90,12 +90,17 @@ exports.top_shows = (req, res) ->
 	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
 		return not_found(res) if not artist
 
-		models.sequelize.query("""SELECT `Shows`.*, `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
+		models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
+												Shows.year,
+												Shows.archive_identifier, Shows.id, Shows.VenueId, Shows.ArtistId, Shows.is_soundboard,
+										   AVG(Shows.duration) as duration, 
+										   SUM(Shows.reviews_count) as reviews_count, MAX(Shows.average_rating) as average_rating,
+										   `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
 									FROM `Shows`
 										INNER JOIN `Venues` on `Shows`.`VenueId` = `Venues`.`id`
 									WHERE `ArtistId` = ? AND reviews_count > ?
+									GROUP BY `Shows`.`display_date`
 									ORDER BY average_rating DESC, reviews_count DESC
-									LIMIT 20
 									""", null, {raw: true}, [artist.id, 1])
 						.error(error(res))
 						.success (shows) ->
