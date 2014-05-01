@@ -19,6 +19,13 @@ module.exports = (grunt) ->
       app: require("./bower.json").appPath or "app"
       dist: "public"
 
+    forever:
+      prod:
+        options:
+          command: 'coffee'
+          index: 'server.coffee'
+          logDir: 'logs'
+
     express:
       options:
         port: process.env.PORT or 9000
@@ -32,6 +39,8 @@ module.exports = (grunt) ->
         options:
           script: "server.coffee"
           node_env: "production"
+          background: false
+          delay: 1000
 
     jade:
       compile:
@@ -250,11 +259,6 @@ module.exports = (grunt) ->
       test: ["coffee", "copy:styles"]
       dist: ["coffee", "copy:styles", "imagemin", "svgmin", "htmlmin"]
 
-    karma:
-      unit:
-        configFile: "karma.conf.js"
-        singleRun: true
-
     cdnify:
       dist:
         html: ["<%= yeoman.dist %>/*.html"]
@@ -277,10 +281,8 @@ module.exports = (grunt) ->
     @async()
 
   grunt.registerTask "server", (target) ->
-    return grunt.task.run(["jade", "build", "express:prod", "open", "express-keepalive"])  if target is "dist"
+    return grunt.task.run(["jade", "build", "forever:prod:restart"])  if target is "dist"
     grunt.task.run ["clean:server", "concurrent:server", "autoprefixer", "stylus", "express:dev", "open", "watch"]
 
-  grunt.registerTask "test", ["clean:server", "concurrent:test", "autoprefixer", "stylus", "karma"]
   grunt.registerTask "build", ["clean:dist", "concurrent:dist", "useminPrepare", "autoprefixer", "stylus", "copy:dist", "concat", "cssmin", "cdnify", "ngmin", "rev", "usemin"]
-  grunt.registerTask "heroku", ["build", "clean:heroku", "copy:heroku"]
   grunt.registerTask "default", ["jshint", "test", "build"]
