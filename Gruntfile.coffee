@@ -13,6 +13,16 @@ module.exports = (grunt) ->
   require("load-grunt-tasks") grunt
   require("time-grunt") grunt
   grunt.initConfig
+    env:
+      options:
+        PORT: process.env.PORT or 9000
+
+      dev:
+        NODE_ENV: 'development'
+
+      prod:
+        NODE_ENV: 'production'
+
     yeoman:
       
       # configurable paths
@@ -281,8 +291,8 @@ module.exports = (grunt) ->
     @async()
 
   grunt.registerTask "server", (target) ->
-    return grunt.task.run(["jade", "build", "forever:prod:restart"])  if target is "dist"
-    grunt.task.run ["clean:server", "concurrent:server", "autoprefixer", "stylus", "express:dev", "open", "watch"]
+    return grunt.task.run(["env:prod", "jade", "build", "forever:prod:restart"])  if target is "dist"
+    grunt.task.run ["env:dev", "clean:server", "concurrent:server", "autoprefixer", "stylus", "express:dev", "open", "watch"]
 
   grunt.registerTask "build", ["clean:dist", "concurrent:dist", "useminPrepare", "autoprefixer", "stylus", "copy:dist", "concat", "cssmin", "cdnify", "ngmin", "rev", "usemin"]
   grunt.registerTask "default", ["jshint", "test", "build"]
