@@ -101,6 +101,7 @@ exports.top_shows = (req, res) ->
 									WHERE `ArtistId` = ? AND reviews_count > ?
 									GROUP BY `Shows`.`display_date`
 									ORDER BY average_rating DESC, reviews_count DESC
+									LIMIT 30
 									""", null, {raw: true}, [artist.id, 1])
 						.error(error(res))
 						.success (shows) ->
