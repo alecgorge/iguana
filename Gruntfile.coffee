@@ -29,7 +29,7 @@ module.exports = (grunt) ->
     express:
       options:
         port: process.env.PORT or 9000
-        cmd: 'coffee'
+        cmd: 'node_modules/.bin/coffee'
 
       dev:
         options:
