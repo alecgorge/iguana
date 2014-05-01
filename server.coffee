@@ -95,6 +95,6 @@ app.get '*', (req, res) ->
     res.render 'index'
 
 # Start server
-port = process.env.PORT or 3000
+port = process.env.PORT or 9000
 app.listen port, ->
   console.log "Express server listening on port %d in %s mode", port, app.get("env")
