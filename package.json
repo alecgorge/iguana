@@ -50,6 +50,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "start": "./node_modules/.bin/bower install && grunt server:dist"
+    "start": "./node_modules/.bin/bower --allow-root install && grunt server:dist"
   }
 }
