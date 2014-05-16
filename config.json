@@ -15,7 +15,8 @@
 			"archive_link": "",
 			"domain_names": ["marcoallday.local", "marcoallday.com", "localhost", "marcoallday.alecgorge.com"],
 			"google_analytics": {
-				"id": "UA-46363228-2"
+				"id": "UA-46363228-2",
+				"domain": "marcoallday.com"
 			}
 		},
 		{
@@ -25,7 +26,8 @@
 			"archive_link": "",
 			"domain_names": ["lotusod.local", "lotusod.com", "lotusod.alecgorge.com"],
 			"google_analytics": {
-				"id": "UA-46363228-1"
+				"id": "UA-46363228-1",
+				"domain": "lotusod.com"
 			}
 		},
 		{
@@ -35,7 +37,8 @@
 			"archive_link": "",
 			"domain_names": ["sts9od.local", "sts9od.com", "sts9od.alecgorge.com"],
 			"google_analytics": {
-				"id": "UA-46363228-3"
+				"id": "UA-46363228-3",
+				"domain": "sts9od.com"
 			}
 		},
 		{
@@ -45,7 +48,8 @@
 			"archive_link": "",
 			"domain_names": ["sciod.local", "sciod.com", "sciod.alecgorge.com"],
 			"google_analytics": {
-				"id": "UA-46363228-5"
+				"id": "UA-46363228-5",
+				"domain": "sciod.alecgorge.com"
 			}
 		},
 		{
@@ -55,7 +59,8 @@
 			"archive_link": "",
 			"domain_names": ["thedeadondemand.local", "thedeadondemand.com", "thedeadondemand.alecgorge.com"],
 			"google_analytics": {
-				"id": "UA-46363228-4"
+				"id": "UA-46363228-4",
+				"domain": "thedeadondemand.alecgorge.com"
 			}
 		}
 	],
