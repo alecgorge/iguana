@@ -10,7 +10,11 @@ app = angular.module('percival', [
 ])
 
 app
-  .config(['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvider, $locationProvider, $httpProvider) ->
+  .config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', ($routeProvider, $locationProvider, $httpProvider, $provide) ->
+    $provide.decorator '$sniffer', ($delegate) ->
+      $delegate.history = false
+      return $delegate
+
     $routeProvider
       .when '/',
         title: 'Home'
