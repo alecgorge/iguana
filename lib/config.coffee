@@ -21,6 +21,6 @@ r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
 ga('create','#{id}', '#{domain}');"""
 
 	get: nconf.get.bind(nconf)
-	env: () -> nconf.get nconf.get 'env'
+	env: () -> nconf.get (process.env.NODE_ENV or nconf.get 'env')
 
 module.exports = exports = new Config

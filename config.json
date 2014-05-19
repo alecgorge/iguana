@@ -2,9 +2,18 @@
 	"env": "production",
 	"production": {
 		"db": {
+			"host": "172.17.0.2",
+			"username": "admin",
+			"password": "nCo5Or9Jgch127IN",
+			"database": "db"
+		}
+	},
+	"development": {
+		"db": {
 			"host": "localhost",
 			"username": "root",
-			"password": "snowman42"
+			"password": "snowman42",
+			"database": "lotusod"
 		}
 	},
 	"site": [
