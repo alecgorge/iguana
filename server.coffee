@@ -11,7 +11,10 @@ models      = require './lib/models'
 config      = require './lib/config'
 
 models.sync(force: false).
-       error((err) -> throw err if err).
+       error((err) ->
+        console.log err
+        throw err
+       ).
        success () ->
         console.log 'synced'
 
