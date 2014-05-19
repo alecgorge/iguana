@@ -14,10 +14,10 @@
     "stylus": "~0.40.3",
     "connect-assets": "~2.5.3",
     "bower": "*",
-    "moment": "~2.5.1"
-  },
-  "devDependencies": {
+    "moment": "~2.5.1",
+
     "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.13",
     "grunt-autoprefixer": "~0.2.0",
     "grunt-concurrent": "~0.3.0",
     "grunt-contrib-clean": "~0.5.0",
@@ -47,10 +47,10 @@
     "time-grunt": "~0.1.0"
   },
   "engines": {
-    "node": ">=0.10.26"
+    "node": "~0.10.28"
   },
   "scripts": {
     "test": "grunt test",
-    "start": "./node_modules/.bin/bower --allow-root install && grunt server:dist"
+    "start": "./node_modules/.bin/bower --allow-root install && ./node_modules/.bin/grunt server:dist"
   }
 }
