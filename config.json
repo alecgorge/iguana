@@ -22,7 +22,7 @@
 			"api_slug": "marco",
 			"artist_name": "Marco Benevento",
 			"archive_link": "",
-			"domain_names": ["marcoallday.local", "marcoallday.com", "localhost", "marcoallday.alecgorge.com"],
+			"domain_names": ["marcoallday.local", "marcoallday.com", "localhost", "iguana.app.alecgorge.com", "marcoallday.alecgorge.com"],
 			"google_analytics": {
 				"id": "UA-46363228-2",
 				"domain": "marcoallday.com"
