@@ -20,7 +20,7 @@ angular.module('percival')
 
 			$scope.venue = venue.data
 
-			$rootScope.title = [$scope.venue.name, "Venues"].join("–")
+			$rootScope.title = [$scope.venue.name, "Venues"].join(" – ")
 
 			$scope.$evalAsync -> $.bootstrapSortable false, 'reversed'
 	])
