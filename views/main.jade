@@ -15,7 +15,7 @@
 			tbody
 				tr(ng-repeat="year in years")
 					td(data-value="{{year.year}}").nopadding
-						a(href='/years/{{year.year}}').block {{year.year}}
+						a(href='#!/years/{{year.year}}').block {{year.year}}
 					td {{year.show_count}}
 					td {{year.recording_count}}
 					td(data-value="{{year.duration}}") {{year.duration | formatSeconds:'hours' | round:2}} hours
@@ -36,11 +36,11 @@
 			tbody
 				tr(ng-repeat="show in top_shows")
 					td(data-value="{{show.date}}").nopadding.min-width-160
-						a(href='/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}').block {{show.display_date}}
+						a(href='#!/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}').block {{show.display_date}}
 					td(data-value="{{show.track_count}}") {{show.track_count}}
 					td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
 					td(data-value="{{show.average_rating}}") {{show.average_rating}}
 					td(data-value="{{show.reviews_count}}") {{show.reviews_count}}
 					td(data-value="{{show.is_soundboard}}") {{show.is_soundboard | humanizeBoolean}}
 					td(data-value="{{show.venue_name}}").nopadding
-						a(href='/venues/{{show.VenueId}}').block {{show.venue_name}}, {{show.venue_city}}
+						a(href='#!/venues/{{show.VenueId}}').block {{show.venue_name}}, {{show.venue_city}}

@@ -7,15 +7,15 @@
 					.navbar-header
 						.navbar-brand
 							h2
-								a(href='/') {{$root.config.name}}
+								a(href='#!/') {{$root.config.name}}
 				.col-xs-6
 					.center-player
 						.song-info(ng-show="show")
 							.song-name {{show.tracks[audioPlayer.currentTrack - 1].title}}
 							.song-album
-								a(href='/years/{{show.year}}/shows/{{show.display_date}}') {{show.display_date | formatDate: "MM-DD-YYYY"}}
+								a(href='#!/years/{{show.year}}/shows/{{show.display_date}}') {{show.display_date | formatDate: "MM-DD-YYYY"}}
 								|  — 
-								a(href='/venues/{{show.venue.id}}') {{show.venue.name}}, {{show.venue.city}}
+								a(href='#!/venues/{{show.venue.id}}') {{show.venue.name}}, {{show.venue.city}}
 						.progress-wrapper(ng-show="show")
 							span.elapsed {{ audioPlayer.formatTime }}
 							span.duration {{ audioPlayer.formatDuration }}
@@ -44,17 +44,17 @@
 						button(type="submit").btn.btn-default.sr-only Search
 				ul.nav.nav-tabs
 					li(ng-class="{active: $root.isActive('/')}")
-						a(href='/') Years
+						a(href='#!/') Years
 					li(ng-class="{active: $root.isActive('/venues')}")
-						a(href='/venues') Venues
+						a(href='#!/venues') Venues
 					li(ng-class="{active: $root.isActive('/about')}")
-						a(href='/about') About
+						a(href='#!/about') About
 		//- .row
 			//- .col-sm-2
 			//- 	p Venues
 			//- .col-xs-12(ng-controller='years').years
 				//- ul.pagination
 					//- li(ng-repeat='year in years')
-						//- a(href='/years/{{year.year}}') {{year.year}}
+						//- a(href='#!/years/{{year.year}}') {{year.year}}
 			//- .col-sm-2
 			//- 	p Search

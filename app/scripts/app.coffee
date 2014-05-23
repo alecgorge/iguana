@@ -10,11 +10,7 @@ app = angular.module('percival', [
 ])
 
 app
-  .config(['$routeProvider', '$locationProvider', '$httpProvider', '$provide', ($routeProvider, $locationProvider, $httpProvider, $provide) ->
-    $provide.decorator '$sniffer', ($delegate) ->
-      $delegate.history = false
-      return $delegate
-
+  .config(['$routeProvider', '$locationProvider', '$httpProvider', ($routeProvider, $locationProvider, $httpProvider) ->
     $routeProvider
       .when '/',
         title: 'Home'
@@ -58,7 +54,7 @@ app
       .otherwise
         redirectTo: '/'
 
-    $locationProvider.html5Mode true
+    $locationProvider.html5Mode false
     $locationProvider.hashPrefix '!'
 
     $http = undefined

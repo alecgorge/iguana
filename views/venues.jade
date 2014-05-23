@@ -5,7 +5,7 @@
 
 		ol.breadcrumb
 			li
-				a(href='/') {{$root.config.artist_name}}
+				a(href='#!/') {{$root.config.artist_name}}
 			li.active Venues
 		table.table.table-striped.table-hover.sortable
 			thead
@@ -15,6 +15,6 @@
 			tbody
 				tr(ng-repeat="venue in venues")
 					td(data-value="{{venue.name}}").nopadding
-						a(href='/venues/{{venue.id}}').block {{venue.name}}
+						a(href='#!/venues/{{venue.id}}').block {{venue.name}}
 					td(data-value="{{venue.city}}") {{venue.city}}
 					td(data-value="{{venue.show_count}}") {{venue.show_count}}

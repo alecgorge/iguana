@@ -5,7 +5,7 @@
 
 		ol.breadcrumb
 			li
-				a(href='/') {{$root.config.artist_name}}
+				a(href='#!/') {{$root.config.artist_name}}
 			li.active {{year.year}}
 		table.table.table-striped.table-hover.sortable
 			thead
@@ -19,11 +19,11 @@
 			tbody
 				tr(ng-repeat="show in year.shows")
 					td(data-value="{{show.date}}").nopadding.min-width-160
-						a(href='/years/{{show.year}}/shows/{{show.display_date}}').block {{show.display_date}}
+						a(href='#!/years/{{show.year}}/shows/{{show.display_date}}').block {{show.display_date}}
 					td(data-value="{{show.recording_count}}") {{show.recording_count}}
 					td(data-value="{{show.duration}}") {{show.duration | humanizeTime:true}}
 					td(data-value="{{show.average_rating}}") {{show.average_rating}}
 					td(data-value="{{show.reviews_count}}") {{show.reviews_count}}
 					td(data-value="{{show.is_soundboard}}") {{show.is_soundboard | humanizeBoolean}}
 					td(data-value="{{show.venue_name}}").nopadding
-						a(href='/venues/{{show.VenueId}}').block {{show.venue_name}}, {{show.venue_city}}
+						a(href='#!/venues/{{show.VenueId}}').block {{show.venue_name}}, {{show.venue_city}}

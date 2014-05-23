@@ -2,13 +2,13 @@
 	.col-xs-12
 		h1 {{current_show.display_date}} 
 			small {{current_show.duration | humanizeTime:true}} at 
-				a(href='/venues/{{current_show.venue.id}}') {{current_show.venue.name}}, {{current_show.venue.city}}
+				a(href='#!/venues/{{current_show.venue.id}}') {{current_show.venue.name}}, {{current_show.venue.city}}
 
 		ol.breadcrumb
 			li
-				a(href='/') {{$root.config.artist_name}}
+				a(href='#!/') {{$root.config.artist_name}}
 			li
-				a(href='/years/{{current_show.year}}') {{current_show.year}}
+				a(href='#!/years/{{current_show.year}}') {{current_show.year}}
 			li.active {{current_show.display_date}} 
 .row
 	.col-xs-4
@@ -23,7 +23,7 @@
 							|  &mdash; {{current_show.source}}
 					ul.dropdown-menu(role='menu')
 						li(ng-repeat="show in shows", ng-class='{disabled: show.id==current_show.id}')
-							a(href='/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}', ng-click="changeSource($event, $index)").no-follow
+							a(href='#!/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}', ng-click="changeSource($event, $index)").no-follow
 								span.badge.pull-right {{show.average_rating | round:2}}/5.00 ({{show.reviews_count}})
 								small 
 									strong {{show.duration | humanizeTime:true}}
@@ -64,7 +64,7 @@
 				tr(ng-repeat="track in current_show.tracks")
 					td(data-value="{{track.track}}") {{track.track}}
 					td(data-value="{{track.title}}").nopadding
-						a(href='/years/{{current_show.year}}/shows/{{current_show.display_date}}/sources/{{current_show.id}}/tracks/{{track.id}}/{{track.slug}}', ng-click="playTrack($event, $index)").no-follow.block {{track.title}}
+						a(href='#!/years/{{current_show.year}}/shows/{{current_show.display_date}}/sources/{{current_show.id}}/tracks/{{track.id}}/{{track.slug}}', ng-click="playTrack($event, $index)").no-follow.block {{track.title}}
 					td(data-value="{{track.length}}") {{track.length | humanizeTime:true}}
 
 		.review-container(ng-show="current_show.reviews.length != 0")

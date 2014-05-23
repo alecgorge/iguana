@@ -1,3 +1,6 @@
 # robotstxt.org
 
 User-agent: *
+
+# the tracks links are just for users to share songs
+Disallow: /*/tracks/
