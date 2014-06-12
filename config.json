@@ -66,7 +66,7 @@
 			"api_slug": "gd",
 			"artist_name": "Grateful Dead",
 			"archive_link": "",
-			"domain_names": ["thedeadondemand.local", "thedeadondemand.com", "thedeadondemand.alecgorge.com"],
+			"domain_names": ["thedeadondemand.local", "thedeadondemand.com", "thedeadondemand.alecgorge.com", "thedeadondemand.app.alecgorge.com"],
 			"google_analytics": {
 				"id": "UA-46363228-4",
 				"domain": "thedeadondemand.alecgorge.com"
