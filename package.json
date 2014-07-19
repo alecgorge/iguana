@@ -82,6 +82,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "start": "./node_modules/.bin/bower --allow-root install && grunt server:dist"
+    "start": "./node_modules/.bin/bower --allow-root install && touch .nginx && grunt server:dist"
   }
 }
