@@ -28,9 +28,9 @@ app.configure ->
 
   # Allow access control origin
   app.use (req, res, next) ->
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.set
+      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Methods': 'GET'
 
     next()
 
