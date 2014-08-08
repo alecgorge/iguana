@@ -26,6 +26,14 @@ importer    = require "./lib/controllers/importer"
 app.configure ->
   app.use express.logger("dev")
 
+  # Allow access control origin
+  app.use (req, res, next) ->
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+
+    next()
+
   app.use (req, res, next) ->
     res.renderView = (viewName, viewModel) ->
       suffix = "" # if req.xhr then "" else "_full"
