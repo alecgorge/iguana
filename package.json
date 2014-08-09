@@ -42,6 +42,7 @@
     "nconf": "~0.6.9",
     "request": "~2.27.0",
     "sequelize": "^2.0.0-dev12",
+    "sequelize-mysql": "^2.0.0-beta.2",
     "stylus": "~0.40.3",
     "time-grunt": "~0.1.0",
     "winston": "~0.7.2"
