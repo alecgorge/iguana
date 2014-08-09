@@ -54,7 +54,7 @@ app.configure "development", ->
   app.use express.errorHandler()
 
 app.configure "production", ->
-  require('graphdat').config socketFile: '/host_tmp/gd.agent.sock'
+  require('graphdat').config { socketFile: '/host_tmp/gd.agent.sock', debug: true }
 
   app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
   app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
