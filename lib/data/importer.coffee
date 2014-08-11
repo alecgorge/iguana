@@ -24,13 +24,22 @@ refreshData = (artist, done) ->
 			loadShow artist, small_show, cb
 		, done
 
-slugify = (t) ->
+slugify = (t, slugs) ->
 	l = t.toLowerCase()
 
 	if l[0...2] is "E:"
 		l = l[2..]
 
-	return l.trim().replace(/[^A-Za-z0-9-]+/g, '-')
+	slug = l.trim().replace(/[^A-Za-z0-9-]+/g, '-')
+
+	# If we want unique slugs, keep track of the slugs we've used
+	if slugs
+		i = 0
+		while slugs[slug]
+			slug = slug.replace(/-[0-9]+$/, '') + '-' + i++
+
+		slugs[slug] = true
+	return slug
 
 venue_slugify = (t) -> t.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '')
 
@@ -76,10 +85,10 @@ cache_year_stats = (done) ->
 
 loadShow = (artist, small_show, cb) ->
 	models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
-		if pre_existing_show isnt null 
+		if pre_existing_show isnt null
 			winston.info "this archive identifier is already in the db"
 			return cb()
-	
+
 		request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
 			winston.info "GET " + SINGLE_URL(small_show.identifier)
 
@@ -134,6 +143,7 @@ loadShow = (artist, small_show, cb) ->
 				source 				: if body.metadata.source then body.metadata.source[0] else "Unknown"
 				lineage 			: if body.metadata.lineage then body.metadata.lineage[0] else "Unknown"
 				taper 				: if body.metadata.taper then body.metadata.taper[0] else "Unknown"
+				transferer 		: if body.metadata.transferer then body.metadata.transferer[0] else "Unknown"
 				description 		: if body.metadata.description then body.metadata.description[0] else ""
 				archive_identifier	: body.metadata.identifier[0]
 				reviews 			: if body.reviews then JSON.stringify body.reviews.reviews else "[]"
@@ -153,6 +163,7 @@ loadShow = (artist, small_show, cb) ->
 
 			track_i = 0
 			total_duration = 0
+			slugs = {}
 			tracks = mp3_tracks.sort().
 								map (v) ->
 				file = files[v]
@@ -174,7 +185,7 @@ loadShow = (artist, small_show, cb) ->
 					size 	: parseInt file.size
 					length 	: parseTime file.length
 					file 	: "https://archive.org/download/#{showProps.archive_identifier}#{v}"
-					slug 	: slugify(t)
+					slug 	: slugify(t, slugs)
 				}
 
 			showProps.duration = total_duration
