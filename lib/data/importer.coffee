@@ -34,7 +34,7 @@ slugify = (t, slugs) ->
 
 	# If we want unique slugs, keep track of the slugs we've used
 	if slugs
-		i = 0
+		i = 1
 		while slugs[slug]
 			slug = slug.replace(/-[0-9]+$/, '') + '-' + i++
 
