@@ -2,6 +2,7 @@
 environment = process.env.NODE_ENV
 
 if environment is "production"
+  require 'newrelic'
   require('graphdat').config { socketFile: '/host_tmp/gd.agent.sock', debug: true }
 
 # Module dependencies.
