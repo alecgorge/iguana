@@ -1,5 +1,5 @@
 {
-  "name": "lotusodcom",
+  "name": "iguana",
   "version": "0.0.0",
   "dependencies": {
     "asset-rack": "alecgorge/asset-rack",
@@ -45,6 +45,7 @@
     "request": "~2.27.0",
     "sequelize": "^2.0.0-dev12",
     "sequelize-mysql": "^2.0.0-beta.2",
+    "strong-agent": "^0.4.12",
     "stylus": "~0.40.3",
     "time-grunt": "~0.1.0",
     "winston": "~0.7.2"
