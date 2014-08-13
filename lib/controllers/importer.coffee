@@ -17,6 +17,20 @@ exports.rebuild_index = (req, res) ->
 
 					winston.info "Done rebuilding index for #{artist.name}"
 
+exports.rebuild_all = (req, res) ->
+	res.set 'Cache-Control', 'no-cache'
+	res.json success: true
+
+	models.Artist.
+			findAll().
+			error((err) -> throw err if err).
+			success (artists) ->
+				for artist in artists
+					importer.refreshData artist, (err) ->
+						throw err if err
+
+					winston.info "Done rebuilding index for #{artist.name}"
+
 exports.reslug = (req, res) ->
 	res.set 'Cache-Control', 'no-cache'
 	res.json success: true

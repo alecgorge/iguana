@@ -118,6 +118,10 @@ loadShow = (artist, small_show, cb) ->
 
 			return cb() if mp3_tracks.length is 0
 
+			unless body.metadata.date
+				winston.info 'no date:', body.metadata.title
+				return cb()
+
 			d = new Date body.metadata.date[0]
 
 			if isNaN(d.getTime())
@@ -146,7 +150,7 @@ loadShow = (artist, small_show, cb) ->
 				transferer 		: if body.metadata.transferer then body.metadata.transferer[0] else "Unknown"
 				description 		: if body.metadata.description then body.metadata.description[0] else ""
 				archive_identifier	: body.metadata.identifier[0]
-				reviews 			: if body.reviews then JSON.stringify body.reviews.reviews else "[]"
+				reviews 			: if body.reviews then JSON.stringify body.reviews.reviews.slice(0, 20) else "[]"
 				reviews_count 		: if body.reviews then body.reviews.info.num_reviews else 0
 				average_rating 		: if body.reviews then body.reviews.info.avg_rating else 0.0
 
