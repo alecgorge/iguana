@@ -34,6 +34,7 @@ Track = sequelize.define 'Track',
 	size 	: Sequelize.INTEGER
 	length 	: Sequelize.INTEGER
 	file 	: Sequelize.TEXT
+	#ogg_file : Sequelize.TEXT
 	slug 	: Sequelize.STRING
 
 Artist = sequelize.define 'Artist',

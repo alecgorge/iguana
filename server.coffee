@@ -68,6 +68,7 @@ app.use app.router
 # Routes
 app.get "/importer/:artist/rebuild_index", importer.rebuild_index
 app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
+app.get "/importer/rebuild-all", importer.rebuild_all
 app.get "/importer/reslug", importer.reslug
 app.get "/importer/search_data", api.search_data
 
