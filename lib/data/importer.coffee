@@ -86,8 +86,7 @@ cache_year_stats = (done) ->
 loadShow = (artist, small_show, cb) ->
 	models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
 		if pre_existing_show isnt null
-			winston.info "this archive identifier is already in the db"
-			return cb()
+			winston.info "this archive identifier is already in the db; checking for every track"
 
 		request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
 			winston.info "GET " + SINGLE_URL(small_show.identifier)
@@ -139,6 +138,8 @@ loadShow = (artist, small_show, cb) ->
 				if isNaN(d.getTime())
 					d = new Date 0
 
+			console.log 'title', body.metadata.title, body.metadata.title.length
+
 			showProps =
 				title				: body.metadata.title
 				date 				: d
@@ -150,7 +151,7 @@ loadShow = (artist, small_show, cb) ->
 				transferer 		: if body.metadata.transferer then body.metadata.transferer[0] else "Unknown"
 				description 		: if body.metadata.description then body.metadata.description[0] else ""
 				archive_identifier	: body.metadata.identifier[0]
-				reviews 			: if body.reviews then JSON.stringify body.reviews.reviews.slice(0, 20) else "[]"
+				reviews 			: if body.reviews then JSON.stringify body.reviews.reviews.slice(0, 30) else "[]"
 				reviews_count 		: if body.reviews then body.reviews.info.num_reviews else 0
 				average_rating 		: if body.reviews then body.reviews.info.avg_rating else 0.0
 
@@ -181,10 +182,12 @@ loadShow = (artist, small_show, cb) ->
 
 				t = t.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '')
 
+				parsed_track = if file.track then parseInt file.track.replace(/[^0-9]+/, '')
+
 				return models.Track.build {
 					title 	: t
 					md5 	: file.md5
-					track 	: if file.track then parseInt file.track.replace(/[^0-9]+/, '') else track_i
+					track 	: if parsed_track then parsed_track else track_i
 					bitrate : parseInt file.bitrate
 					size 	: parseInt file.size
 					length 	: parseTime file.length
@@ -195,13 +198,13 @@ loadShow = (artist, small_show, cb) ->
 			showProps.duration = total_duration
 			showProps.track_count = tracks.length
 
-			winston.info "looking for show in db"
-			models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id, archive_identifier: showProps.archive_identifier}, showProps).error(cb).success (show, created) ->
+			showCreated = (show, created) ->
 				unless created
-					winston.info "this show is already in the db"
+					winston.info "this show is already in the db; ensuring all tracks are present"
 					return cb()
+				else
+					winston.info "show created! looking for venue"
 
-				winston.info "show created! looking for venue"
 				models.Venue.findOrCreate({slug: venueProps.slug}, venueProps).error(cb).success (venue, created) ->
 					winston.info "building tracks"
 
@@ -227,5 +230,8 @@ loadShow = (artist, small_show, cb) ->
 						chainer.run().error(cb).success ->
 							console.log "related"
 							cache_year_stats cb
+
+			winston.info "looking for show in db"
+			models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id, archive_identifier: showProps.archive_identifier}, showProps).error(showCreated).success showCreated
 
 module.exports = exports = refreshData: refreshData, reslug: reslug, slugify: slugify

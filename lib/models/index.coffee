@@ -4,7 +4,7 @@ sequelize 		= require('../data/db').seq
 mysql 	 		= require('sequelize-mysql').mysql
 
 Show = sequelize.define 'Show',
-	title				: Sequelize.STRING
+	title				: Sequelize.STRING(255)
 	date 				: Sequelize.DATE
 	display_date		: Sequelize.STRING
 	year 				: Sequelize.INTEGER
@@ -33,7 +33,7 @@ Track = sequelize.define 'Track',
 	bitrate : Sequelize.INTEGER
 	size 	: Sequelize.INTEGER
 	length 	: Sequelize.INTEGER
-	file 	: Sequelize.TEXT
+	file 	: type: Sequelize.STRING, unique: true
 	#ogg_file : Sequelize.TEXT
 	slug 	: Sequelize.STRING
 

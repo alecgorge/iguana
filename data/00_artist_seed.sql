@@ -54,7 +54,7 @@ VALUES
   ('Greensky Bluegrass','GreenskyBluegrass','greensky-bluegrass',24,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('God Street Wine','GodStreetWine','god-street-wine',25,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('G. Love and Special Sauce','G.LoveandSpecialSauce','g-love',26,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
-  ('Funky Butter','FunkyButter','funky-butter',27,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('Grace Potter','GracePotterandtheNocturnals','grace-potter',27,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Fugazi','Fugazi','fugazi',28,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Railroad Earth','RailroadEarth','railroad-earth',30,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Yonder Mountain String Band','YonderMountainStringBand','yonder',31,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
@@ -62,14 +62,13 @@ VALUES
   ('The New Deal','TheNewDeal','the-new-deal',33,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('The Heavy Pets','TheHeavyPets','the-heavy-pets',34,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('String Cheese Incident','StringCheeseIncident','sci',35,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
-  ('Steve Kimock Band','SteveKimockBand','steve-kimock',36,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
-  ('Steve Kimock','SteveKimock','kimock',37,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('Steve Kimock Band','SteveKimockBand','steve-kimock-band',36,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('Steve Kimock','SteveKimock','steve-kimock',37,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Spoon','Spoon','spoon',38,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Raq','Raq','raq',39,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Zero','Zero','zero',40,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('KVHW','KVHW','kvhw',41,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
-  ('Infamous Stringdusters','InfamousStringdusters','stringdusters',42,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
-  ('Grace Potter','GracePotterandtheNocturnals','grace-potter',43,'2013-11-09 01:51:24','2013-11-09 01:51:24');
+  ('Infamous Stringdusters','InfamousStringdusters','stringdusters',42,'2013-11-09 01:51:24','2013-11-09 01:51:24');
 
 /*!40000 ALTER TABLE `Artists` ENABLE KEYS */;
 UNLOCK TABLES;
