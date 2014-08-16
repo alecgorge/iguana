@@ -24,6 +24,18 @@ refreshData = (artist, done) ->
 			loadShow artist, small_show, cb
 		, done
 
+refreshShow = (artist, id, done) ->
+	winston.info 'requesting search url'
+	request SINGLE_URL(id), (err, httpres, body) ->
+		throw err if err
+
+		show = JSON.parse body
+
+		winston.info 'got search results'
+
+		winston.info "requesting #{show.metadata.indentifier?[0]}"
+		loadShow artist, identifier: show.metadata.identifier[0], done
+
 slugify = (t, slugs) ->
 	l = t.toLowerCase()
 
@@ -139,12 +151,13 @@ loadShow = (artist, small_show, cb) ->
 					d = new Date 0
 
 			console.log 'title', body.metadata.title, body.metadata.title.length
+			console.log 'date', body.metadata.date, ':', body.metadata.year
 
 			showProps =
 				title				: body.metadata.title
 				date 				: d
 				display_date 		: body.metadata.date[0]
-				year 				: parseInt body.metadata.year[0]
+				year 				: if body.metadata.year then parseInt body.metadata.year[0] else new Date(body.metadata.date[0]).getFullYear()
 				source 				: if body.metadata.source then body.metadata.source[0] else "Unknown"
 				lineage 			: if body.metadata.lineage then body.metadata.lineage[0] else "Unknown"
 				taper 				: if body.metadata.taper then body.metadata.taper[0] else "Unknown"
@@ -185,7 +198,7 @@ loadShow = (artist, small_show, cb) ->
 				parsed_track = if file.track then parseInt file.track.replace(/[^0-9]+/, '')
 
 				return models.Track.build {
-					title 	: t
+					title 	: t.slice(0, 254)
 					md5 	: file.md5
 					track 	: if parsed_track then parsed_track else track_i
 					bitrate : parseInt file.bitrate
@@ -200,7 +213,7 @@ loadShow = (artist, small_show, cb) ->
 
 			showCreated = (show, created) ->
 				unless created
-					winston.info "this show is already in the db; ensuring all tracks are present"
+					winston.info "this show is already in the db; ensuring archive_collection tracks are present"
 					return cb()
 				else
 					winston.info "show created! looking for venue"
@@ -234,4 +247,4 @@ loadShow = (artist, small_show, cb) ->
 			winston.info "looking for show in db"
 			models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id, archive_identifier: showProps.archive_identifier}, showProps).error(showCreated).success showCreated
 
-module.exports = exports = refreshData: refreshData, reslug: reslug, slugify: slugify
+module.exports = exports = refreshData: refreshData, reslug: reslug, slugify: slugify, refreshShow: refreshShow
