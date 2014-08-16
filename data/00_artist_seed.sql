@@ -60,7 +60,7 @@ VALUES
   ('Yonder Mountain String Band','YonderMountainStringBand','yonder',31,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Ween','Ween','ween',32,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('The New Deal','TheNewDeal','the-new-deal',33,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
-  ('The Heavy Pets','TheHeavyPets','the-heavy-pets',34,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('The Heavy Pets','HeavyPets','the-heavy-pets',34,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('String Cheese Incident','StringCheeseIncident','sci',35,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Steve Kimock Band','SteveKimockBand','steve-kimock-band',36,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Steve Kimock','SteveKimock','steve-kimock',37,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
@@ -68,7 +68,18 @@ VALUES
   ('Raq','Raq','raq',39,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('Zero','Zero','zero',40,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
   ('KVHW','KVHW','kvhw',41,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
-  ('Infamous Stringdusters','InfamousStringdusters','stringdusters',42,'2013-11-09 01:51:24','2013-11-09 01:51:24');
+  ('Infamous Stringdusters','InfamousStringdusters','stringdusters',42,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('The Breakfast','TheBreakfast','the-breakfast',43,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('Dopapod','Dopapod','dopapod',44,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('Phil Lesh and Friends','PhilLeshandFriends','phil-lesh',45,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('moe.','moe','moe',45,'2013-11-09 01:51:24','2013-11-09 01:51:24'),
+  ('Ratdog', 'Ratdog', 'ratdog', 47, '2013-11-09 01:51:24', '2013-11-09 01:51:24'),
+  ('The Radiators', 'Radiators', 'radiators', 48, '2013-11-09 01:51:24', '2013-11-09 01:51:24'),
+  ('Smashing Pumpkins', 'SmashingPumpkins', 'smashing-pumpkins', 49, '2013-11-09 01:51:24', '2013-11-09 01:51:24'),
+  ('The Big Wu', 'TheBigWu', 'the-big-wu', 50, '2013-11-09 01:51:24', '2013-11-09 01:51:24'),
+  ('Keller Williams', 'KellerWilliams', 'keller-williams', 51, '2013-11-09 01:51:24', '2013-11-09 01:51:24'),
+  ('Tedeschi Trucks Band', 'TedeschiTrucksBand', 'tedeschi-trucks', 52, '2013-11-09 01:51:24', '2013-11-09 01:51:24');
+
 
 /*!40000 ALTER TABLE `Artists` ENABLE KEYS */;
 UNLOCK TABLES;
