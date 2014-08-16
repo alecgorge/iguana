@@ -10,6 +10,7 @@ Show = sequelize.define 'Show',
 	year 				: Sequelize.INTEGER
 	source 				: 'MEDIUMTEXT' # Sequelize.TEXT
 	lineage 			: Sequelize.TEXT
+	transferer 				: Sequelize.TEXT
 	taper 				: Sequelize.TEXT
 	description 		: Sequelize.TEXT
 	archive_identifier	: type: Sequelize.STRING, unique: true
@@ -43,7 +44,7 @@ Artist = sequelize.define 'Artist',
 	musicbrainz_id		: type: Sequelize.STRING, unique: true
 	extended_features	: Sequelize.INTEGER
 
-Artist.features = 
+Artist.features =
 	SETLIST_FM 			: 1 << 0
 	SETLIST_CHARTS		: 1 << 1
 
@@ -112,7 +113,7 @@ Show.hasMany Track, joinTableName: 'show_has_tracks'
 Year.belongsTo Artist
 Artist.hasMany Year
 
-module.exports = 
+module.exports =
 	Show: Show
 	Venue: Venue
 	Track: Track
