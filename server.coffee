@@ -75,6 +75,8 @@ app.use app.router
 
 #app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
 
+app.get '/api/status', api.status
+
 app.get '/api/artists', api.artists
 app.get '/api/artists/:artist_slug', api.single_artist
 app.get '/api/artists/:artist_slug/years', api.artist_years
