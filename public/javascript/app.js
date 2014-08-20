@@ -776,7 +776,7 @@ window.App = {
       "name": "Aquarium Rescue Unit"
     },
     "bela-fleck": {
-      "name": "Bela Fleck and the Flecktones"
+      "name": "Béla Fleck and the Flecktones"
     },
     "ben-kweller": {
       "name": "Ben Kweller"
