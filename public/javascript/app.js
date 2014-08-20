@@ -444,7 +444,19 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2, options;
-  buffer += "\n  <li>\n    <a href=\"/"
+  buffer += "\n  <li>\n    <a class=\"show-";
+  if (stack1 = helpers.year) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.year; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "-";
+  if (stack1 = helpers.month) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.month; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "-";
+  if (stack1 = helpers.day) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.day; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "\" href=\"/"
     + escapeExpression(((stack1 = depth1.band),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/";
   if (stack2 = helpers.year) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
@@ -715,6 +727,10 @@ function program1(depth0,data,depth1) {
   buffer += "\n  <li>\n    <a href=\"/"
     + escapeExpression(((stack1 = depth1.band),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/";
+  if (stack2 = helpers.year) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.year; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "\" class=\"year-";
   if (stack2 = helpers.year) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.year; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
@@ -1172,13 +1188,27 @@ App.Router = (function(_super) {
   };
 
   Router.prototype.band = function(band) {
+    var _this = this;
     this.band = band;
     this.changeView(new App.Views.HomePage());
-    App.years = new App.Views.Years({
+    this.randomShow = new App.Models.RandomShow({
       band: band
     });
+    this.randomShow.fetch({
+      success: function() {
+        var _ref1;
+        App.years = new App.Views.Years({
+          band: band
+        });
+        _ref1 = _this.randomShow.toJSON(), _this.year = _ref1.year, _this.month = _ref1.month, _this.day = _ref1.day;
+        return App.router.navigate("/" + band + "/" + _this.year + "/" + _this.month + "/" + _this.day, {
+          trigger: true,
+          replace: true
+        });
+      }
+    });
     App.header.render();
-    return document.title = 'Relisten';
+    return document.title = "" + App.bands[band].name + " | Relisten";
   };
 
   Router.prototype.year = function(band, year) {
@@ -1246,12 +1276,10 @@ App.Router = (function(_super) {
         band: this.band
       });
     }
-    if (!(App.shows && App.shows.shows && App.shows.shows.get('year') === +this.year)) {
-      App.shows = new App.Views.Shows({
-        band: this.band,
-        year: this.year
-      });
-    }
+    App.shows = new App.Views.Shows({
+      band: this.band,
+      year: this.year
+    });
     App.songs = new App.Views.Songs({
       band: this.band,
       year: this.year,
@@ -1758,6 +1786,45 @@ var _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+App.Models.RandomShow = (function(_super) {
+  __extends(RandomShow, _super);
+
+  function RandomShow() {
+    _ref = RandomShow.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  RandomShow.prototype.url = function() {
+    var band;
+    band = this.get('band');
+    return "" + App.root + "/api/artists/" + band + "/random_date";
+  };
+
+  RandomShow.prototype.parse = function(response) {
+    var date, day, month, year, _ref1;
+    if (!(response != null ? response.data : void 0)) {
+      return {};
+    }
+    date = response.data;
+    _ref1 = date.split('-'), year = _ref1[0], month = _ref1[1], day = _ref1[2];
+    year = +year;
+    month = +month;
+    day = +day;
+    return {
+      year: year,
+      month: month,
+      day: day
+    };
+  };
+
+  return RandomShow;
+
+})(App.Models.Model);
+
+var _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
 App.Models.Shows = (function(_super) {
   __extends(Shows, _super);
 
@@ -2252,7 +2319,7 @@ App.Views.Header = (function(_super) {
   Header.prototype.template = JST['header'];
 
   Header.prototype.events = {
-    'click .band-select': 'chooseBand'
+    'click .band': 'refreshBand'
   };
 
   Header.prototype.initialize = function() {
@@ -2267,6 +2334,11 @@ App.Views.Header = (function(_super) {
       bandName: (_ref2 = App.bands[(_ref3 = App.router) != null ? _ref3.band : void 0]) != null ? _ref2.name : void 0,
       the: (_ref4 = App.bands[(_ref5 = App.router) != null ? _ref5.band : void 0]) != null ? _ref4.the : void 0
     }));
+  };
+
+  Header.prototype.refreshBand = function() {
+    var _ref1;
+    return Backbone.history.loadUrl('/' + ((_ref1 = App.router) != null ? _ref1.band : void 0));
   };
 
   return Header;
@@ -2935,7 +3007,7 @@ App.Views.Shows = (function(_super) {
       band: this.options.band
     }));
     this.$a = this.$el.find('a');
-    this.$a.removeClass('active');
+    this.$a.filter(".show-" + App.router.year + "-" + App.router.month + "-" + App.router.day).addClass('active');
     return this;
   };
 
@@ -3003,7 +3075,6 @@ App.Views.Songs = (function(_super) {
     }
     this.songs = sources[this.options.showVersion || 0];
     sources[this.options.showVersion || 0].hidden = true;
-    console.log(this.songs);
     this.$el.html(this.template({
       songs: this.songs,
       sources: sources || [],
@@ -3117,6 +3188,7 @@ App.Views.Years = (function(_super) {
       band: this.options.band
     }));
     this.$a = this.$el.find('a');
+    this.$a.filter('.year-' + App.router.year).addClass('active');
     return this;
   };
 
