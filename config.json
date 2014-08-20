@@ -2,7 +2,7 @@
 	"env": "production",
 	"production": {
 		"db": {
-			"host": "172.17.0.24",
+			"host": "172.17.0.3",
 			"username": "admin",
 			"password": "iUKRzEhQ0WDw1a4D",
 			"database": "db"
