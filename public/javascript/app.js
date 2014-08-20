@@ -1226,7 +1226,7 @@ App.Router = (function(_super) {
       }
     });
     App.header.render();
-    return document.title = "" + App.bands[band].name + " | Relisten";
+    return document.title = "" + App.bands[this.band].name + " | Relisten";
   };
 
   Router.prototype.year = function(band, year, month, day) {
@@ -1248,7 +1248,7 @@ App.Router = (function(_super) {
       App.songs.$el.empty();
     }
     App.header.render();
-    return document.title = "" + year + " | Relisten";
+    return document.title = "" + year + " | " + App.bands[this.band].name + " | Relisten";
   };
 
   Router.prototype.day = function(band, year, month, day) {
@@ -1278,7 +1278,7 @@ App.Router = (function(_super) {
       day: this.day
     });
     App.header.render();
-    return document.title = "" + this.year + "/" + this.month + "/" + this.day + " | Relisten";
+    return document.title = "" + this.year + "/" + this.month + "/" + this.day + " | " + App.bands[this.band].name + " | Relisten";
   };
 
   Router.prototype.show = function(band, year, month, day, showVersion) {
@@ -1310,7 +1310,7 @@ App.Router = (function(_super) {
       showVersion: this.showVersion
     });
     App.header.render();
-    return document.title = "" + this.year + "/" + this.month + "/" + this.day + " | Relisten";
+    return document.title = "" + this.year + "/" + this.month + "/" + this.day + " | " + App.bands[this.band].name + " | Relisten";
   };
 
   Router.prototype.song = function(band, year, month, day, showVersion, slug, version, time) {
@@ -1358,7 +1358,7 @@ App.Router = (function(_super) {
       App.song = App.queue.findWhere({
         slug: self.slug
       });
-      document.title = "" + (App.song.get('title')) + " | " + self.year + "/" + self.month + "/" + self.day + " | Relisten";
+      document.title = "" + (App.song.get('title')) + " | " + self.year + "/" + self.month + "/" + self.day + " | " + App.bands[self.band].name + " | Relisten";
       App.queue.play(App.song, ms);
       return App.queue.off('reset');
     });
@@ -2080,7 +2080,7 @@ App.Collections.Queue = (function(_super) {
     showVersionStr = showVersion ? '-' + showVersion : '';
     if (!window.location.pathname.match("/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug)) {
       url = "/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug;
-      document.title = "" + title + " | " + year + "/" + month + "/" + day + " | Relisten";
+      document.title = "" + title + " | " + year + "/" + month + "/" + day + " | " + App.bands[band].name + "| Relisten";
       Backbone.history.navigate(url, {
         trigger: false
       });
