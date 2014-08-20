@@ -5521,9 +5521,9 @@ footer .buttons .bar-right .next{border-left:30px solid #333}
 .home-page .row-fluid .span4.shows-container a{color:#333;}
 .home-page .row-fluid .span4.shows-container a.active span{color:#fff}
 .home-page .row-fluid .span4.songs-container li.current-source{padding:5px 2px}
-.home-page .row-fluid .span4.songs-container li.source,.home-page .row-fluid .span4.songs-container li.current-source{cursor:auto;font-family:"Helvetica","Arial","sans-serif";}
+.home-page .row-fluid .span4.songs-container li.source,.home-page .row-fluid .span4.songs-container li.current-source{cursor:auto;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;}
 .home-page .row-fluid .span4.songs-container li.source h5,.home-page .row-fluid .span4.songs-container li.current-source h5{margin:1px auto;width:97%}
-.home-page .row-fluid .span4.songs-container li.source > a,.home-page .row-fluid .span4.songs-container li.current-source > a{white-space:normal;color:#333;font-size:1em}
+.home-page .row-fluid .span4.songs-container li.source > a,.home-page .row-fluid .span4.songs-container li.current-source > a{white-space:normal;color:#333;font-size:1em;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}
 .home-page .row-fluid .span4.songs-container li.source p,.home-page .row-fluid .span4.songs-container li.current-source p{font-size:1em;margin:1px auto;width:97%;}
 .home-page .row-fluid .span4.songs-container li.source p .field,.home-page .row-fluid .span4.songs-container li.current-source p .field{font-weight:bold}
 .home-page .row-fluid .span4.songs-container li.select-source.multiple-sources{padding:5px;font-weight:bold;}
