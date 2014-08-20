@@ -42,7 +42,7 @@ slugify = (t, slugs) ->
 	if l[0...2] is "E:"
 		l = l[2..]
 
-	slug = l.trim().replace(/[^A-Za-z0-9-]+/g, '-')
+	slug = l.trim().replace(/[^A-Za-z0-9-]+/g, '-').slice(0, 254)
 
 	# If we want unique slugs, keep track of the slugs we've used
 	if slugs

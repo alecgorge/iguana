@@ -24,7 +24,7 @@ module.exports = (grunt) ->
         NODE_ENV: 'production'
 
     yeoman:
-      
+
       # configurable paths
       app: require("./bower.json").appPath or "app"
       dist: "public"
@@ -156,7 +156,7 @@ module.exports = (grunt) ->
           ext: ".js"
         ]
 
-    
+
     # not used since Uglify task does concat,
     # but still available if needed
     #concat: {
@@ -197,7 +197,7 @@ module.exports = (grunt) ->
         ]
 
     cssmin: {}
-    
+
     # By default, your `index.html` <!-- Usemin Block --> will take care of
     # minification. This option is pre-configured if you do not wish to use
     # Usemin blocks.
@@ -212,7 +212,7 @@ module.exports = (grunt) ->
     htmlmin:
       dist:
         options: {}
-        
+
         #removeCommentsFromCDATA: true,
         #          // https://github.com/yeoman/grunt-usemin/issues/44
         #          //collapseWhitespace: true,
@@ -229,7 +229,7 @@ module.exports = (grunt) ->
           dest: "<%= yeoman.dist %>"
         ]
 
-    
+
     # Put files not handled in other tasks here
     copy:
       dist:
@@ -291,7 +291,7 @@ module.exports = (grunt) ->
     @async()
 
   grunt.registerTask "server", (target) ->
-    return grunt.task.run(["env:prod", "jade", "build", "express:prod"])  if target is "dist"
+    return grunt.task.run(["env:prod", "express:prod"])  if target is "dist"
     grunt.task.run ["env:dev", "clean:server", "concurrent:server", "autoprefixer", "stylus", "express:dev", "open", "watch"]
 
   grunt.registerTask "build", ["clean:dist", "concurrent:dist", "useminPrepare", "autoprefixer", "stylus", "copy:dist", "concat", "cssmin", "cdnify", "ngmin", "rev", "usemin"]

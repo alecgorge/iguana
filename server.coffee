@@ -54,8 +54,8 @@ app.configure ->
   app.set 'trust proxy', true
 
 app.configure "development", ->
-  app.use express.static(path.join(__dirname, ".tmp"))
-  app.use express.static(path.join(__dirname, "app"))
+  app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
+  app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
   app.use express.errorHandler()
 
 app.configure "production", ->
@@ -66,14 +66,14 @@ app.configure "production", ->
 app.use app.router
 
 # Routes
-app.get "/importer/:artist/rebuild_index", importer.rebuild_index
-app.get "/importer/:artist/:archive_id/rebuild_index", importer.rebuild_show
-app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
-app.get "/importer/rebuild-all", importer.rebuild_all
-app.get "/importer/reslug", importer.reslug
-app.get "/importer/search_data", api.search_data
+#app.get "/importer/:artist/rebuild_index", importer.rebuild_index
+#app.get "/importer/:artist/:archive_id/rebuild_index", importer.rebuild_show
+#app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
+#app.get "/importer/rebuild-all", importer.rebuild_all
+#app.get "/importer/reslug", importer.reslug
+#app.get "/importer/search_data", api.search_data
 
-app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
+#app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
 
 app.get '/api/artists', api.artists
 app.get '/api/artists/:artist_slug', api.single_artist
@@ -106,7 +106,7 @@ app.get '/configure.js', (req, res) ->
   json = "window.app_config = " + JSON.stringify(app_config) + ";"
   res.send json + config.googleAnalyticsCode(app_config.google_analytics.id, app_config.google_analytics.domain)
 
-app.get '/', (req, res) -> res.render 'index'
+#app.get '/', (req, res) -> res.render 'index'
 app.get '*', (req, res) ->
   if environment is "production"
     res.sendfile __dirname + '/public/index.html'
