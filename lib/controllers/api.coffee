@@ -37,6 +37,9 @@ cleanup_shows = (shows, removeReviews = false) ->
 			v.reviews = JSON.parse(v.reviews)
 		return v
 
+exports.status = (req, res) ->
+	res.json success: true
+
 exports.artists = (req, res) ->
 	models.Artist.findAll().error(error(res)).success (artists) ->
 		res.json success artists
