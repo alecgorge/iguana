@@ -5520,14 +5520,17 @@ footer .buttons .bar-right .next{border-left:30px solid #333}
 .home-page .row-fluid .span4 ul li .error{font-size:3em;ne-height:1em;padding:10px;color:#d90f0f}
 .home-page .row-fluid .span4.shows-container a{color:#333;}
 .home-page .row-fluid .span4.shows-container a.active span{color:#fff}
-.home-page .row-fluid .span4.songs-container li.source h5,.home-page .row-fluid .span4.songs-container li.current-source h5{margin:1px auto;width:97%;}
-.home-page .row-fluid .span4.songs-container li.source h5 span,.home-page .row-fluid .span4.songs-container li.current-source h5 span{font-size:.6em}
-.home-page .row-fluid .span4.songs-container li.source > a,.home-page .row-fluid .span4.songs-container li.current-source > a{white-space:normal;color:#333}
-.home-page .row-fluid .span4.songs-container li.source p,.home-page .row-fluid .span4.songs-container li.current-source p{font-size:.8em;margin:1px auto;width:97%;}
-.home-page .row-fluid .span4.songs-container li.source p.taper,.home-page .row-fluid .span4.songs-container li.current-source p.taper{font-size:1em;font-weight:bold}
-.home-page .row-fluid .span4.songs-container li.current-source:hover{background:#e6e6e6;cursor:pointer}
-.home-page .row-fluid .span4.songs-container li.current-source .total-sources{position:absolute;right:15px;bottom:3px;font-family:'Open Sans';font-weight:.8em}
-.home-page .row-fluid .span4.songs-container li.source{display:none}
+.home-page .row-fluid .span4.songs-container li.current-source{padding:5px 2px}
+.home-page .row-fluid .span4.songs-container li.source,.home-page .row-fluid .span4.songs-container li.current-source{cursor:auto;font-family:Helvetica,Arial,sans-serif;}
+.home-page .row-fluid .span4.songs-container li.source h5,.home-page .row-fluid .span4.songs-container li.current-source h5{margin:1px auto;width:97%}
+.home-page .row-fluid .span4.songs-container li.source > a,.home-page .row-fluid .span4.songs-container li.current-source > a{white-space:normal;color:#333;font-size:1em}
+.home-page .row-fluid .span4.songs-container li.source p,.home-page .row-fluid .span4.songs-container li.current-source p{font-size:1em;margin:1px auto;width:97%;}
+.home-page .row-fluid .span4.songs-container li.source p .field,.home-page .row-fluid .span4.songs-container li.current-source p .field{font-weight:bold}
+.home-page .row-fluid .span4.songs-container li.select-source.multiple-sources{padding:5px;font-weight:bold;}
+.home-page .row-fluid .span4.songs-container li.select-source.multiple-sources:hover{background:#e6e6e6;cursor:pointer}
+.home-page .row-fluid .span4.songs-container li.select-source.multiple-sources .total-sources{position:absolute;right:5px;font-family:'Open Sans';font-size:.9em}
+.home-page .row-fluid .span4.songs-container li.source{display:none;}
+.home-page .row-fluid .span4.songs-container li.source p{font-size:1em}
 
 .login-page,.register-page{text-align:center;}
 .login-page form,.register-page form{width:400px;margin:auto;text-align:left;}
