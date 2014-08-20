@@ -617,10 +617,10 @@ function program16(depth0,data,depth2) {
     + "/"
     + escapeExpression(((stack1 = depth2.month),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/"
-    + escapeExpression(((stack1 = depth2.day),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "-"
-    + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ">\n            ";
+    + escapeExpression(((stack1 = depth2.day),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  stack2 = helpers['if'].call(depth0, ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index), {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += ">\n            ";
   stack2 = helpers['if'].call(depth0, depth0.taper, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n            ";
@@ -633,12 +633,20 @@ function program16(depth0,data,depth2) {
   stack2 = helpers['if'].call(depth0, depth0.lineage, {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n            ";
-  stack2 = helpers['if'].call(depth0, depth0.avg, {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.avg, {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n          </a>\n        </li>\n      ";
   return buffer;
   }
 function program17(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "-"
+    + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  return buffer;
+  }
+
+function program19(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n              <p>Rating: ";
@@ -653,7 +661,7 @@ function program17(depth0,data) {
   return buffer;
   }
 
-function program19(depth0,data,depth1) {
+function program21(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2, options;
   buffer += "\n    <li data-idx="
@@ -670,7 +678,7 @@ function program19(depth0,data,depth1) {
     + escapeExpression(((stack1 = depth1.month),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/"
     + escapeExpression(((stack1 = depth1.day),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
-  stack2 = helpers['if'].call(depth0, depth1.showVersion, {hash:{},inverse:self.noop,fn:self.program(20, program20, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth1.showVersion, {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += escapeExpression(((stack1 = depth1.showVersion),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/";
@@ -687,7 +695,7 @@ function program19(depth0,data,depth1) {
     + "</span></a>\n      <div class=play>ᐅ</div>\n      <div title=\"Add To Queue\" class=add>+</div>\n    </li>\n  ";
   return buffer;
   }
-function program20(depth0,data) {
+function program22(depth0,data) {
   
   
   return "-";
@@ -708,7 +716,7 @@ function program20(depth0,data) {
   stack1 = helpers['if'].call(depth0, depth0.multipleSources, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  ";
-  stack2 = helpers.each.call(depth0, ((stack1 = depth0.songs),stack1 == null || stack1 === false ? stack1 : stack1.tracks), {hash:{},inverse:self.noop,fn:self.programWithDepth(19, program19, data, depth0),data:data});
+  stack2 = helpers.each.call(depth0, ((stack1 = depth0.songs),stack1 == null || stack1 === false ? stack1 : stack1.tracks), {hash:{},inverse:self.noop,fn:self.programWithDepth(21, program21, data, depth0),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n  <li><a class=archive href=\"https://archive.org/details/"
     + escapeExpression(((stack1 = ((stack1 = depth0.songs),stack1 == null || stack1 === false ? stack1 : stack1.archive_identifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1187,23 +1195,33 @@ App.Router = (function(_super) {
     return document.title = 'Relisten';
   };
 
-  Router.prototype.band = function(band) {
+  Router.prototype.band = function(band, year, month, day) {
     var _this = this;
     this.band = band;
+    this.year = year;
+    this.month = month;
+    this.day = day;
     this.changeView(new App.Views.HomePage());
     this.randomShow = new App.Models.RandomShow({
-      band: band
+      band: this.band
     });
     this.randomShow.fetch({
       success: function() {
         var _ref1;
-        App.years = new App.Views.Years({
-          band: band
-        });
         _ref1 = _this.randomShow.toJSON(), _this.year = _ref1.year, _this.month = _ref1.month, _this.day = _ref1.day;
-        return App.router.navigate("/" + band + "/" + _this.year + "/" + _this.month + "/" + _this.day, {
-          trigger: true,
-          replace: true
+        App.years = new App.Views.Years({
+          band: _this.band
+        });
+        App.shows = new App.Views.Shows({
+          band: _this.band,
+          year: _this.year
+        });
+        return App.songs = new App.Views.Songs({
+          band: _this.band,
+          year: _this.year,
+          month: _this.month,
+          day: _this.day,
+          showVersion: _this.showVersion
         });
       }
     });
@@ -1211,9 +1229,11 @@ App.Router = (function(_super) {
     return document.title = "" + App.bands[band].name + " | Relisten";
   };
 
-  Router.prototype.year = function(band, year) {
+  Router.prototype.year = function(band, year, month, day) {
     this.band = band;
     this.year = year;
+    this.month = month;
+    this.day = day;
     if (App.initial) {
       this.changeView(new App.Views.HomePage());
       App.years = new App.Views.Years({
@@ -1328,8 +1348,7 @@ App.Router = (function(_super) {
   };
 
   Router.prototype.finishSong = function() {
-    var self,
-      _this = this;
+    var self;
     self = this;
     App.queue.on('reset', function() {
       var ms;
@@ -1340,15 +1359,6 @@ App.Router = (function(_super) {
       document.title = "" + (App.song.get('title')) + " | " + self.year + "/" + self.month + "/" + self.day + " | Relisten";
       App.queue.play(App.song, ms);
       return App.queue.off('reset');
-    });
-    App.songs.songs.tracks.map(function(track) {
-      return _.extend(track, {
-        band: _this.band,
-        year: _this.year,
-        month: _this.month,
-        day: _this.day,
-        showVersion: _this.showVersion
-      });
     });
     return App.queue.reset(App.songs.songs.tracks);
   };
@@ -2337,8 +2347,14 @@ App.Views.Header = (function(_super) {
   };
 
   Header.prototype.refreshBand = function() {
-    var _ref1;
-    return Backbone.history.loadUrl('/' + ((_ref1 = App.router) != null ? _ref1.band : void 0));
+    var _ref1, _ref2, _ref3;
+    if (Backbone.history.fragment === ((_ref1 = App.router) != null ? _ref1.band : void 0)) {
+      return Backbone.history.loadUrl('/' + ((_ref2 = App.router) != null ? _ref2.band : void 0));
+    } else {
+      return App.router.navigate('/' + ((_ref3 = App.router) != null ? _ref3.band : void 0), {
+        trigger: true
+      });
+    }
   };
 
   return Header;
@@ -2986,7 +3002,7 @@ App.Views.Shows = (function(_super) {
 
   Shows.prototype.initialize = function() {
     if (!this.options.band) {
-      this.options.band = 'gd';
+      return;
     }
     if (!this.options.year) {
       this.shows = new App.Models.Shows(this.options.band, shows);
@@ -3065,7 +3081,8 @@ App.Views.Songs = (function(_super) {
   };
 
   Songs.prototype.render = function() {
-    var sources;
+    var band, day, month, showVersion, sources, year, _ref1,
+      _this = this;
     App.router.clearActive();
     if (this.folder) {
       sources = this.folder.get('data');
@@ -3075,6 +3092,16 @@ App.Views.Songs = (function(_super) {
     }
     this.songs = sources[this.options.showVersion || 0];
     sources[this.options.showVersion || 0].hidden = true;
+    _ref1 = App.router, band = _ref1.band, year = _ref1.year, month = _ref1.month, day = _ref1.day, showVersion = _ref1.showVersion;
+    this.songs.tracks.map(function(track) {
+      return _.extend(track, {
+        band: band,
+        year: year,
+        month: month,
+        day: day,
+        showVersion: showVersion
+      });
+    });
     this.$el.html(this.template({
       songs: this.songs,
       sources: sources || [],
@@ -3104,7 +3131,6 @@ App.Views.Songs = (function(_super) {
   };
 
   Songs.prototype.addAll = function() {
-    console.log(this.songs.tracks);
     if (App.queue.length === 0) {
       App.queue.reset(this.songs.tracks);
     }
@@ -3172,7 +3198,7 @@ App.Views.Years = (function(_super) {
 
   Years.prototype.initialize = function() {
     if (!this.options.band) {
-      this.options.band = 'gd';
+      return;
     }
     this.years = new App.Models.Years({
       band: this.options.band
