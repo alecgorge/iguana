@@ -72,7 +72,7 @@ exports.artist_year_shows = (req, res) ->
 			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
 													Shows.year,
 													Shows.archive_identifier, Shows.id, Shows.VenueId, Shows.ArtistId, Shows.is_soundboard,
-											   AVG(Shows.duration) as duration, 
+											   AVG(Shows.duration) as duration,
 											   SUM(Shows.reviews_count) as reviews_count, MAX(Shows.average_rating) as average_rating,
 											   `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
 										FROM `Shows`
@@ -93,7 +93,7 @@ exports.top_shows = (req, res) ->
 		models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
 												Shows.year,
 												Shows.archive_identifier, Shows.id, Shows.VenueId, Shows.ArtistId, Shows.is_soundboard,
-										   AVG(Shows.duration) as duration, 
+										   AVG(Shows.duration) as duration,
 										   SUM(Shows.reviews_count) as reviews_count, MAX(Shows.average_rating) as average_rating,
 										   `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
 									FROM `Shows`
@@ -146,6 +146,22 @@ exports.random_show = (req, res) ->
 
 						res.set 'Cache-Control', 'no-cache'
 						res.json success json
+
+exports.random_date = (req, res) ->
+	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+		return not_found(res) if not artist
+
+		artist.getShows(
+			group: 'display_date'
+			order: [
+				{raw: 'RAND()'}
+			]
+			limit: 1
+		).error(error(res)).success (shows) ->
+			return not_found(res) if not shows or shows.length is 0
+
+			res.set 'Cache-Control', 'no-cache'
+			res.json success shows[0].display_date
 
 exports.single_show = (req, res) ->
 	models.Show.find(where: id: req.param('show_id')).error(error(res)).success (show) ->
@@ -218,7 +234,7 @@ exports.single_venue = (req, res) ->
 			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
 													Shows.year,
 													Shows.archive_identifier, Shows.id, Shows.VenueId, Shows.ArtistId, Shows.is_soundboard,
-											   AVG(Shows.duration) as duration, 
+											   AVG(Shows.duration) as duration,
 											   SUM(Shows.reviews_count) as reviews_count, MAX(Shows.average_rating) as average_rating,
 											   `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
 										FROM `Shows`
