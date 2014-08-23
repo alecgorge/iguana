@@ -5447,15 +5447,17 @@ body ul#notifications li div h3{line-height:1em}
 header{height:50px;width:100%;border-bottom:1px solid #aaa;background:$backgroundColor;position:relative;z-index:99;}
 header ul{height:50px;margin:0;}
 header ul li{height:100%;list-style-type:none;margin:0;padding:0}
-header ul.left{position:absolute;left:0;width:80%;}
+header ul.left{position:absolute;left:0;width:100%;}
 header ul.left li{float:left;}
 header ul.left li a:hover{text-decoration:none}
 header ul.left li.home-container{font-family:'Lato';font-style:italic;font-weight:700;font-size:1.2em;}
 header ul.left li.home-container a.home,header ul.left li.home-container a.band{font-size:2em;line-height:1.5em;height:50px;color:#008ab0;float:left;padding:0 5px 0 5px;}
 header ul.left li.home-container a.home:hover,header ul.left li.home-container a.band:hover{color:#f6f6f6;background:#008ab0}
 header ul.left li.home-container a.home span,header ul.left li.home-container a.band span{font-size:.7em}
-header ul.left li.home-container a.band{padding:0 5px 0 5px}
-header ul.left li.home-container span{font-size:1.5em;line-height:57px;height:50px;color:#008ab0;float:left;padding:0 0 0 0}
+header ul.left li.home-container a.band{padding:0 5px 0 5px;}
+header ul.left li.home-container a.band:hover + .tip{display:block}
+header ul.left li.home-container span{font-size:1.5em;line-height:57px;height:50px;color:#008ab0;float:left;padding:0 0 0 0;}
+header ul.left li.home-container span.tip{font-size:.8em;display:none;background:#fff;line-height:50px;height:49px}
 header ul.left li.band-selector{width:50px;}
 header ul.left li.band-selector span{font-size:3em}
 header ul.left li.band-selector .bands{display:none;width:300px;min-height:200px;font-size:1.8em;background:#eee;border:1px solid #333;}
@@ -5487,11 +5489,11 @@ footer .buttons .bar-right{border-right:7px solid #333;}
 footer .buttons .bar-right .next{border-left:30px solid #333}
 
 .index-page{padding-bottom:50px;}
-.index-page table{text-align:left;width:70%;max-width:800px;margin:0 auto;font-size:1.2em;}
+.index-page table{text-align:left;width:70%;max-width:800px;margin:0 auto;font-size:1.4em;}
 .index-page table tr{line-height:1.4em;}
+.index-page table tr th{font-weight:normal;}
+.index-page table tr th.heading{font-weight:bold}
 .index-page table tr td{width:50px;text-align:right}
-.index-page ul{clear:both;}
-.index-page ul li{list-style-type:none;font-size:1.6em;line-height:30px;padding:5px 0}
 
 .home-page{color:#333;height:100%;}
 .home-page .row-fluid{width:100%;height:100%;}

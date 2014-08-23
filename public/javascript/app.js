@@ -48,7 +48,7 @@ function program5(depth0,data) {
   if (stack1 = helpers.bandName) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.bandName; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "\n      </a>\n    ";
+    + "\n      </a>\n      <span class=\"tip\">&nbsp;&nbsp;&lt;- click here for a random show!</span>\n    ";
   return buffer;
   }
 function program6(depth0,data) {
@@ -98,7 +98,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<table>\n   <thead>\n      <tr>\n         <th>Band</th>\n         <th>Tapes</th>\n      </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th><a href=\"/grateful-dead\">Grateful Dead</a></th>\n      <td>"
+  buffer += "<table>\n   <thead>\n      <tr>\n         <th class=\"heading\">Band</th>\n         <th class=\"heading\">Tapes</th>\n      </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th><a href=\"/grateful-dead\">Grateful Dead</a></th>\n      <td>"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1['grateful-dead'])),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</td>\n    </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th>&nbsp;</th>\n      <td>&nbsp;</td>\n    </tr>\n   </thead>\n   ";
   stack2 = helpers.each.call(depth0, depth0.bands, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
