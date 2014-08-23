@@ -2,6 +2,7 @@ models 		= require '../models'
 request 	= require 'request'
 winston 	= require 'winston'
 async 		= require 'async'
+slugsA 		= require 'slugs'
 Sequelize 	= models.Sequelize
 
 SEARCH_URL = (collection) -> "http://archive.org/advancedsearch.php?q=collection%3A#{collection}&fl%5B%5D=date&fl%5B%5D=identifier&fl%5B%5D=year&sort%5B%5D=year+asc&sort%5B%5D=&sort%5B%5D=&rows=9999999&page=1&output=json&save=yes"
@@ -42,7 +43,10 @@ slugify = (t, slugs) ->
 	if l[0...2] is "E:"
 		l = l[2..]
 
-	slug = l.trim().replace(/[^A-Za-z0-9-]+/g, '-').slice(0, 254)
+	slug = slugsA(l.trim())
+					 .slice(0, 254)
+	         .replace /-{2,100}/, '-'
+					 .replace /^-+|-+$/, ''
 
 	# If we want unique slugs, keep track of the slugs we've used
 	if slugs
@@ -56,21 +60,33 @@ slugify = (t, slugs) ->
 venue_slugify = (t) -> t.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '')
 
 reslug = (done) ->
-	done "this doesn't work any more"
-	# chainer = new Sequelize.Utils.QueryChainer
-	# models.Track.all().error(done).success (tracks) ->
-	# 	for track in tracks
-	# 		title = track.title.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '').trim()
-	# 		chainer.add track.updateAttributes({
-	# 			"slug" : slugify(title)
-	# 			"title": title
-	# 		})
+	chainer = new Sequelize.Utils.QueryChainer
+	models.Show.findAll().error(done).success (shows) ->
+		for show in shows
+			show.getTracks().error(done).success (tracks) ->
+				slugObj = {}
+				i = 1
+				for track in tracks
+					title = track.title.trim()
+					slug = slugs(title).replace /-{2,100}/, '-'
+														 .replace /-+$/, ''
 
-	# models.Venue.all().error(done).success (venues) ->
-	# 	for venue in venues
-	# 		chainer.add venue.updateAttributes slug: venue_slugify(venue.name)
+					while slugObj[slug]
+						slug = slug.replace(/-[0-9]+$/, '') + '-' + i++
 
-	# 	chainer.run().error(done).success -> done()
+					slugObj[slug] = true
+
+					track.updateAttributes slug: slug, title: title
+							 .success -> 0#console.log arguments[0].dataValues.slug
+							 .error -> 0#console.log arguments[0].dataValues.slug
+	###
+	models.Venue.findAll().error(done).success (venues) ->
+		for venue in venues
+			venue.updateAttributes slug: slugs(venue.name)
+					 .success -> console.log arguments[0].dataValues.slug
+					 .error -> console.log arguments[0].dataValues.slug
+	###
+
 
 ###
 
@@ -150,9 +166,6 @@ loadShow = (artist, small_show, cb) ->
 				if isNaN(d.getTime())
 					d = new Date 0
 
-			console.log 'title', body.metadata.title, body.metadata.title.length
-			console.log 'date', body.metadata.date, ':', body.metadata.year
-
 			showProps =
 				title				: body.metadata.title
 				date 				: d
@@ -177,7 +190,7 @@ loadShow = (artist, small_show, cb) ->
 				name 				: if body.metadata.venue then body.metadata.venue[0] else "Unknown"
 				city 				: if body.metadata.coverage then body.metadata.coverage[0] else "Unknown"
 
-			venueProps.slug = venue_slugify venueProps.name
+			venueProps.slug = slugify venueProps.name
 
 			track_i = 0
 			total_duration = 0
@@ -185,9 +198,6 @@ loadShow = (artist, small_show, cb) ->
 			tracks = mp3_tracks.sort().
 								map (v) ->
 				file = files[v]
-
-				if not file.track
-					track_i += 1
 
 				t = file.title || file.original
 
@@ -200,7 +210,7 @@ loadShow = (artist, small_show, cb) ->
 				return models.Track.build {
 					title 	: t.slice(0, 254)
 					md5 	: file.md5
-					track 	: if parsed_track then parsed_track else track_i
+					track 	: ++track_i
 					bitrate : parseInt file.bitrate
 					size 	: parseInt file.size
 					length 	: parseTime file.length
