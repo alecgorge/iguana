@@ -79,25 +79,31 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["JST"]["index"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n  <li><a href=\"/"
+  buffer += "\n   <tbody>\n      <tr>\n        <th>\n          <a href=\"/"
     + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.key)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\">";
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\n";
+    + "</a>\n        </th>\n        <td>";
+  if (stack2 = helpers.shows) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.shows; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "</td>\n      </tr>\n   </tbody>\n  ";
   return buffer;
   }
 
-  buffer += "<ul>\n  <br>\n  <li class=\"featured\"><a href=\"/grateful-dead\">Grateful Dead</a></li>\n  <br>\n";
-  stack1 = helpers.each.call(depth0, depth0.bands, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</ul>\n";
+  buffer += "<table>\n   <thead>\n      <tr>\n         <th>Band</th>\n         <th>Tapes</th>\n      </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th><a href=\"/grateful-dead\">Grateful Dead</a></th>\n      <td>"
+    + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1['grateful-dead'])),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</td>\n    </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th>&nbsp;</th>\n      <td>&nbsp;</td>\n    </tr>\n   </thead>\n   ";
+  stack2 = helpers.each.call(depth0, depth0.bands, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n</table>\n";
   return buffer;
   });
 
@@ -767,242 +773,317 @@ window.App = {
   "utils": {},
   "bands": {
     "animal-collective": {
-      "name": "Animal Collective"
+      "name": "Animal Collective",
+      "shows": 23
     },
     "aqueous": {
-      "name": "Aqueous"
+      "name": "Aqueous",
+      "shows": 58
     },
     "aru": {
-      "name": "Aquarium Rescue Unit"
+      "name": "Aquarium Rescue Unit",
+      "shows": 103
     },
     "bela-fleck": {
-      "name": "Béla Fleck and the Flecktones"
+      "name": "Béla Fleck and the Flecktones",
+      "shows": 321
     },
     "ben-kweller": {
-      "name": "Ben Kweller"
+      "name": "Ben Kweller",
+      "shows": 18
     },
     "duo": {
       "name": "Benevento Russo Duo",
-      "the": true
+      "the": true,
+      "shows": 288
     },
     "bernie-worrell": {
       "name": "Bernie Worrell Orchestra",
-      "the": true
+      "the": true,
+      "shows": 27
     },
     "the-big-wu": {
-      "name": "The Big Wu"
+      "name": "The Big Wu",
+      "shows": 252
     },
     "blues-traveler": {
-      "name": "Blues Traveler"
+      "name": "Blues Traveler",
+      "shows": "1,099"
     },
     "the-breakfast": {
-      "name": "The Breakfast"
+      "name": "The Breakfast",
+      "shows": 317
     },
     "weir": {
-      "name": "Bob Weir"
+      "name": "Bob Weir",
+      "shows": 80
     },
     "club-d-elf": {
-      "name": "Club d'Elf"
+      "name": "Club d'Elf",
+      "shows": 523
     },
     "dark-star": {
-      "name": "Dark Star Orchestra"
+      "name": "Dark Star Orchestra",
+      "shows": 546
     },
     "the-decemberists": {
-      "name": "The Decemberists"
+      "name": "The Decemberists",
+      "shows": 74
     },
     "disco-biscuits": {
       "name": "Disco Biscuits",
-      "the": true
+      "the": true,
+      "shows": "1,251"
     },
     "dispatch": {
-      "name": "Dispatch"
+      "name": "Dispatch",
+      "shows": 32
     },
     "dopapod": {
-      "name": "Dopapod"
+      "name": "Dopapod",
+      "shows": 357
     },
     "drive-by-truckers": {
       "name": "Drive-By Truckers",
-      "the": true
+      "the": true,
+      "shows": 680
     },
     "elliott-smith": {
-      "name": "Elliott Smith"
+      "name": "Elliott Smith",
+      "shows": 81
     },
     "everyone-orchestra": {
-      "name": "Everyone Orchestra"
+      "name": "Everyone Orchestra",
+      "shows": 123
     },
     "fugazi": {
-      "name": "Fugazi"
+      "name": "Fugazi",
+      "shows": 18
     },
     "furthur": {
-      "name": "Furthur"
+      "name": "Furthur",
+      "shows": 972
     },
     "g-love": {
-      "name": "G. Love and Special Sauce"
+      "name": "G. Love and Special Sauce",
+      "shows": 124
     },
     "g-nome": {
       "name": "G-Nome Project",
-      "the": true
+      "the": true,
+      "shows": 4
     },
     "garage-a-trois": {
-      "name": "Garage A Trois"
+      "name": "Garage A Trois",
+      "shows": 74
     },
     "god-street-wine": {
-      "name": "God Street Wine"
+      "name": "God Street Wine",
+      "shows": 240
     },
     "grace-potter": {
       "name": "Grace Potter",
-      "the": true
+      "the": true,
+      "shows": 488
     },
     "grateful-dead": {
       "name": "Grateful Dead",
-      "the": true
+      "the": true,
+      "shows": "9,142"
     },
     "greensky-bluegrass": {
-      "name": "Greensky Bluegrass"
+      "name": "Greensky Bluegrass",
+      "shows": 462
     },
     "guster": {
-      "name": "Guster"
+      "name": "Guster",
+      "shows": 484
     },
     "the-heavy-pets": {
-      "name": "The Heavy Pets"
+      "name": "The Heavy Pets",
+      "shows": 142
     },
     "jack-johnson": {
-      "name": "Jack Johnson"
+      "name": "Jack Johnson",
+      "shows": 146
     },
     "jazz-mandolin-project": {
       "name": "Jazz Mandolin Project",
-      "the": true
+      "the": true,
+      "shows": 163
     },
     "jerry-joseph": {
-      "name": "Jerry Joseph and the Jackmormons"
+      "name": "Jerry Joseph and the Jackmormons",
+      "shows": 604
     },
     "john-popper": {
-      "name": "John Popper"
+      "name": "John Popper",
+      "shows": 67
     },
     "keller-williams": {
-      "name": "Keller Williams"
+      "name": "Keller Williams",
+      "shows": 608
     },
     "kvhw": {
-      "name": "KVHW"
+      "name": "KVHW",
+      "shows": 109
     },
     "leftover-salmon": {
-      "name": "Leftover Salmon"
+      "name": "Leftover Salmon",
+      "shows": 542
     },
     "little-feat": {
-      "name": "Little Feat"
+      "name": "Little Feat",
+      "shows": 567
     },
     "lotus": {
-      "name": "Lotus"
+      "name": "Lotus",
+      "shows": 368
     },
     "marco": {
-      "name": "Marco Benevento"
+      "name": "Marco Benevento",
+      "shows": 136
     },
     "matisyahu": {
-      "name": "Matisyahu"
+      "name": "Matisyahu",
+      "shows": 296
     },
     "matt-pond-pa": {
-      "name": "Matt Pond PA"
+      "name": "Matt Pond PA",
+      "shows": 8
     },
     "max-creek": {
-      "name": "Max Creek"
+      "name": "Max Creek",
+      "shows": "1,850"
     },
     "mmj": {
-      "name": "My Morning Jacket"
+      "name": "My Morning Jacket",
+      "shows": 253
     },
     "moe": {
-      "name": "moe."
+      "name": "moe.",
+      "shows": 959
     },
     "mogwai": {
-      "name": "Mogwai"
+      "name": "Mogwai",
+      "shows": 164
     },
     "the-motet": {
-      "name": "The Motet"
+      "name": "The Motet",
+      "shows": 166
     },
     "the-new-deal": {
-      "name": "The New Deal"
+      "name": "The New Deal",
+      "shows": 241
     },
     "new-mastersounds": {
-      "name": "The New Mastersounds"
+      "name": "The New Mastersounds",
+      "shows": 197
     },
     "percy-hill": {
-      "name": "Percy Hill"
+      "name": "Percy Hill",
+      "shows": 102
     },
     "phil-lesh": {
-      "name": "Phil Lesh and Friends"
+      "name": "Phil Lesh and Friends",
+      "shows": "1,707"
     },
     "radiators": {
-      "name": "The Radiators"
+      "name": "The Radiators",
+      "shows": "1,163"
     },
     "railroad-earth": {
-      "name": "Railroad Earth"
+      "name": "Railroad Earth",
+      "shows": "1,180"
     },
     "raq": {
-      "name": "Raq"
+      "name": "Raq",
+      "shows": 290
     },
     "ratdog": {
-      "name": "Ratdog"
+      "name": "Ratdog",
+      "shows": 831
     },
     "ryan-adams": {
-      "name": "Ryan Adams"
+      "name": "Ryan Adams",
+      "shows": 409
     },
     "sci": {
       "name": "String Cheese Incident",
-      "the": true
+      "the": true,
+      "shows": 932
     },
     "smashing-pumpkins": {
       "name": "Smashing Pumpkins",
-      "the": true
+      "the": true,
+      "shows": "1,005"
     },
     "spoon": {
-      "name": "Spoon"
+      "name": "Spoon",
+      "shows": 51
     },
     "steve-kimock": {
-      "name": "Steve Kimock"
+      "name": "Steve Kimock",
+      "shows": 256
     },
     "steve-kimock-band": {
       "name": "Steve Kimock Band",
-      "the": true
+      "the": true,
+      "shows": 441
     },
     "strangefolk": {
-      "name": "Strangefolk"
+      "name": "Strangefolk",
+      "shows": 727
     },
     "stringdusters": {
       "name": "Infamous Stringdusters",
-      "the": true
+      "the": true,
+      "shows": 406
     },
     "tea-leaf-green": {
-      "name": "Tea Leaf Green"
+      "name": "Tea Leaf Green",
+      "shows": 976
     },
     "ted-leo": {
-      "name": "Ted Leo and the Pharmacists"
+      "name": "Ted Leo and the Pharmacists",
+      "shows": 20
     },
     "tedeschi-trucks": {
       "name": "Tedeschi Trucks Band",
-      "the": true
+      "the": true,
+      "shows": 239
     },
     "tenacious-d": {
-      "name": "Tenacious D"
+      "name": "Tenacious D",
+      "shows": 31
     },
     "umphreys": {
-      "name": "Umphrey's McGee"
+      "name": "Umphrey's McGee",
+      "shows": 696
     },
     "the-walkmen": {
-      "name": "The Walkmen"
+      "name": "The Walkmen",
+      "shows": 18
     },
     "war-on-drugs": {
-      "name": "The War on Drugs"
+      "name": "The War on Drugs",
+      "shows": 30
     },
     "warren-zevon": {
-      "name": "Warren Zevon"
+      "name": "Warren Zevon",
+      "shows": 104
     },
     "ween": {
-      "name": "Ween"
+      "name": "Ween",
+      "shows": 447
     },
     "yonder": {
-      "name": "Yonder Mountain String Band"
+      "name": "Yonder Mountain String Band",
+      "shows": 792
     },
     "zero": {
-      "name": "Zero"
+      "name": "Zero",
+      "shows": 416
     }
   },
   "root": "http://relisten.net"

@@ -42,7 +42,17 @@ exports.status = (req, res) ->
 
 exports.artists = (req, res) ->
 	models.Artist.findAll().error(error(res)).success (artists) ->
-		res.json success artists
+		output = []
+		for artist in artists
+			((artist) ->
+				artist.getSongs().error(error(res)).success (shows) ->
+					output.push
+						slug: artist.slug
+						count: shows.length
+
+					console.log JSON.stringify output
+			)(artist)
+
 
 exports.single_artist = (req, res) ->
 	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
