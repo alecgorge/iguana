@@ -676,7 +676,22 @@ function program21(depth0,data,depth1) {
   if (stack2 = helpers.title) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.title; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "\">\n      <a class=song href=\"/"
+    + "\">\n      <a class=\"song "
+    + escapeExpression(((stack1 = depth1.band),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "-"
+    + escapeExpression(((stack1 = depth1.year),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "-"
+    + escapeExpression(((stack1 = depth1.month),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "-"
+    + escapeExpression(((stack1 = depth1.day),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  stack2 = helpers['if'].call(depth0, depth1.showVersion, {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += escapeExpression(((stack1 = depth1.showVersion),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "-";
+  if (stack2 = helpers.slug) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.slug; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "\" href=\"/"
     + escapeExpression(((stack1 = depth1.band),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/"
     + escapeExpression(((stack1 = depth1.year),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -2148,7 +2163,7 @@ App.Collections.Queue = (function(_super) {
   };
 
   Queue.prototype.play = function(song, ms) {
-    var band, day, month, showVersion, showVersionStr, slug, title, url, year, _ref1, _ref2;
+    var band, day, month, showVersion, showVersionStr, slug, title, url, year, _ref1;
     if (song) {
       if (App.song) {
         this.idx = this.indexOf(App.song);
@@ -2168,8 +2183,7 @@ App.Collections.Queue = (function(_super) {
     App.song.set('active', 'active');
     App.player.play(ms);
     App.player.set('playing', true);
-    _ref1 = App.router, band = _ref1.band, year = _ref1.year, month = _ref1.month, day = _ref1.day, showVersion = _ref1.showVersion;
-    _ref2 = App.song.toJSON(), slug = _ref2.slug, title = _ref2.title;
+    _ref1 = App.song.toJSON(), slug = _ref1.slug, title = _ref1.title, year = _ref1.year, month = _ref1.month, day = _ref1.day, showVersion = _ref1.showVersion, band = _ref1.band;
     showVersionStr = showVersion ? '-' + showVersion : '';
     if (!window.location.pathname.match("/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug)) {
       url = "/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug;
@@ -2180,6 +2194,8 @@ App.Collections.Queue = (function(_super) {
       ga('send', 'pageview', "" + url);
     }
     App.queueView.render(App.queueView.$el.find('ul').scrollTop());
+    $('.song').removeClass('active');
+    $("." + band + "-" + year + "-" + month + "-" + day + showVersionStr + "-" + slug).addClass('active');
     return ++this.idx;
   };
 

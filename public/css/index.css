@@ -5509,7 +5509,8 @@ footer .buttons .bar-right .next{border-left:30px solid #333}
 .home-page .row-fluid .span4 ul li > a{color:#008ab0;height:100%;width:auto;padding:5px 0 5px 5px;text-decoration:none;display:block;-o-text-overflow:ellipsis;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;font-size:14px;font-family:'Open Sans';}
 .home-page .row-fluid .span4 ul li > a:hover{background:#eee}
 .home-page .row-fluid .span4 ul li > a.blue{color:#008ab0}
-.home-page .row-fluid .span4 ul li > a.active{background:#008ab0;color:#fff}
+.home-page .row-fluid .span4 ul li > a.active{background:#008ab0;color:#fff;}
+.home-page .row-fluid .span4 ul li > a.active span.time{color:#eee}
 .home-page .row-fluid .span4 ul li > a.clear{padding:0;width:auto;height:auto;display:inline-block}
 .home-page .row-fluid .span4 ul li > a.video-link{font-size:1.14em}
 .home-page .row-fluid .span4 ul li > a.archive,.home-page .row-fluid .span4 ul li > a.add-all{color:#333}
