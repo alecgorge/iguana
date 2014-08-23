@@ -5487,6 +5487,9 @@ footer .buttons .bar-right{border-right:7px solid #333;}
 footer .buttons .bar-right .next{border-left:30px solid #333}
 
 .index-page{padding-bottom:50px;}
+.index-page table{text-align:left;width:70%;max-width:800px;margin:0 auto;font-size:1.2em;}
+.index-page table tr{line-height:1.4em;}
+.index-page table tr td{width:50px;text-align:right}
 .index-page ul{clear:both;}
 .index-page ul li{list-style-type:none;font-size:1.6em;line-height:30px;padding:5px 0}
 
