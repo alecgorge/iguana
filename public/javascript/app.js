@@ -873,6 +873,9 @@ window.App = {
       "name": "Jazz Mandolin Project",
       "the": true
     },
+    "jerry-joseph": {
+      "name": "Jerry Joseph and the Jackmormons"
+    },
     "john-popper": {
       "name": "John Popper"
     },
@@ -881,6 +884,9 @@ window.App = {
     },
     "kvhw": {
       "name": "KVHW"
+    },
+    "leftover-salmon": {
+      "name": "Leftover Salmon"
     },
     "little-feat": {
       "name": "Little Feat"
@@ -914,6 +920,9 @@ window.App = {
     },
     "the-new-deal": {
       "name": "The New Deal"
+    },
+    "new-mastersounds": {
+      "name": "The New Mastersounds"
     },
     "percy-hill": {
       "name": "Percy Hill"
@@ -982,6 +991,9 @@ window.App = {
     },
     "war-on-drugs": {
       "name": "The War on Drugs"
+    },
+    "warren-zevon": {
+      "name": "Warren Zevon"
     },
     "ween": {
       "name": "Ween"
