@@ -5554,9 +5554,10 @@ footer .buttons .bar-right .next{border-left:30px solid #333}
 
 .player-container{height:100%;width:50%;border-bottom:1px solid #aaa;position:absolute;right:0;top:0;}
 .player-container .info{top:15px;right:22px;position:absolute;text-align:right;width:70%;height:100%;}
-.player-container .info h3.title,.player-container .info h4.album{line-height:.5em;padding-right:10px;color:#333}
+.player-container .info h3.title,.player-container .info h4.album{line-height:1em;padding-right:10px;color:#333;margin:0;max-height:2em}
 .player-container .info .time{padding-right:10px;}
 .player-container .info .time div{display:inline-block}
+.player-container .info h3.title{white-space:nowrap;overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis}
 .player-container .volume-container{position:absolute;right:5px;bottom:0;height:80%;width:8px;border-left:1px solid #333;border-top:1px solid #333;border-right:1px solid #333;cursor:pointer;}
 .player-container .volume-container .volume{height:100%;width:100%;background:#333;position:absolute;bottom:0;left:0}
 
