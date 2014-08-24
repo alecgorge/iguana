@@ -2219,7 +2219,7 @@ App.Collections.Queue = (function(_super) {
     App.player.play(ms);
     App.player.set('playing', true);
     _ref1 = App.song.toJSON(), slug = _ref1.slug, title = _ref1.title, year = _ref1.year, month = _ref1.month, day = _ref1.day, showVersion = _ref1.showVersion, band = _ref1.band;
-    this.notify(App.bands[band].name, "" + title + "\n" + year + "/" + month + "/" + day);
+    this.notify(title, "" + App.bands[band].name + "\n" + year + "/" + month + "/" + day);
     showVersionStr = showVersion ? '-' + showVersion : '';
     if (!window.location.pathname.match("/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug)) {
       url = "/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug;
@@ -2592,9 +2592,11 @@ App.Views.IndexPage = (function(_super) {
       "default": Notification.permission === "default"
     }));
     if (Notification.permission === "default") {
-      return this.$el.find('.enable-notifications')[0].addEventListener('click', function() {
+      return this.$el.find('.enable-notifications')[0].addEventListener('click', function(e) {
         if (Notification.permission === "default") {
-          return Notification.requestPermission();
+          return Notification.requestPermission(function() {
+            return $(e.target).fadeOut();
+          });
         }
       });
     }
