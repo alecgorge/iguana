@@ -1231,6 +1231,13 @@ Application = (function() {
     }
     App.initial = true;
     this.initViews();
+    if (Notification.permission === "default") {
+      document.querySelector('body').addEventListener('click', function() {
+        if (Notification.permission === "default") {
+          return Notification.requestPermission();
+        }
+      });
+    }
     App.router = new App.Router();
     Backbone.history.start({
       pushState: true
@@ -2184,6 +2191,7 @@ App.Collections.Queue = (function(_super) {
     App.player.play(ms);
     App.player.set('playing', true);
     _ref1 = App.song.toJSON(), slug = _ref1.slug, title = _ref1.title, year = _ref1.year, month = _ref1.month, day = _ref1.day, showVersion = _ref1.showVersion, band = _ref1.band;
+    this.notify(App.bands[band].name, "" + title + "\n" + year + "/" + month + "/" + day);
     showVersionStr = showVersion ? '-' + showVersion : '';
     if (!window.location.pathname.match("/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug)) {
       url = "/" + band + "/" + year + "/" + month + "/" + day + showVersionStr + "/" + slug;
@@ -2208,6 +2216,21 @@ App.Collections.Queue = (function(_super) {
       this.idx = 0;
     }
     return this.play(null, 0);
+  };
+
+  Queue.prototype.notify = function(title, body) {
+    var notification;
+    if (!window.Notification) {
+      return;
+    }
+    if (Notification.permission === "granted") {
+      notification = new Notification(title, {
+        body: body
+      });
+      return setTimeout(function() {
+        return notification.close();
+      }, 2500);
+    }
   };
 
   return Queue;
@@ -3170,6 +3193,7 @@ App.Views.Songs = (function(_super) {
 
   Songs.prototype.events = {
     'click .add': 'addToPlaylist',
+    'click .song': 'clickSong',
     'click .play': 'play',
     'click .add-all': 'addAll',
     'click .select-source': 'showSources'
@@ -3279,6 +3303,12 @@ App.Views.Songs = (function(_super) {
       return this.$sources.slideDown();
     }
     return this.$sources.slideUp();
+  };
+
+  Songs.prototype.clickSong = function(e) {
+    if (Notify.needsPermission) {
+      return Notify.requestPermission(console.log, console.log);
+    }
   };
 
   return Songs;
