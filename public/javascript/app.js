@@ -2594,8 +2594,9 @@ App.Views.IndexPage = (function(_super) {
     if (Notification.permission === "default") {
       return this.$el.find('.enable-notifications')[0].addEventListener('click', function(e) {
         if (Notification.permission === "default") {
-          return Notification.requestPermission(function() {
-            return $(e.target).fadeOut();
+          return Notification.requestPermission(function(permission) {
+            $(e.target).fadeOut();
+            return ga('send', 'event', 'notifications', 'enable', 'index button', permission === "granted");
           });
         }
       });
