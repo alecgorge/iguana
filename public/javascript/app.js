@@ -2596,7 +2596,7 @@ App.Views.IndexPage = (function(_super) {
         if (Notification.permission === "default") {
           return Notification.requestPermission(function(permission) {
             $(e.target).fadeOut();
-            return ga('send', 'event', 'notifications', 'enable', 'index button', permission === "granted");
+            return ga('send', 'event', 'notifications', 'enable', 'index button', permission === "granted" ? 1 : 0);
           });
         }
       });
