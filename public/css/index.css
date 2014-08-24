@@ -5488,12 +5488,15 @@ footer .buttons .play{width:0;height:0;border-top:18.75px solid transparent;bord
 footer .buttons .bar-right{border-right:7px solid #333;}
 footer .buttons .bar-right .next{border-left:30px solid #333}
 
-.index-page{padding-bottom:50px;}
+.index-page{padding-bottom:50px;text-align:center;}
 .index-page table{text-align:left;width:70%;max-width:800px;margin:0 auto;font-size:1.4em;}
 .index-page table tr{line-height:1.4em;}
 .index-page table tr th{font-weight:normal;}
 .index-page table tr th.heading{font-weight:bold}
 .index-page table tr td{width:50px;text-align:right}
+.index-page .enable-notifications{width:250px;height:60px;border:1px solid #333;background:transparent;margin:20px 0;font-size:1.4em;font-family:"HelveticaNeue-CondensedBold",Helvetica,Arial,sans-serif;}
+.index-page .enable-notifications:hover{background:#333;color:#fff}
+.index-page .enable-notifications:focus{outline:none}
 
 .home-page{color:#333;height:100%;}
 .home-page .row-fluid{width:100%;height:100%;}

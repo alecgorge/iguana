@@ -98,12 +98,21 @@ function program1(depth0,data) {
   return buffer;
   }
 
+function program3(depth0,data) {
+  
+  
+  return "<button class=enable-notifications>ENABLE NOTIFICATIONS</button>";
+  }
+
   buffer += "<table>\n   <thead>\n      <tr>\n         <th class=\"heading\">Band</th>\n         <th class=\"heading\">Tapes</th>\n      </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th><a href=\"/grateful-dead\">Grateful Dead</a></th>\n      <td>"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1['grateful-dead'])),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</td>\n    </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th>&nbsp;</th>\n      <td>&nbsp;</td>\n    </tr>\n   </thead>\n   ";
   stack2 = helpers.each.call(depth0, depth0.bands, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</table>\n";
+  buffer += "\n</table>\n\n";
+  stack2 = helpers['if'].call(depth0, depth0['default'], {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n";
   return buffer;
   });
 
@@ -777,7 +786,14 @@ function program1(depth0,data,depth1) {
   buffer += "\n</ul>\n";
   return buffer;
   });
-var addZero, resize, timeToMS, toHHMMSS;
+var Notification, addZero, resize, timeToMS, toHHMMSS;
+
+if (!Notification) {
+  Notification = function() {
+    return 0;
+  };
+  Notification.permission = false;
+}
 
 window.App = {
   "Models": {},
@@ -1172,6 +1188,7 @@ timeToMS = function(time) {
   if (!/m/.test(time)) {
     return 0;
   }
+  time = time.replace(/s$/, '');
   time = time.split('m');
   min = +time[0];
   sec = +time[1];
@@ -1231,13 +1248,6 @@ Application = (function() {
     }
     App.initial = true;
     this.initViews();
-    if (Notification.permission === "default") {
-      document.querySelector('body').addEventListener('click', function() {
-        if (Notification.permission === "default") {
-          return Notification.requestPermission();
-        }
-      });
-    }
     App.router = new App.Router();
     Backbone.history.start({
       pushState: true
@@ -1298,7 +1308,7 @@ App.Router = (function(_super) {
     this.route(/^([a-z]+(?:-[a-z]+)*)\/([0-9]{4})\/?$/, 'year');
     this.route(/^([a-z]+(?:-[a-z]+)*)\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})\/?$/, 'day');
     this.route(/^([a-z]+(?:-[a-z]+)*)\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})-?([0-9]{1,2})?\/?$/, 'show');
-    this.route(/^([a-z]+(?:-[a-z]+)*)\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})-?([0-9]{1,2})?\/([a-zA-Z0-9\-]*)\/?([0-9]{1,2})?\:?\:?([0-9]{1,2}m[0-9]{1,2})?\/?$/, 'song');
+    this.route(/^([a-z]+(?:-[a-z]+)*)\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})-?([0-9]{1,2})?\/([a-zA-Z0-9\-]*)\/?([0-9]{1,2})?\:?\:?([0-9]{1,2}m[0-9]{1,2})?s?\/?$/, 'song');
     this.route(/^about\/?$/, 'about');
     this.$container = $('#page-container');
     return this.bind('all', this._trackPageview);
@@ -1437,7 +1447,13 @@ App.Router = (function(_super) {
     this.slug = slug;
     this.version = version;
     this.time = time;
+    if (this.version) {
+      this.slug += '-' + this.version;
+    }
     if (App.initial) {
+      if (!/m/.test(this.time)) {
+        this.time = this.getParameterByName('t');
+      }
       this.changeView(new App.Views.HomePage());
       App.years = new App.Views.Years({
         band: this.band
@@ -1600,6 +1616,18 @@ App.Router = (function(_super) {
     }
     this.lastUrl = url;
     return ga('send', 'pageview', "/" + url);
+  };
+
+  Router.prototype.getParameterByName = function(name) {
+    var regex, results;
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+    results = regex.exec(location.search);
+    if (results == null) {
+      return "";
+    } else {
+      return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
   };
 
   return Router;
@@ -2559,9 +2587,17 @@ App.Views.IndexPage = (function(_super) {
 
   IndexPage.prototype.render = function() {
     App.header.render();
-    return this.$el.html(this.template({
-      bands: App.bands
+    this.$el.html(this.template({
+      bands: App.bands,
+      "default": Notification.permission === "default"
     }));
+    if (Notification.permission === "default") {
+      return this.$el.find('.enable-notifications')[0].addEventListener('click', function() {
+        if (Notification.permission === "default") {
+          return Notification.requestPermission();
+        }
+      });
+    }
   };
 
   return IndexPage;
@@ -3193,7 +3229,6 @@ App.Views.Songs = (function(_super) {
 
   Songs.prototype.events = {
     'click .add': 'addToPlaylist',
-    'click .song': 'clickSong',
     'click .play': 'play',
     'click .add-all': 'addAll',
     'click .select-source': 'showSources'
@@ -3303,12 +3338,6 @@ App.Views.Songs = (function(_super) {
       return this.$sources.slideDown();
     }
     return this.$sources.slideUp();
-  };
-
-  Songs.prototype.clickSong = function(e) {
-    if (Notify.needsPermission) {
-      return Notify.requestPermission(console.log, console.log);
-    }
   };
 
   return Songs;
