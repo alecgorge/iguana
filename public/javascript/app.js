@@ -548,7 +548,7 @@ function program1(depth0,data) {
   stack1 = helpers['if'].call(depth0, depth0.lineage, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n      ";
-  stack1 = helpers['if'].call(depth0, depth0.avg, {hash:{},inverse:self.noop,fn:self.program(14, program14, data),data:data});
+  stack1 = helpers['if'].call(depth0, depth0.average_rating, {hash:{},inverse:self.noop,fn:self.program(14, program14, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </li>\n  ";
   return buffer;
@@ -617,13 +617,13 @@ function program12(depth0,data) {
 function program14(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n        <p>Rating: ";
-  if (stack1 = helpers.avg) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.avg; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += "\n        <p><span class=\"field\">Rating:</span> ";
+  if (stack1 = helpers.average_rating) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.average_rating; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + " / ";
-  if (stack1 = helpers.total_reviews) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.total_reviews; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (stack1 = helpers.reviews_count) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.reviews_count; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + " reviews</p>\n      ";
   return buffer;
@@ -683,7 +683,7 @@ function program20(depth0,data,depth2) {
   stack2 = helpers['if'].call(depth0, depth0.lineage, {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n            ";
-  stack2 = helpers['if'].call(depth0, depth0.avg, {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.average_rating, {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n          </a>\n        </li>\n      ";
   return buffer;
@@ -700,12 +700,12 @@ function program23(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n              <p>Rating: ";
-  if (stack1 = helpers.avg) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.avg; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (stack1 = helpers.average_rating) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.average_rating; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + " / ";
-  if (stack1 = helpers.total_reviews) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.total_reviews; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (stack1 = helpers.reviews_count) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.reviews_count; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + " reviews</p>\n            ";
   return buffer;
