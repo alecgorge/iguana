@@ -7,10 +7,28 @@ Sequelize 	= models.Sequelize
 
 SEARCH_URL = (collection) -> "http://archive.org/advancedsearch.php?q=collection%3A#{collection}&fl%5B%5D=date&fl%5B%5D=identifier&fl%5B%5D=year&sort%5B%5D=year+asc&sort%5B%5D=&sort%5B%5D=&rows=9999999&page=1&output=json&save=yes"
 SINGLE_URL = (identifier) -> "https://archive.org/details/#{identifier}?output=json"
+PHISH_URL = (date) -> "http://phish.in/api/v1/show-on-date/#{date}.json"
 
 parseTime = (str) -> str.split(':').reverse().map((v, k) -> Math.max(1, 60 * k) * parseInt(v)).reduce((x,y) -> x+y)
 
+refreshPhishData = (artist, done) ->
+	winston.info 'requesting phish search url'
+	request "http://phish.in/api/v1/shows.json?per_page=2000", (err, httpres, body) ->
+		throw err if err
+
+		body = JSON.parse body
+
+		winston.info 'got search results'
+		shows = body.data
+
+		async.mapLimit shows, 1, (small_show, cb) ->
+			winston.info "requesting #{small_show.date}"
+			loadPhishShow artist, small_show, cb
+		, done
+
 refreshData = (artist, done) ->
+	return refreshPhishData(artist, done) if artist.slug == 'phish'
+
 	winston.info 'requesting search url'
 	request SEARCH_URL(artist.archive_collection), (err, httpres, body) ->
 		throw err if err
@@ -111,10 +129,134 @@ cache_year_stats = (done) ->
 				GROUP BY ArtistId, year
 			""").error(done).success(done)
 
+loadPhishShow = (artist, small_show, cb) ->
+	small_show.identifier = 'phish-' + small_show.id
+	models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
+		if pre_existing_show isnt null
+			winston.info "this archive identifier is already in the db"
+
+		request PHISH_URL(small_show.date), (err, httpres, body) ->
+
+			try
+				body = JSON.parse(body).data
+			catch e
+				# invalid json
+				console.log e
+				return cb()
+
+			winston.info "GET " + PHISH_URL(body.date)
+
+			files = body.tracks
+
+			winston.info "mp3 track count: #{files.length}"
+
+			return cb() if files.length is 0
+
+			d = new Date body.date
+
+			if isNaN(d.getTime())
+				parts = body.date[0].split('-')
+				parts[1] = '01' if parts[1] == '00'
+				parts[2] = '01' if parts[2] == '00'
+
+				if parseInt(parts[2], 10) > 31
+					parts[2] = '31'
+				if parseInt(parts[1], 10) > 12
+					parts[2] = '12'
+
+				d = new Date "#{parts[0]}-#{parts[2]}-#{parts[1]}"
+
+				if isNaN(d.getTime())
+					d = new Date 0
+
+			showProps =
+				title				: "Phish Live at #{body.venue.name} on #{body.date}"
+				date 				: d
+				display_date 		: body.date
+				year 				: new Date(body.date).getFullYear()
+				source 				: ""
+				lineage 			: ""
+				taper 				: ""
+				transferer 		: ""
+				description 		: if body.taper_notes then body.taper_notes else ""
+				archive_identifier	: "phish-#{body.id}"
+				reviews 			: "[]"
+				reviews_count 		: 0
+				average_rating 		: 0.0
+				is_soundboard: body.sbd
+
+			venueProps =
+				name 				: if body.venue?.name then body.venue.name else "Unknown"
+				city 				: if body.location then body.location else "Unknown"
+
+			venueProps.slug = slugify venueProps.name
+
+			track_i = 0
+			total_duration = 0
+			slugs = {}
+			tracks = files.map (file) ->
+
+				t = file.title
+
+				duration = Math.ceil file.duration / 1000
+				total_duration += duration
+
+				t = t.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '')
+
+				return models.Track.build {
+					title 	: t.slice(0, 254)
+					md5 	: ''
+					track 	: ++track_i
+					bitrate : 0
+					size 	: 0
+					length 	: duration
+					file 	: file.mp3
+					slug 	: slugify(t, slugs)
+				}
+
+			showProps.duration = total_duration
+			showProps.track_count = tracks.length
+
+			showCreated = (show, created) ->
+				unless created
+					winston.info "this show is already in the db"
+					return cb()
+				else
+					winston.info "show created! looking for venue"
+
+				models.Venue.findOrCreate({slug: venueProps.slug}, venueProps).error(cb).success (venue, created) ->
+					winston.info "building tracks"
+
+					winston.info "setting venue and tracks"
+					show.setVenue venue
+					show.setArtist artist
+
+					chainer = new Sequelize.Utils.QueryChainer
+					chainer.add show.save()
+
+					for tr in tracks
+						chainer.add tr.save()
+
+					winston.info "saving!"
+					chainer.run().error(cb).success ->
+						console.log "done! relating tracks to shows"
+
+						chainer = new Sequelize.Utils.QueryChainer
+
+						for tr in tracks
+							tr.setShow show
+
+						chainer.run().error(cb).success ->
+							console.log "related"
+							cache_year_stats cb
+
+			winston.info "looking for show in db"
+			models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id, archive_identifier: showProps.archive_identifier}, showProps).error(showCreated).success showCreated
+
 loadShow = (artist, small_show, cb) ->
 	models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
 		if pre_existing_show isnt null
-			winston.info "this archive identifier is already in the db; checking for every track"
+			winston.info "this archive identifier is already in the db"
 
 		request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
 			winston.info "GET " + SINGLE_URL(small_show.identifier)
@@ -195,13 +337,13 @@ loadShow = (artist, small_show, cb) ->
 			track_i = 0
 			total_duration = 0
 			slugs = {}
-			tracks = mp3_tracks.sort().
+			tracks = files.sort().
 								map (v) ->
 				file = files[v]
 
-				t = file.title || file.original
+				t = file.title
 
-				total_duration += parseTime file.length
+				total_duration += parseTime file.duration
 
 				t = t.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '')
 
@@ -223,7 +365,7 @@ loadShow = (artist, small_show, cb) ->
 
 			showCreated = (show, created) ->
 				unless created
-					winston.info "this show is already in the db; ensuring archive_collection tracks are present"
+					winston.info "this show is already in the db"
 					return cb()
 				else
 					winston.info "show created! looking for venue"
