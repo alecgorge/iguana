@@ -50,6 +50,7 @@
     "slugs": "^0.1.2",
     "stylus": "~0.40.3",
     "time-grunt": "~0.1.0",
+    "underscore": "^1.6.0",
     "winston": "~0.7.2"
   },
   "devDependencies": {
