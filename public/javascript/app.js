@@ -64,7 +64,7 @@ function program6(depth0,data) {
 function program8(depth0,data) {
   
   
-  return "Powered by phish.in";
+  return "(Powered by phish.in)";
   }
 
   buffer += "<ul class=\"left\">\n  <li class=\"home-container\">\n    <a class=\"home\" href=\"/\">Relisten</a>\n    <span> to";
