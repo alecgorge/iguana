@@ -355,11 +355,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, stack2, options;
-  buffer += "\n    <li>\n      <span>[\n        <a href=\"javascript:\" class=delete>x</a>\n      ]</span>\n      <a class=\"song ";
+  buffer += "\n    <li class=\"";
   if (stack1 = helpers.active) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.active; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "\" href=\"/";
+    + "\">\n      <span>[\n        <a href=\"javascript:\" class=delete>x</a>\n      ]</span>\n      <a class=\"song\" href=\"/";
   if (stack1 = helpers.band) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.band; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)

@@ -5593,7 +5593,7 @@ footer .buttons .bar-right .next{border-left:30px solid #333}
 .queue-container{height:100%;width:40%;position:absolute;bottom:0;left:0;}
 .queue-container ul{padding:8px 0 0 0;margin:0 5px;overflow-y:scroll;height:100%;width:100%;}
 .queue-container ul li{list-style-type:none;}
-.queue-container ul li a.active{font-weight:bold}
+.queue-container ul li.active .song{font-weight:bold}
 .queue-container ul li span{font-size:.8em;}
 .queue-container ul li span a{color:#333}
 .queue-container ul li .right{text-align:right;padding-right:150px}
