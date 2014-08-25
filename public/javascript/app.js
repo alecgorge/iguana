@@ -610,11 +610,10 @@ function program11(depth0,data) {
 
 function program13(depth0,data) {
   
-  var buffer = "", stack1;
+  var buffer = "", stack1, options;
   buffer += "<p title=\"";
-  if (stack1 = helpers.description) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.description; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.newLine || depth0.newLine),stack1 ? stack1.call(depth0, depth0.description, options) : helperMissing.call(depth0, "newLine", depth0.description, options)))
     + "\" class=\"description\"><span class=\"field\">Description:</span> Hover</p>";
   return buffer;
   }
@@ -682,13 +681,16 @@ function program21(depth0,data,depth2) {
   stack2 = helpers['if'].call(depth0, depth0.transferer, {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n            ";
-  stack2 = helpers['if'].call(depth0, depth0.source, {hash:{},inverse:self.noop,fn:self.program(24, program24, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.source, {hash:{},inverse:self.program(26, program26, data),fn:self.program(24, program24, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n            ";
   stack2 = helpers['if'].call(depth0, depth0.lineage, {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n            ";
-  stack2 = helpers['if'].call(depth0, depth0.average_rating, {hash:{},inverse:self.noop,fn:self.program(26, program26, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.description, {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n            ";
+  stack2 = helpers['if'].call(depth0, depth0.average_rating, {hash:{},inverse:self.noop,fn:self.program(28, program28, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n          </a>\n        </li>\n      ";
   return buffer;
@@ -708,14 +710,23 @@ function program24(depth0,data) {
   if (stack1 = helpers.source) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.source; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</p>";
+    + "</p>\n            ";
   return buffer;
   }
 
 function program26(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n              <p>Rating: ";
+  stack1 = helpers['if'].call(depth0, depth0.is_soundboard, {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n            ";
+  return buffer;
+  }
+
+function program28(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n              <p><span class=\"field\">Rating:</span> ";
   if (stack1 = helpers.average_rating) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.average_rating; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -727,7 +738,7 @@ function program26(depth0,data) {
   return buffer;
   }
 
-function program28(depth0,data,depth1) {
+function program30(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2, options;
   buffer += "\n    <li data-idx="
@@ -744,7 +755,7 @@ function program28(depth0,data,depth1) {
     + escapeExpression(((stack1 = depth1.month),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "-"
     + escapeExpression(((stack1 = depth1.day),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
-  stack2 = helpers['if'].call(depth0, depth1.showVersion, {hash:{},inverse:self.noop,fn:self.program(29, program29, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth1.showVersion, {hash:{},inverse:self.noop,fn:self.program(31, program31, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += escapeExpression(((stack1 = depth1.showVersion),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "-";
@@ -759,7 +770,7 @@ function program28(depth0,data,depth1) {
     + escapeExpression(((stack1 = depth1.month),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/"
     + escapeExpression(((stack1 = depth1.day),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
-  stack2 = helpers['if'].call(depth0, depth1.showVersion, {hash:{},inverse:self.noop,fn:self.program(29, program29, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth1.showVersion, {hash:{},inverse:self.noop,fn:self.program(31, program31, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += escapeExpression(((stack1 = depth1.showVersion),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/";
@@ -776,13 +787,13 @@ function program28(depth0,data,depth1) {
     + "</span></a>\n      <div class=play>ᐅ</div>\n      <div title=\"Add To Queue\" class=add>+</div>\n    </li>\n  ";
   return buffer;
   }
-function program29(depth0,data) {
+function program31(depth0,data) {
   
   
   return "-";
   }
 
-function program31(depth0,data) {
+function program33(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n    <li><a class=archive href=\"http://phish.net/setlists/?d="
@@ -793,7 +804,7 @@ function program31(depth0,data) {
   return buffer;
   }
 
-function program33(depth0,data) {
+function program35(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n    <li><a class=archive href=\"https://archive.org/details/"
@@ -817,10 +828,10 @@ function program33(depth0,data) {
   stack1 = helpers['if'].call(depth0, depth0.multipleSources, {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  ";
-  stack2 = helpers.each.call(depth0, ((stack1 = depth0.songs),stack1 == null || stack1 === false ? stack1 : stack1.tracks), {hash:{},inverse:self.noop,fn:self.programWithDepth(28, program28, data, depth0),data:data});
+  stack2 = helpers.each.call(depth0, ((stack1 = depth0.songs),stack1 == null || stack1 === false ? stack1 : stack1.tracks), {hash:{},inverse:self.noop,fn:self.programWithDepth(30, program30, data, depth0),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n  <li><a class=add-all href=\"javascript:\">Add All To Queue</a></li>\n  ";
-  options = {hash:{},inverse:self.program(33, program33, data),fn:self.program(31, program31, data),data:data};
+  options = {hash:{},inverse:self.program(35, program35, data),fn:self.program(33, program33, data),data:data};
   stack2 = ((stack1 = helpers.if_eq || depth0.if_eq),stack1 ? stack1.call(depth0, depth0.band, "phish", options) : helperMissing.call(depth0, "if_eq", depth0.band, "phish", options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n</ul>\n";
@@ -1294,6 +1305,10 @@ Handlebars.registerHelper("addZero", function(num) {
 
 Handlebars.registerHelper("addOne", function(num) {
   return new Handlebars.SafeString(num + 1);
+});
+
+Handlebars.registerHelper("newLine", function(str) {
+  return new Handlebars.SafeString($('<div/>').text(str.replace(/\n/g, '<br />')).html());
 });
 
 Handlebars.registerHelper("if_eq", function(a, b, opts) {
@@ -3334,7 +3349,7 @@ App.Views.Songs = (function(_super) {
   };
 
   Songs.prototype.render = function() {
-    var band, day, month, showVersion, sources, year, _ref1,
+    var $description, band, day, month, showVersion, sources, year, _ref1,
       _this = this;
     App.router.clearActive();
     if (this.folder) {
@@ -3366,7 +3381,8 @@ App.Views.Songs = (function(_super) {
       multipleSources: sources.length > 1,
       totalSources: sources.length
     }));
-    this.$el.find('.description').powerTip({
+    $description = this.$el.find('.description');
+    $description.powerTip({
       placement: 'sw'
     });
     this.$sources = this.$el.find('.source');
