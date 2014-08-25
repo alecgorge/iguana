@@ -1179,7 +1179,7 @@ window.App = {
       "shows": 416
     }
   },
-  "root": "http://relist.net"
+  "root": "http://relisten.net"
 };
 
 $(function() {
