@@ -89,9 +89,26 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["JST"]["index"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
+  
+  
+  return "\n   ";
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n   <thead>\n    <tr>\n      <th><a href=\"/grateful-dead\">Grateful Dead</a></th>\n      <td>"
+    + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1['grateful-dead'])),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</td>\n    </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th><a href=\"/phish\">Phish</a></th>\n      <td>"
+    + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1.phish)),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</td>\n    </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th>&nbsp;</th>\n      <td>&nbsp;</td>\n    </tr>\n   </thead>\n   ";
+  return buffer;
+  }
+
+function program5(depth0,data) {
   
   var buffer = "", stack1, stack2;
   buffer += "\n   <tbody>\n      <tr>\n        <th>\n          <a href=\"/"
@@ -108,22 +125,21 @@ function program1(depth0,data) {
   return buffer;
   }
 
-function program3(depth0,data) {
+function program7(depth0,data) {
   
   
   return "<button class=enable-notifications>ENABLE NOTIFICATIONS</button>";
   }
 
-  buffer += "<table>\n   <thead>\n      <tr>\n         <th class=\"heading\">Band</th>\n         <th class=\"heading\">Tapes</th>\n      </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th><a href=\"/grateful-dead\">Grateful Dead</a></th>\n      <td>"
-    + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1['grateful-dead'])),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n    </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th><a href=\"/phish\">Phish</a></th>\n      <td>"
-    + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1.phish)),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</td>\n    </tr>\n   </thead>\n   <thead>\n    <tr>\n      <th>&nbsp;</th>\n      <td>&nbsp;</td>\n    </tr>\n   </thead>\n   ";
-  stack2 = helpers.each.call(depth0, depth0.bands, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "<table>\n   <thead>\n      <tr>\n         <th class=\"heading\">Band</th>\n         <th class=\"heading\">Tapes</th>\n      </tr>\n   </thead>\n   ";
+  stack1 = helpers['if'].call(depth0, depth0.realMusic, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n   ";
+  stack1 = helpers.each.call(depth0, depth0.bands, {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</table>\n\n";
-  stack2 = helpers['if'].call(depth0, depth0['default'], {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
+  stack1 = helpers['if'].call(depth0, depth0['default'], {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;
   });
@@ -1210,6 +1226,148 @@ window.App = {
       "shows": 416
     }
   },
+  "realMusic": {
+    "akron-family": {
+      "name": "Akron/Family",
+      "shows": 35
+    },
+    "animal-collective": {
+      "name": "Animal Collective",
+      "shows": 23
+    },
+    "bela-fleck": {
+      "name": "Béla Fleck and the Flecktones",
+      "shows": 321
+    },
+    "ben-kweller": {
+      "name": "Ben Kweller",
+      "shows": 18
+    },
+    "bernie-worrell": {
+      "name": "Bernie Worrell Orchestra",
+      "the": true,
+      "shows": 27
+    },
+    "club-d-elf": {
+      "name": "Club d'Elf",
+      "shows": 523
+    },
+    "the-decemberists": {
+      "name": "The Decemberists",
+      "shows": 74
+    },
+    "dispatch": {
+      "name": "Dispatch",
+      "shows": 32
+    },
+    "drive-by-truckers": {
+      "name": "Drive-By Truckers",
+      "the": true,
+      "shows": 680
+    },
+    "elliott-smith": {
+      "name": "Elliott Smith",
+      "shows": 81
+    },
+    "fugazi": {
+      "name": "Fugazi",
+      "shows": 18
+    },
+    "g-love": {
+      "name": "G. Love and Special Sauce",
+      "shows": 124
+    },
+    "garage-a-trois": {
+      "name": "Garage A Trois",
+      "shows": 74
+    },
+    "grace-potter": {
+      "name": "Grace Potter",
+      "the": true,
+      "shows": 488
+    },
+    "guster": {
+      "name": "Guster",
+      "shows": 484
+    },
+    "jack-johnson": {
+      "name": "Jack Johnson",
+      "shows": 146
+    },
+    "jerry-joseph": {
+      "name": "Jerry Joseph and the Jackmormons",
+      "shows": 604
+    },
+    "john-popper": {
+      "name": "John Popper",
+      "shows": 67
+    },
+    "little-feat": {
+      "name": "Little Feat",
+      "shows": 567
+    },
+    "matisyahu": {
+      "name": "Matisyahu",
+      "shows": 296
+    },
+    "matt-pond-pa": {
+      "name": "Matt Pond PA",
+      "shows": 8
+    },
+    "mmj": {
+      "name": "My Morning Jacket",
+      "shows": 253
+    },
+    "mogwai": {
+      "name": "Mogwai",
+      "shows": 164
+    },
+    "new-mastersounds": {
+      "name": "The New Mastersounds",
+      "shows": 197
+    },
+    "radiators": {
+      "name": "The Radiators",
+      "shows": "1,163"
+    },
+    "ryan-adams": {
+      "name": "Ryan Adams",
+      "shows": 409
+    },
+    "smashing-pumpkins": {
+      "name": "Smashing Pumpkins",
+      "the": true,
+      "shows": "1,005"
+    },
+    "spoon": {
+      "name": "Spoon",
+      "shows": 51
+    },
+    "ted-leo": {
+      "name": "Ted Leo and the Pharmacists",
+      "shows": 20
+    },
+    "tenacious-d": {
+      "name": "Tenacious D",
+      "shows": 31
+    },
+    "the-walkmen": {
+      "name": "The Walkmen",
+      "shows": 18
+    },
+    "war-on-drugs": {
+      "name": "The War on Drugs",
+      "shows": 30
+    },
+    "warren-zevon": {
+      "name": "Warren Zevon",
+      "shows": 104
+    },
+    "ween": {
+      "name": "Ween",
+      "shows": 447
+    }
+  },
   "root": "http://relisten.net"
 };
 
@@ -1409,6 +1567,7 @@ App.Router = (function(_super) {
     this.route(/^([a-z]+(?:-[a-z]+)*)\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})-?([0-9]{1,2})?\/?$/, 'show');
     this.route(/^([a-z]+(?:-[a-z]+)*)\/([0-9]{4})\/([0-9]{1,2})\/([0-9]{1,2})-?([0-9]{1,2})?\/([a-zA-Z0-9\-]*)\/?([0-9]{1,2})?\:?\:?([0-9]{1,2}m[0-9]{1,2})?s?\/?$/, 'song');
     this.route(/^about\/?$/, 'about');
+    this.route(/^real-music\/?$/, 'realMusic');
     this.$container = $('#page-container');
     return this.bind('all', this._trackPageview);
   };
@@ -1417,6 +1576,14 @@ App.Router = (function(_super) {
     this.band = '';
     this.changeView(new App.Views.IndexPage());
     return document.title = 'Relisten';
+  };
+
+  Router.prototype.realMusic = function() {
+    this.band = '';
+    this.changeView(new App.Views.IndexPage({
+      realMusic: true
+    }));
+    return document.title = 'Real Music | Relisten';
   };
 
   Router.prototype.band = function(band, year, month, day) {
@@ -2684,11 +2851,18 @@ App.Views.IndexPage = (function(_super) {
 
   IndexPage.prototype.template = JST['index'];
 
+  IndexPage.prototype.initialize = function(options) {
+    this.options = options;
+    return IndexPage.__super__.initialize.apply(this, arguments);
+  };
+
   IndexPage.prototype.render = function() {
+    var _ref1, _ref2;
     App.header.render();
     this.$el.html(this.template({
-      bands: App.bands,
-      "default": Notification.permission === "default"
+      bands: ((_ref1 = this.options) != null ? _ref1.realMusic : void 0) ? App.realMusic : App.bands,
+      "default": Notification.permission === "default",
+      realMusic: (_ref2 = this.options) != null ? _ref2.realMusic : void 0
     }));
     if (Notification.permission === "default") {
       return this.$el.find('.enable-notifications')[0].addEventListener('click', function(e) {
