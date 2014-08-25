@@ -286,7 +286,7 @@ loadPhishShow = (artist, small_show, cb) ->
 loadShow = (artist, small_show, cb) ->
   models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
     if pre_existing_show isnt null
-      winston.info "this archive identifier is already in the db"
+      winston.info "this archive identifier is already in the db; checking for every track"
 
     request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
       winston.info "GET " + SINGLE_URL(small_show.identifier)
@@ -367,13 +367,13 @@ loadShow = (artist, small_show, cb) ->
       track_i = 0
       total_duration = 0
       slugs = {}
-      tracks = files.sort().
+      tracks = mp3_tracks.sort().
                 map (v) ->
         file = files[v]
 
-        t = file.title
+        t = file.title || file.original
 
-        total_duration += parseTime file.duration
+        total_duration += parseTime file.length
 
         t = t.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '')
 
@@ -395,7 +395,7 @@ loadShow = (artist, small_show, cb) ->
 
       showCreated = (show, created) ->
         unless created
-          winston.info "this show is already in the db"
+          winston.info "this show is already in the db; ensuring archive_collection tracks are present"
           return cb()
         else
           winston.info "show created! looking for venue"

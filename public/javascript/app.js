@@ -887,6 +887,10 @@ window.App = {
   "Router": {},
   "utils": {},
   "bands": {
+    "akron-family": {
+      "name": "Akron/Family",
+      "shows": 35
+    },
     "animal-collective": {
       "name": "Animal Collective",
       "shows": 23
