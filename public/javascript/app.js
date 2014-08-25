@@ -1924,7 +1924,7 @@ App.Models.Player = (function(_super) {
       volume = this.sound.volume;
       this.sound.destruct();
     }
-    this.set('id', id = App.song.get('_id'));
+    this.set('id', id = App.song.get('id'));
     App.playerView.played.push(id);
     canPlayOgg = soundManager.canPlayMIME('audio/ogg');
     if (!(canPlayOgg && (url = App.song.get('oggUrl')))) {
@@ -1978,7 +1978,7 @@ App.Models.Player = (function(_super) {
     if (title = (_ref1 = App.song) != null ? _ref1.get('title') : void 0) {
       return App.playerView.updateText({
         title: title,
-        album: App.songs.songs.title,
+        album: App.song.get('show_title'),
         length: App.song.get('length')
       });
     }
@@ -3367,7 +3367,8 @@ App.Views.Songs = (function(_super) {
         year: year,
         month: month,
         day: day,
-        showVersion: showVersion
+        showVersion: showVersion,
+        show_title: _this.songs.title
       });
     });
     this.$el.html(this.template({
