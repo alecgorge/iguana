@@ -1,6 +1,9 @@
 # defaults to production
 environment = process.env.NODE_ENV
 
+ui = "iguana"
+# ui = "switz"
+
 if environment is "production"
   require('strong-agent').profile()
   require 'newrelic'
@@ -55,7 +58,13 @@ app.configure ->
 
 app.configure "development", ->
   app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
-  app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
+
+  if ui is "switz"
+    app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
+  else
+    app.use express.static(path.join(__dirname, ".tmp"))
+    app.use express.static(path.join(__dirname, "app"))
+
   app.use express.errorHandler()
 
 app.configure "production", ->
@@ -74,7 +83,7 @@ app.use app.router
 #app.get "/importer/rebuild-weighted-avg", importer.reweigh
 #app.get "/importer/search_data", api.search_data
 
-#app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
+app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
 
 app.get '/api/status', api.status
 
@@ -98,6 +107,8 @@ app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
 app.get '/api/artists/:artist_slug/setlists/on-date/:show_date', api.setlist.on_date
 app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 
+app.get '/', (req, res) -> res.render 'index'
+
 app.get '/configure.js', (req, res) ->
   res.set 'Cache-Control', 'no-cache'
   res.set 'Content-Type', 'text/javascript'
@@ -110,9 +121,9 @@ app.get '/configure.js', (req, res) ->
   json = "window.app_config = " + JSON.stringify(app_config) + ";"
   res.send json + config.googleAnalyticsCode(app_config.google_analytics.id, app_config.google_analytics.domain)
 
-#app.get '/', (req, res) -> res.render 'index'
+app.get '/', (req, res) -> res.render 'index'
 app.get '*', (req, res) ->
-  if environment is "production"
+  if environment is "production" and ui is "switz"
     res.sendfile __dirname + '/public/index.html'
   else
     res.render 'index'

@@ -12,8 +12,8 @@
 		"db": {
 			"host": "localhost",
 			"username": "root",
-			"password": "123",
-			"database": "relisten"
+			"password": "snowman42",
+			"database": "lotusod"
 		}
 	},
 	"site": [

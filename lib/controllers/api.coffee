@@ -41,17 +41,12 @@ exports.status = (req, res) ->
 	res.json success: true
 
 exports.artists = (req, res) ->
-	models.Artist.findAll().error(error(res)).success (artists) ->
-		output = []
-		for artist in artists
-			((artist) ->
-				artist.getSongs().error(error(res)).success (shows) ->
-					output.push
-						slug: artist.slug
-						count: shows.length
-
-					console.log JSON.stringify output
-			)(artist)
+	models.sequelize.query("""SELECT *, (SELECT COUNT(id) FROM Shows WHERE ArtistId = Artists.id) as recording_count
+								FROM Artists
+								""", null, {raw: true})
+					.error(error(res))
+					.success (artists) ->
+						res.json success artists
 
 
 exports.single_artist = (req, res) ->
