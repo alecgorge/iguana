@@ -128,6 +128,10 @@ app.get '*', (req, res) ->
   else
     res.render 'index'
 
+process.on 'uncaughtException', (err) ->
+  console.error "Got uncaught exception"
+  console.error err
+
 # Start server
 console.log "Attempting to listen on port %d", (process.env.PORT or 9000)
 port = process.env.PORT or 9000
