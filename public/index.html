@@ -1,32 +1,121 @@
 <!DOCTYPE html>
-<script>var urchinTracker=function(){},_gaq={push:function(){try {if(arguments[0][0]=='_link')window.location.href=arguments[0][1]}catch(er){}}},_gat={_createTracker:function(){}, _getTracker:function(){return{__noSuchMethod__:function(){},_link:function(o){if(o)location.href=o;},_linkByPost:function(){return true;},_getLinkerUrl:function(o){return o;},_trackEvent:function(){}}}};</script><head><link href="/css/index.css" rel="stylesheet"><meta charset="utf-8"><link rel="shortcut icon" href="/favicon.ico"><title>Relisten</title><style type="text/css"></style></head><body cz-shortcut-listen="true"><header id="header-container" class="header-container">
-</header><div class="container-fluid outer-container"><div id="page-container" class="page-container" style="height: 721px; overflow: auto; display: block;"></div></div>
-  <footer>
-    <div class="queue-container"></div>
-    <div class="player-container"></div>
-    <div class="progress-container">
-      <div class="progress-bar"></div>
-      <div class="position-bar"></div>
-    </div>
-    <div class="buttons">
-      <div class="bar bar-left">
-        <div class="last"></div>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7">
+<![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8">
+<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<html ng-app="percival" class="no-js">
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{title}} – {{$root.config.name}}</title>
+    <meta name="description" content="">
+    <meta name="fragment" content="!">
+    <base href="/">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory-->
+    <link rel="stylesheet" href="styles/973611cc.bootstrap.css">
+    <link rel="stylesheet" href="styles/d41d8cd9.main.css">
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+    <p class="browsehappy">
+      You are using an <strong>outdated</strong> browser.
+      Please <a href="http://browsehappy.com/">upgrade your browser</a>
+      to improve your experience.
+    </p>
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+    <div id="topbar">
+      <div class="container">
+        <nav class="navbar navbar-default">
+          <div ng-controller="player" id="player_controller" class="row">
+            <div class="col-xs-3">
+              <div class="navbar-header">
+                <div class="navbar-brand">
+                  <h2><a href="#!/">{{$root.config.name}}</a></h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="center-player">
+                <div ng-show="show" class="song-info">
+                  <div class="song-name">{{show.tracks[audioPlayer.currentTrack - 1].title}}</div>
+                  <div class="song-album"><a href="#!/years/{{show.year}}/shows/{{show.display_date}}">{{show.display_date | formatDate: "MM-DD-YYYY"}}</a> — <a href="#!/venues/{{show.venue.id}}">{{show.venue.name}}, {{show.venue.city}}</a></div>
+                </div>
+                <div ng-show="show" class="progress-wrapper"><span class="elapsed">{{ audioPlayer.formatTime }}</span><span class="duration">{{ audioPlayer.formatDuration }}</span>
+                  <div class="progress">
+                    <div role="progressbar" aria-valuemin="0" aria-valuemax="0" ng-style="{ width: audioPlayer.currentTime*100/audioPlayer.duration + '%' }" class="progress-bar"></div><span id="playhead" class="playhead"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <audio player-control="audioPlayer" playlist="audioPlaylist" audio-player=""></audio>
+              <div ng-show="show" class="center-player-controls">
+                <div ng-click="audioPlayer.prev()" class="btn"><span class="glyphicon glyphicon-backward"></span></div>
+                <div ng-click="audioPlayer.playPause()" class="btn"><span ng-class="{ 'glyphicon-pause': audioPlayer.playing, 'glyphicon-play': !audioPlayer.playing }" class="glyphicon"></span></div>
+                <div ng-click="audioPlayer.next()" class="btn"><span class="glyphicon glyphicon-forward"></span></div>
+              </div>
+            </div>
+          </div>
+        </nav>
+        <div class="row">
+          <div class="col-xs-12">
+            <div ng-controller="search" class="pull-right col-xs-4">
+              <form role="form" ng-submit="search()" class="form-inline">
+                <div class="form-group">
+                  <label for="q" class="sr-only">Search</label>
+                  <div class="input-group">
+                    <input type="search" id="search" ng-model="q" value="{{q}}" placeholder="Search..." class="form-control"><span class="input-group-addon"><a href="#" class="glyphicon glyphicon-search"></a></span>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-default sr-only">Search</button>
+              </form>
+            </div>
+            <ul class="nav nav-tabs">
+              <li ng-class="{active: $root.isActive('/')}"><a href="#!/">Years</a></li>
+              <li ng-class="{active: $root.isActive('/venues')}"><a href="#!/venues">Venues</a></li>
+              <li ng-class="{active: $root.isActive('/about')}"><a href="#!/about">About</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="pause"></div>
-      <div class="bar bar-right">
-        <div class="next"></div>
+    </div>
+    <!-- Add your site or application content here -->
+    <div ng-view="" class="container">
+      <!-- - nope-->
+    </div>
+    <div id="loadingWidget" loading-widget="">
+      <div class="loadingContent">
+        <p><img alt="Loading Content" src="images/running-dog.gif">Fetching...</p>
       </div>
     </div>
-  </footer>
-<ul id="notifications"></ul><script async="" src="//www.google-analytics.com/analytics.js"></script><script type="text/javascript">// bootstrap user and csrf objects
-var user = {}
-, csrf = "";</script><script type="text/javascript" src="/javascript/vendor.js"></script><script type="text/javascript" src="/javascript/app.js"></script><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-54000407-1', 'auto');
-  ga('send', 'pageview');
-
-</script></body></html>
+    <footer>
+      <div class="container">
+        <div class="row-xs-12 well">
+          <p>Site by Alec Gorge. Music streamed from archive.org. <a href="#!/about">More info</a>.</p>
+        </div>
+      </div>
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="bower_components/jquery/jquery.min.js"><\/script>')</script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.js"></script>
+    <script>
+      if(!window.angular) {
+       document.write('<script src="bower_components/angular/angular.min.js"><\/script>')
+       document.write('<script src="bower_components/angular-route/angular-route.min.js"><\/script>')
+      }
+      
+    </script>
+    <script src="configure.js"></script>
+    <script src="scripts/47ac415b.deps.js"></script>
+    <script src="scripts/d41d8cd9.scripts.js"></script>
+  </body>
+</html>
