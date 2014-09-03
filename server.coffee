@@ -1,7 +1,3 @@
-process.on 'uncaughtException', (err) ->
-  console.log "Got uncaught exception"
-  console.log err
-
 # defaults to production
 environment = process.env.NODE_ENV
 
