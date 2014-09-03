@@ -157,7 +157,10 @@ cache_year_stats = (done) ->
             AVG(Shows.duration), AVG(NULLIF(Shows.average_rating, 0)), NOW(), NOW()
         FROM Shows
         GROUP BY ArtistId, year
-      """).error(done).success(done)
+      """).error(done).success () ->
+      models.sequelize.query("""
+        UPDATE Years SET avg_rating = 0 WHERE avg_rating IS NULL
+        """).error(done).success(done)
 
 loadPhishShow = (artist, small_show, cb) ->
   small_show.identifier = 'phish-' + small_show.id
