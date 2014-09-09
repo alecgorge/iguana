@@ -1,0 +1,29 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1>Shows at {{venue.name}} <small>{{venue.city}}</small></h1>
+    <ol class="breadcrumb">
+      <li><a href="#!/">{{$root.config.artist_name}}</a></li>
+      <li><a href="#!/venues">Venues</a></li>
+      <li class="active">{{venue.name}}</li>
+    </ol>
+    <table class="table table-striped table-hover sortable">
+      <thead>
+        <th data-defaultsort="asc">Date</th>
+        <th>Tracks</th>
+        <th>Duration</th>
+        <th>Avg. Rating</th>
+        <th>Reviews</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="show in venue.shows">
+          <td data-value="{{show.date}}" class="nopadding"><a href="#!/years/{{show.year}}/shows/{{show.display_date}}" class="block">{{show.display_date}}</a></td>
+          <td data-value="{{show.track_count}}">{{show.track_count}}</td>
+          <td data-value="{{show.duration}}">{{show.duration | humanizeTime:true}}</td>
+          <td data-value="{{show.average_rating}}">{{show.average_rating}}</td>
+          <td data-value="{{show.reviews_count}}">{{show.reviews_count}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

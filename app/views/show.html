@@ -1,0 +1,79 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{current_show.display_date}} <small>{{current_show.duration | humanizeTime:true}} at <a href="#!/venues/{{current_show.venue.id}}">{{current_show.venue.name}}, {{current_show.venue.city}}</a></small></h1>
+    <ol class="breadcrumb">
+      <li><a href="#!/">{{$root.config.artist_name}}</a></li>
+      <li><a href="#!/years/{{current_show.year}}">{{current_show.year}}</a></li>
+      <li class="active">{{current_show.display_date}} </li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-4">
+    <div class="block">
+      <h3 style="margin-top:0">{{shows.length}} Source(s)</h3>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active dropdown"><a data-toggle="dropdown" data-target="#" href="javascript:;"><span class="badge pull-right">{{current_show.average_rating | round:2}}/5.00 ({{current_show.reviews_count}})</span><small> <strong>{{current_show.duration | humanizeTime:true}}</strong> &mdash; {{current_show.source}}</small></a>
+          <ul role="menu" class="dropdown-menu">
+            <li ng-repeat="show in shows" ng-class="{disabled: show.id==current_show.id}"><a href="#!/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}" ng-click="changeSource($event, $index)" class="no-follow"><span class="badge pull-right">{{show.average_rating | round:2}}/5.00 ({{show.reviews_count}})</span><small> <strong>{{show.duration | humanizeTime:true}}</strong> &mdash; {{show.source}}</small></a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><br/>
+    <div ng-show="current_show.description != ''" class="block">
+      <div class="well current_show-description">
+        <p ng-bind-html="current_show.description | nl2br"></p>
+      </div>
+    </div>
+    <div ng-show="current_show.source != ''" class="block">
+      <h3>Source</h3>
+      <p>{{current_show.source}}</p>
+    </div>
+    <div ng-show="current_show.lineage != ''" class="block">
+      <h3>Lineage</h3>
+      <p>{{current_show.lineage}}</p>
+    </div>
+    <div ng-show="current_show.taper != ''" class="block">
+      <h3>Taper</h3>
+      <p>{{current_show.taper}}</p>
+    </div>
+    <div ng-show="current_show.archive_identifier != ''" class="block">
+      <h3>Links</h3>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="https://archive.org/details/{{current_show.archive_identifier}}">Complete show details on archive.org</a></li>
+        <li><a href="https://archive.org/download/{{current_show.archive_identifier}}/{{current_show.archive_identifier}}_vbr_mp3.zip">VBR MP3 ZIP (via archive.org)</a></li>
+        <li><a href="https://archive.org/details/{{current_show.archive_identifier}}/{{current_show.archive_identifier}}_vbr.m3u">VBR MP3 M3U Stream (via archive.org)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-xs-8">
+    <table class="table table-striped table-hover sortable">
+      <thead>
+        <th data-defaultsort="asc">#</th>
+        <th>Title</th>
+        <th>Length</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="track in current_show.tracks">
+          <td data-value="{{track.track}}">{{track.track}}</td>
+          <td data-value="{{track.title}}" class="nopadding"><a href="#!/years/{{current_show.year}}/shows/{{current_show.display_date}}/sources/{{current_show.id}}/tracks/{{track.id}}/{{track.slug}}" ng-click="playTrack($event, $index)" class="no-follow block">{{track.title}}</a></td>
+          <td data-value="{{track.length}}">{{track.length | humanizeTime:true}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div ng-show="current_show.reviews.length != 0" class="review-container">
+      <h3>Reviews</h3>
+      <p class="lead">{{current_show.average_rating | round:2}} ({{current_show.reviews_count}} reviews)</p>
+      <ul class="reviews">
+        <li ng-repeat="review in current_show.reviews">
+          <h4>{{review.reviewtitle}}<small>{{review.reviewdate}}</small></h4>
+          <p>Rated {{review.stars}}/5 stars by 
+            <cite>{{review.reviewer}}</cite>
+          </p>
+          <blockquote ng-bind-html="review.reviewbody | nl2br"></blockquote>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

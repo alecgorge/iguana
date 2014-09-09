@@ -1,0 +1,74 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1>Searching for “{{search_term}}” <small>{{results.tracks.length + results.shows.length + results.venues.length}}</small></h1>
+    <ol class="breadcrumb">
+      <li><a href="#!/">{{$root.config.artist_name}}</a></li>
+      <li class="active">“{{search_term}}”</li>
+    </ol>
+    <div ng-show="results.tracks.length + results.shows.length + results.venues.length == 0" class="block">
+      <h2>No results</h2>
+    </div>
+    <div ng-show="results.shows.length &gt; 0" class="block">
+      <h2>Shows <small>{{results.shows.length}}</small></h2>
+      <table class="table table-striped table-hover sortable">
+        <thead>
+          <th data-defaultsort="asc">Date</th>
+          <th>Tracks</th>
+          <th>Duration</th>
+          <th>Avg. Rating</th>
+          <th>Reviews</th>
+          <th>SBD</th>
+          <th>Venue</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="show in results.shows">
+            <td data-value="{{show.date}}" class="nopadding min-width-160"><a href="#!/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}" class="block">{{show.display_date}}</a></td>
+            <td data-value="{{show.track_count}}">{{show.track_count}}</td>
+            <td data-value="{{show.duration}}">{{show.duration | humanizeTime:true}}</td>
+            <td data-value="{{show.average_rating}}">{{show.average_rating}}</td>
+            <td data-value="{{show.reviews_count}}">{{show.reviews_count}}</td>
+            <td data-value="{{show.is_soundboard}}">{{show.is_soundboard | humanizeBoolean}}</td>
+            <td data-value="{{show.venue_name}}" class="nopadding"><a href="#!/venues/{{show.VenueId}}" class="block">{{show.venue_name}}, {{show.venue_city}}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-show="results.tracks.length &gt; 0" class="block">
+      <h2>Tracks <small>{{results.tracks.length}}</small></h2>
+      <table class="table table-striped table-hover sortable">
+        <thead>
+          <th>#</th>
+          <th>Title</th>
+          <th>Show</th>
+          <th>Length</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="track in results.tracks">
+            <td data-value="{{track.track}}">{{track.track}}</td>
+            <td data-value="{{track.title}}" class="nopadding"><a href="#!/years/{{track.year}}/shows/{{track.display_date}}/sources/{{show.id}}/tracks/{{track.id}}/{{track.slug}}" class="block">{{track.title}}</a></td>
+            <td data-value="{{track.date}}" class="nopadding"><a href="#!/years/{{track.year}}/shows/{{track.display_date}}/sources/{{show.id}}" class="block">{{track.display_date}}</a></td>
+            <td data-value="{{track.length}}">{{track.length | humanizeTime:true}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-show="results.venues.length &gt; 0" class="block">
+      <h2>Venues <small>{{results.venues.length}}</small></h2>
+      <table class="table table-striped table-hover sortable">
+        <thead>
+          <th>Name</th>
+          <th>City</th>
+          <th>Show Count</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="venue in results.venues">
+            <td data-value="{{venue.name}}" class="nopadding"><a href="#!/venues/{{venue.id}}" class="block">{{venue.name}}</a></td>
+            <td data-value="{{venue.city}}">{{venue.city}}</td>
+            <td data-value="{{venue.show_count}}">{{venue.show_count}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{years.length}} Years of {{$root.config.artist_name}}</h1>
+    <ol class="breadcrumb">
+      <li class="active">{{$root.config.artist_name}}</li>
+    </ol>
+    <table class="table table-striped table-hover sortable">
+      <thead>
+        <th data-defaultsort="asc">Year</th>
+        <th>Shows</th>
+        <th>Sources</th>
+        <th>Duration</th>
+        <th>Avg. Duration</th>
+        <th>Avg. Rating</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="year in years">
+          <td data-value="{{year.year}}" class="nopadding"><a href="#!/years/{{year.year}}" class="block">{{year.year}}</a></td>
+          <td>{{year.show_count}}</td>
+          <td>{{year.recording_count}}</td>
+          <td data-value="{{year.duration}}">{{year.duration | formatSeconds:'hours' | round:2}} hours</td>
+          <td data-value="{{year.avg_duration}}">{{year.avg_duration | formatSeconds:'hours' | round:2}} hours</td>
+          <td data-value="{{year.avg_rating}}">{{year.avg_rating | round:2}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-xs-12">
+    <h1>{{$root.config.artist_name}}'s Top Rated Shows</h1>
+    <table class="table table-striped table-hover sortable">
+      <thead>
+        <th data-defaultsort="asc">Date</th>
+        <th>Tracks</th>
+        <th>Duration</th>
+        <th>Avg. Rating</th>
+        <th>Reviews</th>
+        <th>SBD</th>
+        <th>Venue</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="show in top_shows">
+          <td data-value="{{show.date}}" class="nopadding min-width-160"><a href="#!/years/{{show.year}}/shows/{{show.display_date}}/sources/{{show.id}}" class="block">{{show.display_date}}</a></td>
+          <td data-value="{{show.track_count}}">{{show.track_count}}</td>
+          <td data-value="{{show.duration}}">{{show.duration | humanizeTime:true}}</td>
+          <td data-value="{{show.average_rating}}">{{show.average_rating}}</td>
+          <td data-value="{{show.reviews_count}}">{{show.reviews_count}}</td>
+          <td data-value="{{show.is_soundboard}}">{{show.is_soundboard | humanizeBoolean}}</td>
+          <td data-value="{{show.venue_name}}" class="nopadding"><a href="#!/venues/{{show.VenueId}}" class="block">{{show.venue_name}}, {{show.venue_city}}</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

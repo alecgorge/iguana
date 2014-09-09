@@ -1,0 +1,57 @@
+
+<div id="topbar">
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <div ng-controller="player" id="player_controller" class="row">
+        <div class="col-xs-3">
+          <div class="navbar-header">
+            <div class="navbar-brand">
+              <h2><a href="#!/">{{$root.config.name}}</a></h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="center-player">
+            <div ng-show="show" class="song-info">
+              <div class="song-name">{{show.tracks[audioPlayer.currentTrack - 1].title}}</div>
+              <div class="song-album"><a href="#!/years/{{show.year}}/shows/{{show.display_date}}">{{show.display_date | formatDate: "MM-DD-YYYY"}}</a> — <a href="#!/venues/{{show.venue.id}}">{{show.venue.name}}, {{show.venue.city}}</a></div>
+            </div>
+            <div ng-show="show" class="progress-wrapper"><span class="elapsed">{{ audioPlayer.formatTime }}</span><span class="duration">{{ audioPlayer.formatDuration }}</span>
+              <div class="progress">
+                <div role="progressbar" aria-valuemin="0" aria-valuemax="0" ng-style="{ width: audioPlayer.currentTime*100/audioPlayer.duration + '%' }" class="progress-bar"></div><span id="playhead" class="playhead"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <audio player-control="audioPlayer" playlist="audioPlaylist" audio-player="audio-player"></audio>
+          <div ng-show="show" class="center-player-controls">
+            <div ng-click="audioPlayer.prev()" class="btn"><span class="glyphicon glyphicon-backward"></span></div>
+            <div ng-click="audioPlayer.playPause()" class="btn"><span ng-class="{ 'glyphicon-pause': audioPlayer.playing, 'glyphicon-play': !audioPlayer.playing }" class="glyphicon"></span></div>
+            <div ng-click="audioPlayer.next()" class="btn"><span class="glyphicon glyphicon-forward"></span></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="row">
+      <div class="col-xs-12">
+        <div ng-controller="search" class="pull-right col-xs-4">
+          <form role="form" ng-submit="search()" class="form-inline">
+            <div class="form-group">
+              <label for="q" class="sr-only">Search</label>
+              <div class="input-group">
+                <input type="search" id="search" ng-model="q" value="{{q}}" placeholder="Search..." class="form-control"/><span class="input-group-addon"><a href="#" class="glyphicon glyphicon-search"></a></span>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-default sr-only">Search</button>
+          </form>
+        </div>
+        <ul class="nav nav-tabs">
+          <li ng-class="{active: $root.isActive('/')}"><a href="#!/">Years</a></li>
+          <li ng-class="{active: $root.isActive('/venues')}"><a href="#!/venues">Venues</a></li>
+          <li ng-class="{active: $root.isActive('/about')}"><a href="#!/about">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
