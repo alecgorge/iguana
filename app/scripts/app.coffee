@@ -1,7 +1,6 @@
 'use strict'
 
 app = angular.module('percival', [
-  'ngSanitize',
   'ngRoute',
   'audioPlayer',
   'angulartics',
