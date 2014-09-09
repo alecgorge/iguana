@@ -88,6 +88,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "start": "touch .nginx && grunt server:dist"
+    "start": "touch .nginx && cd app && bower install && cd .. && grunt server:dist"
   }
 }
