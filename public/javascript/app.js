@@ -1199,7 +1199,7 @@ window.App = {
     },
     "umphreys": {
       "name": "Umphrey's McGee",
-      "shows": 696
+      "shows": 2024
     },
     "the-walkmen": {
       "name": "The Walkmen",
@@ -1370,6 +1370,10 @@ window.App = {
     "ween": {
       "name": "Ween",
       "shows": 447
+    },
+    "white-denim": {
+      "name": "White Denim",
+      "shows": 24
     }
   },
   "root": "http://relisten.net"

@@ -46,6 +46,8 @@ refreshData = (artist, done) ->
     winston.info 'got search results'
     shows = body['response']['docs']
 
+    winston.info artist.slug, shows.length, 'tapes'
+
     async.mapLimit shows, 1, (small_show, cb) ->
       winston.info "requesting #{small_show.date}"
       loadShow artist, small_show, cb
@@ -286,7 +288,8 @@ loadPhishShow = (artist, small_show, cb) ->
 loadShow = (artist, small_show, cb) ->
   models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
     if pre_existing_show isnt null
-      winston.info "this archive identifier is already in the db; checking for every track"
+      winston.info "this archive identifier is already in the db"
+      return cb()
 
     request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
       winston.info "GET " + SINGLE_URL(small_show.identifier)
@@ -313,7 +316,7 @@ loadShow = (artist, small_show, cb) ->
 
                   return true
 
-      winston.info "mp3 track count: #{mp3_tracks.length}"
+      #winston.info "mp3 track count: #{mp3_tracks.length}"
 
       return cb() if mp3_tracks.length is 0
 
