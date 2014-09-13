@@ -1199,7 +1199,7 @@ window.App = {
     },
     "umphreys": {
       "name": "Umphrey's McGee",
-      "shows": 2024
+      "shows": "2,024"
     },
     "the-walkmen": {
       "name": "The Walkmen",
