@@ -1126,7 +1126,7 @@ window.App = {
     "phish": {
       "name": "Phish",
       "the": true,
-      "shows": "1,417"
+      "shows": "1,420"
     },
     "radiators": {
       "name": "The Radiators",
@@ -1216,6 +1216,10 @@ window.App = {
     "ween": {
       "name": "Ween",
       "shows": 447
+    },
+    "white-denim": {
+      "name": "White Denim",
+      "shows": 24
     },
     "yonder": {
       "name": "Yonder Mountain String Band",
