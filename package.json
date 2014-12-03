@@ -5,7 +5,7 @@
     "asset-rack": "alecgorge/asset-rack",
     "async": "~0.2.9",
     "bower": "*",
-    "coffee-script": "~1.6.3",
+    "coffee-script": "^1.8.0",
     "connect-assets": "~2.5.3",
     "express": "~3.4.7",
     "grunt": "~0.4.1",
@@ -83,6 +83,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "start": "touch .nginx && grunt server:dist"
+    "start": "node server.js"
   }
 }
