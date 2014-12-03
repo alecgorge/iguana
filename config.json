@@ -2,10 +2,10 @@
 	"env": "production",
 	"production": {
 		"db": {
-			"host": "localhost",
-			"username": "admin",
-			"password": "JDyZXYrPIJJIKfUM",
-			"database": "db"
+			"host": "mariadb",
+			"username": "relisten",
+			"password": "lniCrwig57xrCUDs",
+			"database": "relisten"
 		}
 	},
 	"development": {
