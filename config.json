@@ -2,9 +2,9 @@
 	"env": "production",
 	"production": {
 		"db": {
-			"host": "172.17.0.32",
+			"host": "localhost",
 			"username": "admin",
-			"password": "bAKFgzgEGzOdNW5U",
+			"password": "JDyZXYrPIJJIKfUM",
 			"database": "db"
 		}
 	},
