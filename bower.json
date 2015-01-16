@@ -6,7 +6,6 @@
     "angular-route": "~1.2.3",
     "json3": "~3.2.4",
     "jquery": "~1.10.2",
-    "bootstrap-sass": "~2.3.1",
     "bootstrap": "~3.0.0",
     "es5-shim": "~2.0.8",
     "angular-resource": "~1.2.0",

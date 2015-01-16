@@ -2,10 +2,10 @@
 	"env": "production",
 	"production": {
 		"db": {
-			"host": "172.17.0.7",
-			"username": "admin",
-			"password": "nCo5Or9Jgch127IN",
-			"database": "db"
+			"host": "mariadb",
+			"username": "iguana",
+			"password": "fj7hUCtYw662vSzk",
+			"database": "database"
 		}
 	},
 	"development": {
