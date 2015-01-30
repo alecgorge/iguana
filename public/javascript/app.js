@@ -3,7 +3,7 @@ this["JST"] = this["JST"] || {};
 this["JST"]["about"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+
 
 
   return "<p>\n  Welcome to yet another internet experiment.\n</p>\n\n<br>\n\n<p class=big>\n  For any comments, suggestions, or data errors please email <a href=\"mailto:admin@relisten.net\">admin@relisten.net</a>.\n</p>\n\n<br>\n\n<p class=big>\n  Peruse the various bands and enjoy their extensive live catalogues.\n</p>\n\n<br>\n\n<p>\n  This site is powered by Archive.org and Alec Gorge's <a href=\"https://github.com/alecgorge/iguana\" target=\"_blank\">Iguana</a>. The Phish collection is hosted and provided by <a href=\"http://phish.in\" target=\"_blank\">Phish.in</a>.\n</p>\n\n<br>\n\n<p>\n  If you'd like to donate, all of the proceeds will go towards the running of this site and others like it. Any extra funds will be donated to Archive.org and The Mockingbird Foundation.\n</p>\n\n<br>\n\n<p>\n<center>\n<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_blank\">\n<input type=\"hidden\" name=\"cmd\" value=\"_s-xclick\">\n<input type=\"hidden\" name=\"encrypted\" value=\"-----BEGIN PKCS7-----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-----END PKCS7-----\n\">\n<input type=\"image\" src=\"https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif\" border=\"0\" name=\"submit\" alt=\"PayPal - The safer, easier way to pay online!\">\n<img alt=\"\" border=\"0\" src=\"https://www.paypalobjects.com/en_US/i/scr/pixel.gif\" width=\"1\" height=\"1\">\n</form>\n</center>\n</p>\n\n<p><center>Bitcoin: 1FQRjYy5hqzeDD5DWThGNzfyy1E2PoNdMC</center></p>\n\n<br>\n<br>\n\n<p>\n  This site complies with Archive.org's <a href=\"https://archive.org/post/261115/hotlinking-allowed\">policy</a>.\n</p>\n\n<p>\n  <i>\n    The Grateful Dead and our managing organizations have long encouraged the purely non-commercial exchange of music taped at our concerts and those of our individual members. That a new medium of distribution has arisen - digital audio files being traded over the Internet - does not change our policy in this regard. Our stipulations regarding digital distribution are merely extensions of those long-standing principles and they are as follow:\n</i>\n</p>\n\n<p>\n  <i>\n    No commercial gain may be sought by websites offering digital files of our music, whether through advertising, exploiting databases compiled from their traffic, or any other means.\n    All participants in such digital exchange acknowledge and respect the copyrights of the performers, writers and publishers of the music.\n  </i>\n</p>\n<p>\n  <i>\n    This notice should be clearly posted on all sites engaged in this activity.\n    We reserve the ability to withdraw our sanction of non-commercial digital music should circumstances arise that compromise our ability to protect and steward the integrity of our work.\n</i>\n</p>\n";
@@ -12,7 +12,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["JST"]["footer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+
 
 
   return "<div class=progress-bar></div>\n<div class=position-bar></div>\n";
@@ -24,19 +24,19 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
-  
-  
+
+
   return " ";
   }
 
 function program3(depth0,data) {
-  
-  
+
+
   return "...";
   }
 
 function program5(depth0,data) {
-  
+
   var buffer = "", stack1, stack2, options;
   buffer += "\n      <a class=\"band\" href=\"/";
   if (stack1 = helpers.slug) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -56,14 +56,14 @@ function program5(depth0,data) {
   return buffer;
   }
 function program6(depth0,data) {
-  
-  
+
+
   return "the ";
   }
 
 function program8(depth0,data) {
-  
-  
+
+
   return "(Powered by phish.in)";
   }
 
@@ -80,7 +80,7 @@ function program8(depth0,data) {
 this["JST"]["home"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+
 
 
   return "<div class=row-fluid>\n  <div class=\"span4 years-container\">\n  </div>\n\n  <div class=\"span4 shows-container\">\n  </div>\n\n  <div class=\"span4 songs-container\">\n  </div>\n</div>";
@@ -92,13 +92,13 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-  
-  
+
+
   return "\n   ";
   }
 
 function program3(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "\n   <thead>\n    <tr>\n      <th><a href=\"/grateful-dead\">Grateful Dead</a></th>\n      <td>"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = depth0.bands),stack1 == null || stack1 === false ? stack1 : stack1['grateful-dead'])),stack1 == null || stack1 === false ? stack1 : stack1.shows)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -109,7 +109,7 @@ function program3(depth0,data) {
   }
 
 function program5(depth0,data) {
-  
+
   var buffer = "", stack1, stack2;
   buffer += "\n   <tbody>\n      <tr>\n        <th>\n          <a href=\"/"
     + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.key)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -126,8 +126,8 @@ function program5(depth0,data) {
   }
 
 function program7(depth0,data) {
-  
-  
+
+
   return "<button class=enable-notifications>ENABLE NOTIFICATIONS</button>";
   }
 
@@ -164,7 +164,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "<img src=";
   if (stack1 = helpers.img) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -192,7 +192,7 @@ function program1(depth0,data) {
 this["JST"]["player"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+
 
 
   return "<div class=player>\n  <div class=info>\n    <h3 class=title></h3>\n    <h4 class=album></h4>\n    <div class=time>\n      <div class=seconds>00:00</div>/<div class=total>00:00</div>\n    </div>\n  </div>\n  <div class=volume-container>\n    <div class=volume></div>\n  </div>\n</div>\n";
@@ -204,7 +204,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "<a href=/playlist/"
     + escapeExpression(((stack1 = ((stack1 = depth0.playlist),stack1 == null || stack1 === false ? stack1 : stack1._id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -213,7 +213,7 @@ function program1(depth0,data) {
   }
 
 function program3(depth0,data,depth1) {
-  
+
   var buffer = "", stack1, stack2, options;
   buffer += "\n    <tr>\n      <td><p>";
   options = {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data};
@@ -253,7 +253,7 @@ function program3(depth0,data,depth1) {
   return buffer;
   }
 function program4(depth0,data) {
-  
+
   var buffer = "";
   return buffer;
   }
@@ -279,7 +279,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, self=this, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression;
 
 function program1(depth0,data,depth1) {
-  
+
   var buffer = "", stack1, stack2, options;
   buffer += "\n      <tr>\n        <td><textarea name=blurb[text]>";
   options = {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data};
@@ -317,7 +317,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 function program2(depth0,data) {
-  
+
   var buffer = "";
   return buffer;
   }
@@ -339,7 +339,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data) {
-  
+
   var buffer = "", stack1, options;
   buffer += "\n    <li><a href=\"/playlist/";
   if (stack1 = helpers._id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -369,7 +369,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
-  
+
   var buffer = "", stack1, stack2, options;
   buffer += "\n    <li class=\"";
   if (stack1 = helpers.active) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -444,14 +444,14 @@ function program1(depth0,data) {
   return buffer;
   }
 function program2(depth0,data) {
-  
-  
+
+
   return "-";
   }
 
 function program4(depth0,data) {
-  
-  
+
+
   return "\n  <button class=save>Save Queue</button>\n";
   }
 
@@ -485,7 +485,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data,depth1) {
-  
+
   var buffer = "", stack1, stack2, options;
   buffer += "\n  <li>\n    <a class=\"show-";
   if (stack1 = helpers.year) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -543,7 +543,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "\n    <li class=\"current-source select-source\">\n      ";
   stack1 = helpers['if'].call(depth0, depth0.taper, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
@@ -567,7 +567,7 @@ function program1(depth0,data) {
   return buffer;
   }
 function program2(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "<p><span class=\"field\">Taper:</span> ";
   if (stack1 = helpers.taper) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -578,7 +578,7 @@ function program2(depth0,data) {
   }
 
 function program4(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "<p><span class=\"field\">Transferer:</span> ";
   if (stack1 = helpers.transferer) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -589,7 +589,7 @@ function program4(depth0,data) {
   }
 
 function program6(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "<p><span class=\"field\">Source:</span> ";
   if (stack1 = helpers.source) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -600,7 +600,7 @@ function program6(depth0,data) {
   }
 
 function program8(depth0,data) {
-  
+
   var buffer = "", stack1;
   stack1 = helpers['if'].call(depth0, depth0.is_soundboard, {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -608,13 +608,13 @@ function program8(depth0,data) {
   return buffer;
   }
 function program9(depth0,data) {
-  
-  
+
+
   return "<p><span class=\"field\">Source:</span> Soundboard</p>";
   }
 
 function program11(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "<p><span class=\"field\">Lineage:</span> ";
   if (stack1 = helpers.lineage) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -625,7 +625,7 @@ function program11(depth0,data) {
   }
 
 function program13(depth0,data) {
-  
+
   var buffer = "", stack1, options;
   buffer += "<p title=\"";
   options = {hash:{},data:data};
@@ -635,7 +635,7 @@ function program13(depth0,data) {
   }
 
 function program15(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "\n        <p><span class=\"field\">Rating:</span> ";
   if (stack1 = helpers.average_rating) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -650,7 +650,7 @@ function program15(depth0,data) {
   }
 
 function program17(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "\n    <li class=\"select-source multiple-sources\">Select another source <span class=total-sources>(";
   if (stack1 = helpers.totalSources) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -663,7 +663,7 @@ function program17(depth0,data) {
   return buffer;
   }
 function program18(depth0,data,depth1) {
-  
+
   var buffer = "", stack1;
   buffer += "\n      ";
   stack1 = helpers['if'].call(depth0, depth0.hidden, {hash:{},inverse:self.programWithDepth(21, program21, data, depth1),fn:self.program(19, program19, data),data:data});
@@ -672,13 +672,13 @@ function program18(depth0,data,depth1) {
   return buffer;
   }
 function program19(depth0,data) {
-  
-  
+
+
   return "\n      ";
   }
 
 function program21(depth0,data,depth2) {
-  
+
   var buffer = "", stack1, stack2;
   buffer += "\n        <li class=source>\n          <a href=/"
     + escapeExpression(((stack1 = depth2.band),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -712,7 +712,7 @@ function program21(depth0,data,depth2) {
   return buffer;
   }
 function program22(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "-"
     + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
@@ -720,7 +720,7 @@ function program22(depth0,data) {
   }
 
 function program24(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "<p><span class=\"field\">Source:</span> ";
   if (stack1 = helpers.source) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -731,7 +731,7 @@ function program24(depth0,data) {
   }
 
 function program26(depth0,data) {
-  
+
   var buffer = "", stack1;
   stack1 = helpers['if'].call(depth0, depth0.is_soundboard, {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -740,7 +740,7 @@ function program26(depth0,data) {
   }
 
 function program28(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "\n              <p><span class=\"field\">Rating:</span> ";
   if (stack1 = helpers.average_rating) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -755,7 +755,7 @@ function program28(depth0,data) {
   }
 
 function program30(depth0,data,depth1) {
-  
+
   var buffer = "", stack1, stack2, options;
   buffer += "\n    <li data-idx="
     + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.index)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -804,13 +804,13 @@ function program30(depth0,data,depth1) {
   return buffer;
   }
 function program31(depth0,data) {
-  
-  
+
+
   return "-";
   }
 
 function program33(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "\n    <li><a class=archive href=\"http://phish.net/setlists/?d="
     + escapeExpression(((stack1 = ((stack1 = depth0.songs),stack1 == null || stack1 === false ? stack1 : stack1.display_date)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -821,7 +821,7 @@ function program33(depth0,data) {
   }
 
 function program35(depth0,data) {
-  
+
   var buffer = "", stack1;
   buffer += "\n    <li><a class=archive href=\"https://archive.org/details/"
     + escapeExpression(((stack1 = ((stack1 = depth0.songs),stack1 == null || stack1 === false ? stack1 : stack1.archive_identifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -860,7 +860,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data,depth1) {
-  
+
   var buffer = "", stack1, stack2;
   buffer += "\n  <li>\n    <a href=\"/"
     + escapeExpression(((stack1 = depth1.band),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1376,7 +1376,7 @@ window.App = {
       "shows": 24
     }
   },
-  "root": "http://relisten.net"
+  "root": "http://localhost:9000"
 };
 
 $(function() {

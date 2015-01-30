@@ -1,4 +1,3 @@
-
 models 		= require '../models'
 winston 	= require 'winston'
 async 		= require 'async'

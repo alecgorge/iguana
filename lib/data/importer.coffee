@@ -166,6 +166,7 @@ loadPhishShow = (artist, small_show, cb) ->
   models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
     if pre_existing_show isnt null
       winston.info "this archive identifier is already in the db"
+      return cb()
 
     request PHISH_URL(small_show.date), (err, httpres, body) ->
 
@@ -356,10 +357,10 @@ loadShow = (artist, small_show, cb) ->
         reviews_count     : if body.reviews then body.reviews.info.num_reviews else 0
         average_rating    : if body.reviews then body.reviews.info.avg_rating else 0.0
 
-      showProps.is_soundboard = showProps.archive_identifier.toString().toLowerCase().indexOf('sbd') isnt -1 or
-                    showProps.title.toString().toLowerCase().indexOf('sbd') isnt -1 or
-                    showProps.source.toString().toLowerCase().indexOf('sbd') isnt -1 or
-                    showProps.lineage.toString().toLowerCase().indexOf('sbd') isnt -1
+      showProps.is_soundboard = showProps.archive_identifier?.toString().toLowerCase().indexOf('sbd') isnt -1 or
+                    showProps.title?.toString().toLowerCase().indexOf('sbd') isnt -1 or
+                    showProps.source?.toString().toLowerCase().indexOf('sbd') isnt -1 or
+                    showProps.lineage?.toString().toLowerCase().indexOf('sbd') isnt -1
 
       venueProps =
         name        : if body.metadata.venue then body.metadata.venue[0] else "Unknown"
