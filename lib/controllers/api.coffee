@@ -360,9 +360,11 @@ exports.search_data = (req, res) ->
 				res.send final.join("\n")
 
 exports.poll = (req, res) ->
+	{ since } = req.query
 	now = Math.floor(Date.now() / 1000)
 
-	redis.zrange 'played', -51, -1, (err, plays) ->
+	handlePlays = (err, plays) ->
+		console.log err, plays
 		output = plays.map (play) ->
 			song = JSON.parse play
 			{ title, slug, band, year, month, day, showVersion } = song
@@ -370,6 +372,11 @@ exports.poll = (req, res) ->
 			return { title, slug, band, year, month, day, showVersion }
 
 		res.json plays: output, now: now
+
+	if since
+		redis.zrangebyscore ['played', since, now], handlePlays
+	else
+		redis.zrange 'played', -51, -1, handlePlays
 
 exports.live = (req, res) ->
 	{ song } = req.body
