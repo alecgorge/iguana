@@ -375,10 +375,11 @@ exports.poll = (req, res) ->
 	#if since
 	#	redis.zrangebyscore ['played', since, now], handlePlays
 	#else
-	redis.zrange 'played', -51, -1, handlePlays
+	redis.zrange 'played', -26, -1, handlePlays
 
 exports.live = (req, res) ->
 	{ song } = req.body
+	song.showVersion ||= ""
 
 	now = Math.floor(Date.now() / 1000)
 	redis.zadd 'played', now, JSON.stringify(song), (length) ->
