@@ -1,6 +1,8 @@
 
 Sequelize 		= require('sequelize-mysql').sequelize
-sequelize 		= require('../data/db').seq
+db            = require('../data/db')
+sequelize 		= db.seq
+redis         = db.redis
 mysql 	 		= require('sequelize-mysql').mysql
 
 Show = sequelize.define 'Show',
@@ -128,3 +130,4 @@ module.exports =
 	Sequelize: Sequelize
 	sequelize: sequelize
 	sync: (o) -> sequelize.sync(o)
+	redis: redis

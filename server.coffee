@@ -93,6 +93,9 @@ app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
 app.get '/api/artists/:artist_slug/setlists/on-date/:show_date', api.setlist.on_date
 app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 
+app.get '/api/poll', api.poll
+app.post '/api/play', api.live
+
 app.get '/configure.js', (req, res) ->
   res.set 'Cache-Control', 'no-cache'
   res.set 'Content-Type', 'text/javascript'

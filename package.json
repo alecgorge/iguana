@@ -39,6 +39,7 @@
     "load-grunt-tasks": "~0.1.0",
     "moment": "~2.5.1",
     "nconf": "~0.6.9",
+    "redis": "^0.12.1",
     "request": "~2.27.0",
     "sequelize-mysql": "~2.0.0-beta.2",
     "slugs": "^0.1.2",

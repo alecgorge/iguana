@@ -1,4 +1,5 @@
 models 		= require '../models'
+redis     = models.redis
 winston 	= require 'winston'
 async 		= require 'async'
 
@@ -358,4 +359,21 @@ exports.search_data = (req, res) ->
 
 				res.send final.join("\n")
 
+exports.poll = (req, res) ->
+	now = Math.floor(Date.now() / 1000)
 
+	redis.zrange 'played', -51, -1, (err, plays) ->
+		output = plays.map (play) ->
+			song = JSON.parse play
+			{ title, slug, band, year, month, day, showVersion } = song
+
+			return { title, slug, band, year, month, day, showVersion }
+
+		res.json plays: output, now: now
+
+exports.live = (req, res) ->
+	{ song } = req.body
+
+	now = Math.floor(Date.now() / 1000)
+	redis.zadd 'played', now, JSON.stringify(song), (length) ->
+		res.json song: song, length: length
