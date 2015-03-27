@@ -3,6 +3,8 @@ redis     = models.redis
 winston 	= require 'winston'
 async 		= require 'async'
 
+_ = require 'underscore'
+
 exports.setlist = require './setlist'
 
 error = (res) ->
@@ -358,6 +360,51 @@ exports.search_data = (req, res) ->
 					final.push JSON.stringify v
 
 				res.send final.join("\n")
+
+exports.today = (req, res) ->
+	now = new Date()
+	month = now.getMonth() + 1
+	day = now.getDate()
+	month = "0#{month}" if month < 10
+	day = "0#{day}" if day < 10
+	DATE_REGEX = new RegExp("#{month}-#{day}$");
+
+	redis.get "tih-#{month}-#{day}", (err, response) ->
+		return res.json tih: JSON.parse response if !err && response
+
+		models.sequelize.query("SELECT `id`,`title`,`display_date`,`date`,`ArtistId`,`year` FROM Shows WHERE display_date LIKE :string GROUP BY display_date ORDER BY ArtistId", models.Show, null, 'string': "%#{month}-#{day}")
+						.error(error(res))
+						.success (shows) ->
+							models.sequelize.query("SELECT * FROM Artists ORDER BY name", null, raw: true)
+								.error(error(res))
+								.success (artists) ->
+									shows = shows.filter (show) -> DATE_REGEX.test show.display_date
+									             .map (show) ->
+										             	show = show.toJSON()
+										             	[year, month, day] = show.display_date.split('-')
+										             	show.month = month
+										             	show.day = day
+										             	show
+									console.log shows
+
+									grouped = _.groupBy shows, 'ArtistId'
+
+									gd = {}
+									phish = {}
+
+									output = artists.map((artist) ->
+										obj = shows: grouped[artist.id], name: artist.name, slug: artist.slug
+										gd = obj if artist.slug == "grateful-dead"
+										phish = obj if artist.slug == "phish"
+										obj
+									).filter (artist) -> artist.shows
+
+									output.unshift gd, phish
+
+									redis.set "tih-#{month}-#{day}", JSON.stringify output
+									redis.expire "tih-#{month}-#{day}", 86400
+
+									res.json tih: output
 
 exports.poll = (req, res) ->
 	##{ since } = req.query

@@ -93,6 +93,7 @@ app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
 app.get '/api/artists/:artist_slug/setlists/on-date/:show_date', api.setlist.on_date
 app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 
+app.get '/api/today', api.today
 app.get '/api/poll', api.poll
 app.post '/api/play', api.live
 
