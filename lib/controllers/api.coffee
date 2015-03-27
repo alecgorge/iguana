@@ -385,7 +385,6 @@ exports.today = (req, res) ->
 										             	show.month = month
 										             	show.day = day
 										             	show
-									console.log shows
 
 									grouped = _.groupBy shows, 'ArtistId'
 
