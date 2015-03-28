@@ -55,7 +55,7 @@ app.configure "development", ->
 
 app.configure "production", ->
   app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
-  app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
+  app.use express.static(path.join(__dirname, "public"), maxAge: 5 * 60 * 1000)
   app.use express.errorHandler()
 
 app.use app.router
