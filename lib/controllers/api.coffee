@@ -396,7 +396,8 @@ exports.today = (req, res) ->
 										gd = obj if artist.slug == "grateful-dead"
 										phish = obj if artist.slug == "phish"
 										obj
-									).filter (artist) -> artist.shows
+									).filter (artist) ->
+										artist.shows && !/(phish)|(grateful\-dead)/.test(artist.slug)
 
 									output.unshift gd, phish
 
