@@ -399,8 +399,8 @@ exports.today = (req, res) ->
 									).filter (artist) ->
 										artist.shows && !/(phish)|(grateful\-dead)/.test(artist.slug)
 
-									output.unshift phish if phish.shows.length
-									output.unshift gd if gd.shows.length
+									output.unshift phish if phish.shows?.length
+									output.unshift gd if gd.shows?.length
 
 									redis.set "tih-#{month}-#{day}", JSON.stringify output
 									redis.expire "tih-#{month}-#{day}", 86400
