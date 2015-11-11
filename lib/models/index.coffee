@@ -1,9 +1,8 @@
 
-Sequelize 		= require('sequelize-mysql').sequelize
+Sequelize 		= require('sequelize').sequelize
 db            = require('../data/db')
 sequelize 		= db.seq
 redis         = db.redis
-mysql 	 		= require('sequelize-mysql').mysql
 
 Show = sequelize.define 'Show',
 	title				: Sequelize.STRING(255)

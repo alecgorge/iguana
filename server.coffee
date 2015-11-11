@@ -34,28 +34,12 @@ app.configure ->
 
     next()
 
-  app.use (req, res, next) ->
-    res.renderView = (viewName, viewModel) ->
-      suffix = "" # if req.xhr then "" else "_full"
-      res.render viewName + suffix, viewModel
-
-    next()
-
   app.use express.bodyParser()
   app.use express.methodOverride()
 
-  app.locals site: config.get 'site'
-  app.set 'view engine', 'jade'
   app.set 'trust proxy', true
 
-app.configure "development", ->
-  app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
-  app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
-  app.use express.errorHandler()
-
 app.configure "production", ->
-  app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
-  app.use express.static(path.join(__dirname, "public"), maxAge: 5 * 60 * 1000)
   app.use express.errorHandler()
 
 app.use app.router
@@ -96,25 +80,6 @@ app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 app.get '/api/today', api.today
 app.get '/api/poll', api.poll
 app.post '/api/play', api.live
-
-app.get '/configure.js', (req, res) ->
-  res.set 'Cache-Control', 'no-cache'
-  res.set 'Content-Type', 'text/javascript'
-
-  app_config = {}
-  for single_config in config.get('site')
-    if single_config.domain_names.filter((v) -> req.host.indexOf(v) isnt -1).length > 0
-      app_config = single_config
-
-  json = "window.app_config = " + JSON.stringify(app_config) + ";"
-  res.send json + config.googleAnalyticsCode(app_config.google_analytics.id, app_config.google_analytics.domain)
-
-#app.get '/', (req, res) -> res.render 'index'
-app.get '*', (req, res) ->
-  if environment is "production"
-    res.sendfile __dirname + '/public/index.html'
-  else
-    res.render 'index'
 
 # Start server
 console.log "Attempting to listen on port %d", (process.env.PORT or 9000)

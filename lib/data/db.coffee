@@ -1,7 +1,7 @@
 
 config = require '../config'
 
-Sequelize = require('sequelize-mysql').sequelize
+Sequelize = require('sequelize').sequelize
 
 db = config.env().db
 
