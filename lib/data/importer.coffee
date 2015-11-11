@@ -242,7 +242,6 @@ loadPhishShow = (artist, small_show, cb) ->
       venueProps =
         name        : if body.venue?.name then body.venue.name else "Unknown"
         city        : if body.location then body.location else "Unknown"
-        ArtistId    : artist.id
 
       venueProps.slug = slugify venueProps.name
 
@@ -400,7 +399,6 @@ loadShow = (artist, small_show, cb) ->
       venueProps =
         name        : if body.metadata.venue then body.metadata.venue[0] else "Unknown"
         city        : if body.metadata.coverage then body.metadata.coverage[0] else "Unknown"
-        ArtistId    : artist.id
 
       venueProps.slug = slugify venueProps.name
 

@@ -110,9 +110,6 @@ Show.belongsTo Artist
 Venue.hasMany Show
 Artist.hasMany Show
 
-Venue.belongsTo Artist
-Artist.hasMany Venue
-
 Track.belongsTo Show
 Show.hasMany Track, joinTableName: 'show_has_tracks'
 

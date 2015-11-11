@@ -229,7 +229,7 @@ exports.single_venue = (req, res) ->
 	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
-		models.Venue.find(req.param 'venue_id').catch(error(res)).then (venue) ->
+		models.Venue.findById(req.params['venue_id']).catch(error(res)).then (venue) ->
 			return not_found(res) if not venue
 
 			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
@@ -246,6 +246,7 @@ exports.single_venue = (req, res) ->
 										""", { replacements: [artist.id, venue.id] })
 							.catch(error(res))
 							.spread (shows) ->
+								venue = venue.toJSON()
 								venue.shows = cleanup_shows shows
 								res.json success venue
 
