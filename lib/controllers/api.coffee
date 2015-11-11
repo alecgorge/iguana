@@ -1,7 +1,9 @@
-
 models 		= require '../models'
+redis     = models.redis
 winston 	= require 'winston'
 async 		= require 'async'
+
+_ = require 'underscore'
 
 exports.setlist = require './setlist'
 
@@ -41,12 +43,17 @@ exports.status = (req, res) ->
 	res.json success: true
 
 exports.artists = (req, res) ->
-	models.sequelize.query("""SELECT *, (SELECT COUNT(id) FROM Shows WHERE ArtistId = Artists.id) as recording_count
-								FROM Artists
-								""", null, {raw: true})
-					.error(error(res))
-					.success (artists) ->
-						res.json success artists
+	models.Artist.findAll().error(error(res)).success (artists) ->
+		output = []
+		for artist in artists
+			((artist) ->
+				artist.getSongs().error(error(res)).success (shows) ->
+					output.push
+						slug: artist.slug
+						count: shows.length
+
+					console.log JSON.stringify output
+			)(artist)
 
 
 exports.single_artist = (req, res) ->
@@ -188,10 +195,10 @@ exports.single_show = (req, res) ->
 exports.artist_show_by_date = (req, res) ->
 	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
 		return not_found(res) if not artist
-		console.log 'hi'
+
 		artist.getShows(
-			order: 'weighted_avg DESC'
 			where: ['display_date = ?', req.param 'show_date']
+			order: 'weighted_avg DESC'
 		).error(error(res)).success (shows) ->
 			return not_found(res) if not shows or shows.length is 0
 
@@ -354,4 +361,74 @@ exports.search_data = (req, res) ->
 
 				res.send final.join("\n")
 
+exports.today = (req, res) ->
+	now = new Date()
+	month = now.getMonth() + 1
+	day = now.getDate()
+	month = "0#{month}" if month < 10
+	day = "0#{day}" if day < 10
+	DATE_REGEX = new RegExp("#{month}-#{day}$");
 
+	redis.get "tih-#{month}-#{day}", (err, response) ->
+		return res.json tih: JSON.parse response if !err && response
+
+		models.sequelize.query("SELECT `id`,`title`,`display_date`,`date`,`ArtistId`,`year` FROM Shows WHERE display_date LIKE :string GROUP BY display_date ORDER BY ArtistId", models.Show, null, 'string': "%#{month}-#{day}")
+						.error(error(res))
+						.success (shows) ->
+							models.sequelize.query("SELECT * FROM Artists ORDER BY name", null, raw: true)
+								.error(error(res))
+								.success (artists) ->
+									shows = shows.filter (show) -> DATE_REGEX.test show.display_date
+									             .map (show) ->
+										             	show = show.toJSON()
+										             	[year, month, day] = show.display_date.split('-')
+										             	show.month = month
+										             	show.day = day
+										             	show
+
+									grouped = _.groupBy shows, 'ArtistId'
+
+									gd = {}
+									phish = {}
+
+									output = artists.map((artist) ->
+										obj = shows: grouped[artist.id], name: artist.name, slug: artist.slug
+										gd = obj if artist.slug == "grateful-dead"
+										phish = obj if artist.slug == "phish"
+										obj
+									).filter (artist) ->
+										artist.shows && !/(phish)|(grateful\-dead)/.test(artist.slug)
+
+									output.unshift phish if phish.shows?.length
+									output.unshift gd if gd.shows?.length
+
+									redis.set "tih-#{month}-#{day}", JSON.stringify output
+									redis.expire "tih-#{month}-#{day}", 86400
+
+									res.json tih: output
+
+exports.poll = (req, res) ->
+	##{ since } = req.query
+	now = Math.floor(Date.now() / 1000)
+
+	handlePlays = (err, plays) ->
+		output = plays.map (play) ->
+			song = JSON.parse play
+			{ title, slug, band, year, month, day, showVersion, id } = song
+
+			return { title, slug, band, year, month, day, showVersion, id }
+
+		res.json plays: output.reverse(), now: now
+
+	#if since
+	#	redis.zrangebyscore ['played', since, now], handlePlays
+	#else
+	redis.zrange 'played', -26, -1, handlePlays
+
+exports.live = (req, res) ->
+	{ song } = req.body
+	song.showVersion ||= ""
+
+	now = Math.floor(Date.now() / 1000)
+	redis.zadd 'played', now, JSON.stringify(song), (length) ->
+		res.json song: song, length: length

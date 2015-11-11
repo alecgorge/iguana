@@ -46,6 +46,8 @@ refreshData = (artist, done) ->
     winston.info 'got search results'
     shows = body['response']['docs']
 
+    winston.info artist.slug, shows.length, 'tapes'
+
     async.mapLimit shows, 1, (small_show, cb) ->
       winston.info "requesting #{small_show.date}"
       loadShow artist, small_show, cb
@@ -167,6 +169,7 @@ loadPhishShow = (artist, small_show, cb) ->
   models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
     if pre_existing_show isnt null
       winston.info "this archive identifier is already in the db"
+      return cb()
 
     request PHISH_URL(small_show.date), (err, httpres, body) ->
 
@@ -290,6 +293,7 @@ loadShow = (artist, small_show, cb) ->
   models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
     if pre_existing_show isnt null
       winston.info "this archive identifier is already in the db"
+      return cb()
 
     request SINGLE_URL(small_show.identifier), (err, httpres, body) ->
       winston.info "GET " + SINGLE_URL(small_show.identifier)
@@ -316,7 +320,7 @@ loadShow = (artist, small_show, cb) ->
 
                   return true
 
-      winston.info "mp3 track count: #{mp3_tracks.length}"
+      #winston.info "mp3 track count: #{mp3_tracks.length}"
 
       return cb() if mp3_tracks.length is 0
 
@@ -356,10 +360,10 @@ loadShow = (artist, small_show, cb) ->
         reviews_count     : if body.reviews then body.reviews.info.num_reviews else 0
         average_rating    : if body.reviews then body.reviews.info.avg_rating else 0.0
 
-      showProps.is_soundboard = showProps.archive_identifier.toString().toLowerCase().indexOf('sbd') isnt -1 or
-                    showProps.title.toString().toLowerCase().indexOf('sbd') isnt -1 or
-                    showProps.source.toString().toLowerCase().indexOf('sbd') isnt -1 or
-                    showProps.lineage.toString().toLowerCase().indexOf('sbd') isnt -1
+      showProps.is_soundboard = showProps.archive_identifier?.toString().toLowerCase().indexOf('sbd') isnt -1 or
+                    showProps.title?.toString().toLowerCase().indexOf('sbd') isnt -1 or
+                    showProps.source?.toString().toLowerCase().indexOf('sbd') isnt -1 or
+                    showProps.lineage?.toString().toLowerCase().indexOf('sbd') isnt -1
 
       venueProps =
         name        : if body.metadata.venue then body.metadata.venue[0] else "Unknown"
@@ -370,13 +374,13 @@ loadShow = (artist, small_show, cb) ->
       track_i = 0
       total_duration = 0
       slugs = {}
-      tracks = files.sort().
+      tracks = mp3_tracks.sort().
                 map (v) ->
         file = files[v]
 
-        t = file.title
+        t = file.title || file.original
 
-        total_duration += parseTime file.duration
+        total_duration += parseTime file.length
 
         t = t.replace(/\\'/g, "'").replace(/\\>/g, ">").replace(/Â»/g, ">").replace(/\([0-9:]+\)/g, '')
 
@@ -398,7 +402,7 @@ loadShow = (artist, small_show, cb) ->
 
       showCreated = (show, created) ->
         unless created
-          winston.info "this show is already in the db"
+          winston.info "this show is already in the db; ensuring archive_collection tracks are present"
           return cb()
         else
           winston.info "show created! looking for venue"
