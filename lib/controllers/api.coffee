@@ -92,7 +92,6 @@ exports.artist_year_shows = (req, res) ->
 										""", {replacements: [artist.id, year.year]})
 							.catch(error(res))
 							.spread (shows) ->
-								console.log shows
 								year.shows = cleanup_shows shows
 								res.json success year
 
@@ -224,7 +223,6 @@ exports.artist_venues = (req, res) ->
 								ORDER BY show_count DESC", {replacements: [artist.id]})
 			.catch(error(res))
 			.spread (venues) ->
-				console.log venues
 				res.json success venues.filter((v) -> v.show_count > 0)
 
 exports.single_venue = (req, res) ->
@@ -248,7 +246,6 @@ exports.single_venue = (req, res) ->
 										""", { replacements: [artist.id, venue.id] })
 							.catch(error(res))
 							.spread (shows) ->
-								venue = venue.toJSON()
 								venue.shows = cleanup_shows shows
 								res.json success venue
 
