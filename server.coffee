@@ -1,14 +1,6 @@
 # defaults to production
 environment = process.env.NODE_ENV
 
-ui = "iguana"
-# ui = "switz"
-
-if environment is "production"
-  require('strong-agent').profile()
-  require 'newrelic'
-  require('graphdat').config { socketFile: '/host_tmp/gd.agent.sock', debug: true }
-
 # Module dependencies.
 express     = require "express"
 path        = require "path"
@@ -58,32 +50,26 @@ app.configure ->
 
 app.configure "development", ->
   app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
-
-  if ui is "switz"
-    app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
-  else
-    app.use express.static(path.join(__dirname, ".tmp"))
-    app.use express.static(path.join(__dirname, "app"))
-
+  app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
   app.use express.errorHandler()
 
 app.configure "production", ->
   app.use express.favicon(path.join(__dirname, "public/favicon.ico"))
-  app.use express.static(path.join(__dirname, "public"), maxAge: 3600 * 1000)
+  app.use express.static(path.join(__dirname, "public"), maxAge: 5 * 60 * 1000)
   app.use express.errorHandler()
 
 app.use app.router
 
 # Routes
-#app.get "/importer/:artist/rebuild_index", importer.rebuild_index
+app.get "/importer/:artist/rebuild_index", importer.rebuild_index
 #app.get "/importer/:artist/:archive_id/rebuild_index", importer.rebuild_show
 #app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
-#app.get "/importer/rebuild-all", importer.rebuild_all
+app.get "/importer/rebuild-all", importer.rebuild_all
 #app.get "/importer/reslug", importer.reslug
 #app.get "/importer/rebuild-weighted-avg", importer.reweigh
 #app.get "/importer/search_data", api.search_data
 
-app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
+#app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
 
 app.get '/api/status', api.status
 
@@ -107,7 +93,9 @@ app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
 app.get '/api/artists/:artist_slug/setlists/on-date/:show_date', api.setlist.on_date
 app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 
-app.get '/', (req, res) -> res.render 'index'
+app.get '/api/today', api.today
+app.get '/api/poll', api.poll
+app.post '/api/play', api.live
 
 app.get '/configure.js', (req, res) ->
   res.set 'Cache-Control', 'no-cache'
@@ -121,9 +109,9 @@ app.get '/configure.js', (req, res) ->
   json = "window.app_config = " + JSON.stringify(app_config) + ";"
   res.send json + config.googleAnalyticsCode(app_config.google_analytics.id, app_config.google_analytics.domain)
 
-app.get '/', (req, res) -> res.render 'index'
+#app.get '/', (req, res) -> res.render 'index'
 app.get '*', (req, res) ->
-  if environment is "production" and ui is "switz"
+  if environment is "production"
     res.sendfile __dirname + '/public/index.html'
   else
     res.render 'index'
