@@ -32,7 +32,11 @@ refreshPhishData = (artist, done) ->
     async.mapLimit shows, 1, (small_show, cb) ->
       winston.info "requesting #{small_show.date}"
       loadPhishShow artist, small_show, cb
-    , done
+    , (err) ->
+      if err
+        return done(err)
+
+      cache_year_stats done
 
 refreshData = (artist, done) ->
   return refreshPhishData(artist, done) if artist.slug == 'phish'
@@ -51,7 +55,15 @@ refreshData = (artist, done) ->
     async.mapLimit shows, 1, (small_show, cb) ->
       winston.info "requesting #{small_show.date}"
       loadShow artist, small_show, cb
-    , done
+    , (err) ->
+      if err
+        return done(err)
+
+      cache_year_stats (err) ->
+        if err
+          return done(err)
+
+        refresh_weighted_avg done
 
 refreshShow = (artist, id, done) ->
   winston.info 'requesting search url'
@@ -66,9 +78,9 @@ refreshShow = (artist, id, done) ->
     loadShow artist, identifier: show.metadata.identifier[0], done
 
 refresh_weighted_avg = (artist, done) ->
-  models.Show.findAll(group: 'display_date', where: { artistId: artist.id }).error(done).success (dates) ->
+  models.Show.findAll(group: 'display_date', where: { artistId: artist.id }).catch(done).then (dates) ->
     dates.map (date) ->
-      models.Show.findAll(where: { display_date: date.display_date, artistId: artist.id }).error(done).success (tapes) ->
+      models.Show.findAll(where: { display_date: date.display_date, artistId: artist.id }).catch(done).then (tapes) ->
         averages = _.pluck tapes, 'average_rating'
         ratings = _.pluck tapes, 'reviews_count'
 
@@ -84,8 +96,8 @@ refresh_weighted_avg = (artist, done) ->
             weighted_avg = (ratingAll * avgAll) + (tape.reviews_count * tape.average_rating) / (ratingAll + tape.reviews_count)
 
           tape.updateAttributes { weighted_avg }
-            .success -> 0
-            .error (err) -> throw err
+            .then -> 0
+            .catch (err) -> throw err
 
 slugify = (t, slugs) ->
   l = t.toLowerCase()
@@ -111,9 +123,9 @@ venue_slugify = (t) -> t.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '')
 
 reslug = (done) ->
   chainer = new Sequelize.Utils.QueryChainer
-  models.Show.findAll().error(done).success (shows) ->
+  models.Show.findAll().catch(done).then (shows) ->
     for show in shows
-      show.getTracks().error(done).success (tracks) ->
+      show.getTracks().catch(done).then (tracks) ->
         slugObj = {}
         i = 1
         for track in tracks
@@ -127,14 +139,14 @@ reslug = (done) ->
           slugObj[slug] = true
 
           track.updateAttributes slug: slug, title: title
-               .success -> 0#console.log arguments[0].dataValues.slug
-               .error -> 0#console.log arguments[0].dataValues.slug
+               .then -> 0#console.log arguments[0].dataValues.slug
+               .catch -> 0#console.log arguments[0].dataValues.slug
   ###
-  models.Venue.findAll().error(done).success (venues) ->
+  models.Venue.findAll().catch(done).then (venues) ->
     for venue in venues
       venue.updateAttributes slug: slugs(venue.name)
-           .success -> console.log arguments[0].dataValues.slug
-           .error -> console.log arguments[0].dataValues.slug
+           .then -> console.log arguments[0].dataValues.slug
+           .catch -> console.log arguments[0].dataValues.slug
   ###
 
 
@@ -152,21 +164,27 @@ SELECT year, ArtistId, COUNT(*) FROM Shows GROUP BY ArtistId, year
 ###
 cache_year_stats = (done) ->
   winston.info "Caching year information"
-  models.sequelize.query("TRUNCATE TABLE Years").error(done).success () ->
-    models.sequelize.query("""
-      INSERT INTO Years (ArtistId, year, show_count, recording_count, duration, avg_duration, avg_rating,createdAt,updatedAt)
-        SELECT ArtistId, year, COUNT(DISTINCT Shows.`display_date`), COUNT(*), SUM(Shows.duration),
-            AVG(Shows.duration), AVG(NULLIF(Shows.average_rating, 0)), NOW(), NOW()
-        FROM Shows
-        GROUP BY ArtistId, year
-      """).error(done).success () ->
+  models.sequelize.query("TRUNCATE TABLE Years")
+    .catch(done)
+    .then () ->
       models.sequelize.query("""
-        UPDATE Years SET avg_rating = 0 WHERE avg_rating IS NULL
-        """).error(done).success(done)
+        INSERT INTO Years (ArtistId, year, show_count, recording_count, duration, avg_duration, avg_rating,createdAt,updatedAt)
+          SELECT ArtistId, year, COUNT(DISTINCT Shows.`display_date`), COUNT(*), SUM(Shows.duration),
+              AVG(Shows.duration), AVG(NULLIF(Shows.average_rating, 0)), NOW(), NOW()
+          FROM Shows
+          GROUP BY ArtistId, year
+        """)
+        .catch(done)
+        .then () ->
+          models.sequelize.query("UPDATE Years SET avg_rating = 0 WHERE avg_rating IS NULL")
+            .catch(done)
+            .then( ->
+              winston.info "Complete year cache"
+            )
 
 loadPhishShow = (artist, small_show, cb) ->
   small_show.identifier = 'phish-' + small_show.id
-  models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
+  models.Show.find(where: archive_identifier: small_show.identifier).catch(cb).then (pre_existing_show) ->
     if pre_existing_show isnt null
       winston.info "this archive identifier is already in the db"
       return cb()
@@ -224,6 +242,7 @@ loadPhishShow = (artist, small_show, cb) ->
       venueProps =
         name        : if body.venue?.name then body.venue.name else "Unknown"
         city        : if body.location then body.location else "Unknown"
+        ArtistId    : artist.id
 
       venueProps.slug = slugify venueProps.name
 
@@ -260,37 +279,50 @@ loadPhishShow = (artist, small_show, cb) ->
         else
           winston.info "show created! looking for venue"
 
-        models.Venue.findOrCreate({slug: venueProps.slug}, venueProps).error(cb).success (venue, created) ->
+        models.Venue.findOrCreate({
+          where: {
+            slug: venueProps.slug
+          },
+          defaults: venueProps
+        }).spread (venue, created) ->
           winston.info "building tracks"
 
           winston.info "setting venue and tracks"
           show.setVenue venue
           show.setArtist artist
 
-          chainer = new Sequelize.Utils.QueryChainer
-          chainer.add show.save()
+          proms = [
+            show.save()
+          ]
 
           for tr in tracks
-            chainer.add tr.save()
+            proms.push tr.save()
 
           winston.info "saving!"
-          chainer.run().error(cb).success ->
+          Sequelize.Promise.all(proms).catch(cb).then ->
             console.log "done! relating tracks to shows"
 
-            chainer = new Sequelize.Utils.QueryChainer
+            proms = []
 
             for tr in tracks
-              tr.setShow show
+              proms.push tr.setShow(show)
 
-            chainer.run().error(cb).success ->
+            Sequelize.Promise.all(proms).catch(cb).then ->
               console.log "related"
-              cache_year_stats cb
+              cb()
 
       winston.info "looking for show in db"
-      models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id, archive_identifier: showProps.archive_identifier}, showProps).error(showCreated).success showCreated
+      models.Show.findOrCreate({
+        where: {
+          date: showProps.date,
+          ArtistId: artist.id,
+          archive_identifier: showProps.archive_identifier
+        },
+        defaults: showProps
+      }).catch(showCreated).spread showCreated
 
 loadShow = (artist, small_show, cb) ->
-  models.Show.find(where: archive_identifier: small_show.identifier).error(cb).success (pre_existing_show) ->
+  models.Show.find(where: archive_identifier: small_show.identifier).catch(cb).then (pre_existing_show) ->
     if pre_existing_show isnt null
       winston.info "this archive identifier is already in the db"
       return cb()
@@ -346,7 +378,7 @@ loadShow = (artist, small_show, cb) ->
           d = new Date 0
 
       showProps =
-        title       : body.metadata.title
+        title       : body.metadata.title.join(", ")
         date        : d
         display_date    : body.metadata.date[0]
         year        : if body.metadata.year then parseInt body.metadata.year[0] else new Date(body.metadata.date[0]).getFullYear()
@@ -368,6 +400,7 @@ loadShow = (artist, small_show, cb) ->
       venueProps =
         name        : if body.metadata.venue then body.metadata.venue[0] else "Unknown"
         city        : if body.metadata.coverage then body.metadata.coverage[0] else "Unknown"
+        ArtistId    : artist.id
 
       venueProps.slug = slugify venueProps.name
 
@@ -407,33 +440,47 @@ loadShow = (artist, small_show, cb) ->
         else
           winston.info "show created! looking for venue"
 
-        models.Venue.findOrCreate({slug: venueProps.slug}, venueProps).error(cb).success (venue, created) ->
+        models.Venue.findOrCreate({
+          where: {
+            slug: venueProps.slug
+          },
+          defaults: venueProps
+        }).catch(cb).spread (venue, created) ->
           winston.info "building tracks"
 
           winston.info "setting venue and tracks"
           show.setVenue venue
           show.setArtist artist
 
-          chainer = new Sequelize.Utils.QueryChainer
-          chainer.add show.save()
+          proms = [
+            show.save()
+          ]
 
           for tr in tracks
-            chainer.add tr.save()
+            proms.push tr.save()
 
           winston.info "saving!"
-          chainer.run().error(cb).success ->
+          Sequelize.Promise.all(proms).catch(cb).then ->
             console.log "done! relating tracks to shows"
 
-            chainer = new Sequelize.Utils.QueryChainer
+            proms = []
 
             for tr in tracks
-              tr.setShow show
+              proms.push tr.setShow(show)
 
-            chainer.run().error(cb).success ->
+            Sequelize.Promise.all(proms).catch(cb).then ->
               console.log "related"
-              cache_year_stats cb
+              cb()
+              # cache_year_stats cb
 
       winston.info "looking for show in db"
-      models.Show.findOrCreate({date: showProps.date, ArtistId: artist.id, archive_identifier: showProps.archive_identifier}, showProps).error(showCreated).success showCreated
+      models.Show.findOrCreate({
+        where: {
+          date: showProps.date,
+          ArtistId: artist.id,
+          archive_identifier: showProps.archive_identifier
+        },
+        defaults: showProps
+      }).catch(showCreated).spread showCreated
 
 module.exports = exports = { refreshData, reslug, slugify, refreshShow, refresh_weighted_avg }

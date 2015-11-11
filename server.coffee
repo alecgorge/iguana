@@ -10,39 +10,39 @@ app         = express()
 models      = require './lib/models'
 config      = require './lib/config'
 
+console.log JSON.stringify(process.env)
+
 models.sync(force: false).
-       error((err) ->
-        console.log err
-        throw err
-       ).
-       success () ->
-        console.log 'synced'
+  then( ->
+    console.log 'synced'
+  ).
+  catch((err) ->
+    console.log err
+    throw err
+  )
 
 # Controllers
 api         = require "./lib/controllers/api"
 importer    = require "./lib/controllers/importer"
 
 # Express Configuration
-app.configure ->
-  app.use express.logger("dev")
+app.use require('morgan')("dev")
 
-  # Allow access control origin
-  app.use (req, res, next) ->
-    res.set
-      'Access-Control-Allow-Origin': '*'
-      'Access-Control-Allow-Methods': 'GET'
+# Allow access control origin
+app.use (req, res, next) ->
+  res.set
+    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Methods': 'GET'
 
-    next()
+  next()
 
-  app.use express.bodyParser()
-  app.use express.methodOverride()
+bodyParser = require 'body-parser'
 
-  app.set 'trust proxy', true
+app.use bodyParser.urlencoded({ extended: false })
+app.use bodyParser.json()
 
-app.configure "production", ->
-  app.use express.errorHandler()
-
-app.use app.router
+app.set 'trust proxy', true
+app.use require('errorhandler')()
 
 # Routes
 app.get "/importer/:artist/rebuild_index", importer.rebuild_index
@@ -50,7 +50,7 @@ app.get "/importer/:artist/rebuild_index", importer.rebuild_index
 #app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
 app.get "/importer/rebuild-all", importer.rebuild_all
 #app.get "/importer/reslug", importer.reslug
-#app.get "/importer/rebuild-weighted-avg", importer.reweigh
+app.get "/importer/rebuild-weighted-avg", importer.reweigh
 #app.get "/importer/search_data", api.search_data
 
 #app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')

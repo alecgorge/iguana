@@ -10,8 +10,8 @@ exports.rebuild_index = (req, res) ->
 
 	models.Artist.
 			find(where: slug: req.param('artist')).
-			error((err) -> throw err if err).
-			success (artist) ->
+			catch((err) -> throw err if err).
+			then (artist) ->
 				importer.refreshData artist, (err) ->
 					throw err if err
 
@@ -23,8 +23,8 @@ exports.rebuild_show = (req, res) ->
 
 	models.Artist.
 			find(where: slug: req.param('artist')).
-			error((err) -> throw err if err).
-			success (artist) ->
+			catch((err) -> throw err if err).
+			then (artist) ->
 				importer.refreshShow artist, req.param('archive_id'), (err) ->
 					throw err if err
 
@@ -36,8 +36,8 @@ exports.rebuild_all = (req, res) ->
 
 	models.Artist.
 			findAll().
-			error((err) -> throw err if err).
-			success (artists) ->
+			catch((err) -> throw err if err).
+			then (artists) ->
 				for artist in artists
 					importer.refreshData artist, (err) ->
 						throw err if err
@@ -59,8 +59,8 @@ exports.reweigh = (req, res) ->
 
 	models.Artist.
 		findAll().
-		error((err) -> throw err if err).
-		success (artists) ->
+		catch((err) -> throw err if err).
+		then (artists) ->
 			for artist in artists
 				importer.refresh_weighted_avg artist, (err) ->
 					throw err if err
@@ -73,8 +73,8 @@ exports.rebuild_setlists = (req, res) ->
 
 	models.Artist.
 			find(where: slug: req.param('artist')).
-			error((err) -> throw err if err).
-			success (artist) ->
+			catch((err) -> throw err if err).
+			then (artist) ->
 				setlist_importer.refreshSetlists artist, (err) ->
 					throw err if err
 

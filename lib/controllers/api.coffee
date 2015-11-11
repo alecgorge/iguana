@@ -43,44 +43,38 @@ exports.status = (req, res) ->
 	res.json success: true
 
 exports.artists = (req, res) ->
-	models.Artist.findAll().error(error(res)).success (artists) ->
-		output = []
-		for artist in artists
-			((artist) ->
-				artist.getSongs().error(error(res)).success (shows) ->
-					output.push
-						slug: artist.slug
-						count: shows.length
-
-					console.log JSON.stringify output
-			)(artist)
-
+	models.sequelize.query("""SELECT *, (SELECT COUNT(id) FROM Shows WHERE ArtistId = Artists.id) as recording_count
+								FROM Artists
+								""")
+					.catch(error(res))
+					.spread (artists) ->
+						res.json success artists
 
 exports.single_artist = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
 		res.json success artist
 
 exports.artist_shows = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
-		artist.getShows().error(error(res)).success (shows) ->
+		artist.getShows().catch(error(res)).then (shows) ->
 			res.json success cleanup_shows shows
 
 exports.artist_years = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
-		artist.getYears().error(error(res)).success (years) ->
+		artist.getYears().catch(error(res)).then (years) ->
 			res.json success years
 
 exports.artist_year_shows = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
-		artist.getYears(where: year: req.param('year')).error(error(res)).success (years) ->
+		artist.getYears(where: year: req.params['year']).catch(error(res)).then (years) ->
 			return not_found(res) if not years or years.length is 0
 
 			year = years[0].toJSON()
@@ -95,14 +89,15 @@ exports.artist_year_shows = (req, res) ->
 										WHERE `ArtistId` = ? AND `year` = ?
 										GROUP BY `Shows`.`display_date`
 										ORDER BY date ASC
-										""", null, {raw: true}, [artist.id, year.year])
-							.error(error(res))
-							.success (shows) ->
+										""", {replacements: [artist.id, year.year]})
+							.catch(error(res))
+							.spread (shows) ->
+								console.log shows
 								year.shows = cleanup_shows shows
 								res.json success year
 
 exports.top_shows = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
 		models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
@@ -117,13 +112,13 @@ exports.top_shows = (req, res) ->
 									GROUP BY `Shows`.`display_date`
 									ORDER BY average_rating DESC, reviews_count DESC
 									LIMIT 30
-									""", null, {raw: true}, [artist.id, 1])
-						.error(error(res))
-						.success (shows) ->
+									""", {replacements: [artist.id, 1]})
+						.catch(error(res))
+						.spread (shows) ->
 							res.json success cleanup_shows shows, true
 
 exports.random_show = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
 		artist.getShows(
@@ -132,16 +127,16 @@ exports.random_show = (req, res) ->
 				{raw: 'RAND()'}
 			]
 			limit: 1
-		).error(error(res)).success (shows) ->
+		).catch(error(res)).then (shows) ->
 			return not_found(res) if not shows or shows.length is 0
 
 			artist.getShows(where: display_date: shows[0].display_date)
-				.error(error(res))
-				.success (shows) ->
+				.catch(error(res))
+				.then (shows) ->
 					json = []
 					async.each shows, (show, cb) ->
-						show.getTracks(order: 'track ASC').error((err) -> cb(err)).success (tracks) ->
-							show.getVenue().error((err) -> cb(err)).success (venue) ->
+						show.getTracks(order: 'track ASC').catch((err) -> cb(err)).then (tracks) ->
+							show.getVenue().catch((err) -> cb(err)).then (venue) ->
 								show = show.toJSON()
 								show.tracks = tracks
 
@@ -163,7 +158,7 @@ exports.random_show = (req, res) ->
 						res.json success json
 
 exports.random_date = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
 		artist.getShows(
@@ -172,18 +167,18 @@ exports.random_date = (req, res) ->
 				{raw: 'RAND()'}
 			]
 			limit: 1
-		).error(error(res)).success (shows) ->
+		).catch(error(res)).then (shows) ->
 			return not_found(res) if not shows or shows.length is 0
 
 			res.set 'Cache-Control', 'no-cache'
 			res.json success shows[0].display_date
 
 exports.single_show = (req, res) ->
-	models.Show.find(where: id: req.param('show_id')).error(error(res)).success (show) ->
+	models.Show.find(where: id: req.params['show_id']).catch(error(res)).then (show) ->
 		return not_found(res) if not show
 
-		show.getTracks().error(error(res)).success (tracks) ->
-			show.getVenue().error(error(res)).success (venue) ->
+		show.getTracks().catch(error(res)).then (tracks) ->
+			show.getVenue().catch(error(res)).then (venue) ->
 				show = show.toJSON()
 				show.tracks = tracks
 
@@ -193,19 +188,19 @@ exports.single_show = (req, res) ->
 				res.json success cleanup_shows show
 
 exports.artist_show_by_date = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
 		artist.getShows(
 			where: ['display_date = ?', req.param 'show_date']
 			order: 'weighted_avg DESC'
-		).error(error(res)).success (shows) ->
+		).catch(error(res)).then (shows) ->
 			return not_found(res) if not shows or shows.length is 0
 
 			json = []
 			async.each shows, (show, cb) ->
-				show.getTracks(order: 'track ASC').error((err) -> cb(err)).success (tracks) ->
-					show.getVenue().error((err) -> cb(err)).success (venue) ->
+				show.getTracks(order: 'track ASC').catch((err) -> cb(err)).then (tracks) ->
+					show.getVenue().catch((err) -> cb(err)).then (venue) ->
 						show = show.toJSON()
 						show.tracks = tracks
 
@@ -221,25 +216,22 @@ exports.artist_show_by_date = (req, res) ->
 				res.json success json
 
 exports.artist_venues = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
 		models.sequelize.query("SELECT *, (select count(DISTINCT display_date) FROM Shows WHERE VenueId = v.id AND ArtistId = ?) as show_count
 									FROM `Venues` as v
-								ORDER BY show_count DESC", models.Venue, null, [artist.id])
-			.error(error(res))
-			.success (venues) ->
-				res.json success venues.filter((v) -> v.show_count > 0).map (v) ->
-					n = v.toJSON()
-					n.show_count = v.show_count
-
-					return n
+								ORDER BY show_count DESC", {replacements: [artist.id]})
+			.catch(error(res))
+			.spread (venues) ->
+				console.log venues
+				res.json success venues.filter((v) -> v.show_count > 0)
 
 exports.single_venue = (req, res) ->
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
-		models.Venue.find(req.param 'venue_id').error(error(res)).success (venue) ->
+		models.Venue.find(req.param 'venue_id').catch(error(res)).then (venue) ->
 			return not_found(res) if not venue
 
 			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
@@ -253,15 +245,15 @@ exports.single_venue = (req, res) ->
 										WHERE `ArtistId` = ? AND `VenueId` = ?
 										GROUP BY `Shows`.`display_date`
 										ORDER BY date ASC
-										""", null, {raw: true}, [artist.id, venue.id])
-							.error(error(res))
-							.success (shows) ->
+										""", { replacements: [artist.id, venue.id] })
+							.catch(error(res))
+							.spread (shows) ->
 								venue = venue.toJSON()
 								venue.shows = cleanup_shows shows
 								res.json success venue
 
 exports.artist_mp3 = (req, res) ->
-	models.Track.find(where: id: req.param('track_id')).error(error(res)).success (track) ->
+	models.Track.find(where: id: req.params['track_id']).catch(error(res)).then (track) ->
 		return not_found(res) if not track
 
 		res.redirect track.file
@@ -271,7 +263,7 @@ exports.search = (req, res) ->
 
 	res.send(404) if not q
 
-	models.Artist.find(where: slug: req.param('artist_slug')).error(error(res)).success (artist) ->
+	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
 		q = '%' + q + '%'
@@ -284,24 +276,24 @@ exports.search = (req, res) ->
 												title LIKE :query OR date LIKE :query OR year LIKE :query OR
 												source LIKE :query OR lineage LIKE :query OR taper LIKE :query OR
 												description LIKE :query OR archive_identifier LIKE :query OR
-												reviews LIKE :query) LIMIT 15""", models.Show, null, {'artist': artist.id, 'query': q})
-								.error(error(res))
-								.success (shows) ->
+												reviews LIKE :query) LIMIT 15""", {replacements: {'artist': artist.id, 'query': q}})
+								.catch(error(res))
+								.spread (shows) ->
 									cb null, {type: "shows", data: shows}
 			,
 			(cb) ->
 				models.sequelize.query("""SELECT Tracks.length, Tracks.title, Tracks.track, Tracks.slug, Tracks.id, Shows.year, Shows.date, Shows.ArtistId
 											FROM Tracks
 												INNER JOIN `Shows` on Shows.id = Tracks.ShowId
-										  	WHERE Shows.ArtistId = :artist AND Tracks.title LIKE :query LIMIT 15""", null, {raw: true}, {'artist': artist.id, 'query': q})
-								.error(error(res))
-								.success (tracks) ->
+										  	WHERE Shows.ArtistId = :artist AND Tracks.title LIKE :query LIMIT 15""", {replacements: {'artist': artist.id, 'query': q}})
+								.catch(error(res))
+								.spread (tracks) ->
 									cb null, {type: "tracks", data: tracks}
 			,
 			(cb) ->
-				models.sequelize.query("SELECT * FROM Venues WHERE name LIKE :query OR city LIKE :query LIMIT 15", models.Venue, null, 'query': q)
-								.error(error(res))
-								.success (venues) ->
+				models.sequelize.query("SELECT * FROM Venues WHERE name LIKE :query OR city LIKE :query LIMIT 15", {replacements: {'query': q}})
+								.catch(error(res))
+								.spread (venues) ->
 									cb null, {type: "venues", data: venues}
 			,
 		], (err, results) ->
@@ -315,14 +307,13 @@ exports.search = (req, res) ->
 				final.venues = final.venues.concat(search_result.data) if search_result.type is "venues"
 
 			final.shows = cleanup_shows final.shows
-			final.venues = final.venues.map (v) -> v.toJSON()
 
 			res.json success final
 		)
 
 exports.search_data = (req, res) ->
 	oup = []
-	models.Show.findAll().error(error(res)).success (shows) ->
+	models.Show.findAll().catch(error(res)).then (shows) ->
 		shows = cleanup_shows shows
 
 		oup = oup.concat shows.map (v) ->
@@ -334,7 +325,7 @@ exports.search_data = (req, res) ->
 			delete v.id
 			return v
 
-		models.Venue.findAll().error(error(res)).success (venues) ->
+		models.Venue.findAll().catch(error(res)).then (venues) ->
 			oup = oup.concat venues.map (v) ->
 				v = v.toJSON()
 				v._index = 'search'
@@ -344,7 +335,7 @@ exports.search_data = (req, res) ->
 				delete v.id
 				return v
 
-			models.Track.findAll().error(error(res)).success (venues) ->
+			models.Track.findAll().catch(error(res)).then (venues) ->
 				oup = oup.concat venues.map (v) ->
 					v = v.toJSON()
 					v._index = 'search'
@@ -373,11 +364,11 @@ exports.today = (req, res) ->
 		return res.json tih: JSON.parse response if !err && response
 
 		models.sequelize.query("SELECT `id`,`title`,`display_date`,`date`,`ArtistId`,`year` FROM Shows WHERE display_date LIKE :string GROUP BY display_date ORDER BY ArtistId", models.Show, null, 'string': "%#{month}-#{day}")
-						.error(error(res))
-						.success (shows) ->
-							models.sequelize.query("SELECT * FROM Artists ORDER BY name", null, raw: true)
-								.error(error(res))
-								.success (artists) ->
+						.catch(error(res))
+						.then (shows) ->
+							models.sequelize.query("SELECT * FROM Artists ORDER BY name")
+								.catch(error(res))
+								.then (artists) ->
 									shows = shows.filter (show) -> DATE_REGEX.test show.display_date
 									             .map (show) ->
 										             	show = show.toJSON()
