@@ -361,7 +361,13 @@ exports.today = (req, res) ->
 	redis.get "tih-#{month}-#{day}", (err, response) ->
 		return res.json tih: JSON.parse response if !err && response
 
-		models.sequelize.query("SELECT `id`,`title`,`display_date`,`date`,`ArtistId`,`year` FROM Shows WHERE display_date LIKE :string GROUP BY display_date ORDER BY ArtistId", models.Show, null, 'string': "%#{month}-#{day}")
+		models.sequelize.query("""
+			SELECT `id`,`title`,`display_date`,`date`,`ArtistId`,`year`
+			FROM Shows
+			WHERE display_date LIKE :string
+			GROUP BY display_date
+			ORDER BY ArtistId
+		""", {replacements: 'string': "%#{month}-#{day}"})
 						.catch(error(res))
 						.then (shows) ->
 							models.sequelize.query("SELECT * FROM Artists ORDER BY name")
