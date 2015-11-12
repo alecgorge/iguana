@@ -181,6 +181,7 @@ cache_year_stats = (done) ->
             .catch(done)
             .then( ->
               winston.info "Complete year cache"
+              done()
             )
 
 loadPhishShow = (artist, small_show, cb) ->
