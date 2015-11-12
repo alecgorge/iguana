@@ -13,6 +13,7 @@
     "morgan": "^1.6.1",
     "mysql": "^2.9.0",
     "nconf": "^0.8.2",
+    "newrelic": "^1.23.1",
     "redis": "^2.3.0",
     "request": "^2.65.0",
     "sequelize": "^3.13.0",

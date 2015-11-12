@@ -1,6 +1,9 @@
 # defaults to production
 environment = process.env.NODE_ENV
 
+if environment is "production"
+  require 'newrelic'
+
 # Module dependencies.
 express     = require "express"
 path        = require "path"
