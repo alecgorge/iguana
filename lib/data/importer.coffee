@@ -87,7 +87,7 @@ refresh_weighted_avg = (artist, done) ->
         avgAll = average averages
         ratingAll = average ratings
 
-        output = []
+        proms = []
 
         tapes.map (tape) ->
           if tape.reviews_count == 0
@@ -95,9 +95,10 @@ refresh_weighted_avg = (artist, done) ->
           else
             weighted_avg = (ratingAll * avgAll) + (tape.reviews_count * tape.average_rating) / (ratingAll + tape.reviews_count)
 
-          tape.updateAttributes { weighted_avg }
-            .then -> 0
-            .catch (err) -> throw err
+          proms.push tape.update({ weighted_avg: weighted_avg })
+        
+        Sequelize.Promise.all(proms).catch(done).then ->
+          done()
 
 slugify = (t, slugs) ->
   l = t.toLowerCase()
