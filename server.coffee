@@ -12,6 +12,22 @@ config      = require './lib/config'
 
 console.log JSON.stringify(process.env)
 
+basicAuth = require('basic-auth')
+auth = (req, res, next) ->
+
+  unauthorized = (res) ->
+    res.set 'WWW-Authenticate', 'Basic realm=Authorization Required'
+    res.send 401
+
+  user = basicAuth(req)
+  if !user or !user.name or !user.pass
+    return unauthorized(res)
+  if user.name == 'iguana' and user.pass == process.env.ADMIN_PASSWORD
+    next()
+  else
+    unauthorized res
+
+
 models.sync(force: false).
   then( ->
     console.log 'synced'
@@ -45,13 +61,13 @@ app.set 'trust proxy', true
 app.use require('errorhandler')()
 
 # Routes
-app.get "/importer/:artist/rebuild_index", importer.rebuild_index
+app.get "/importer/:artist/rebuild_index", auth, importer.rebuild_index
 #app.get "/importer/:artist/:archive_id/rebuild_index", importer.rebuild_show
 #app.get "/importer/:artist/rebuild_setlists", importer.rebuild_setlists
-app.get "/importer/rebuild-all", importer.rebuild_all
+app.get "/importer/rebuild-all", auth, importer.rebuild_all
 #app.get "/importer/reslug", importer.reslug
-app.get "/importer/rebuild-weighted-avg", importer.reweigh
-#app.get "/importer/search_data", api.search_data
+app.get "/importer/rebuild-weighted-avg", auth, importer.reweigh
+# app.get "/importer/search_data", api.search_data
 
 #app.get '/views/:name.html', (req, res) -> res.renderView req.param('name')
 
@@ -72,10 +88,10 @@ app.get '/api/artists/:artist_slug/venues', api.artist_venues
 app.get '/api/artists/:artist_slug/venues/:venue_id', api.single_venue
 app.get '/api/artists/:artist_slug/search', api.search
 
-app.get '/api/artists/:artist_slug/setlists', api.setlist.setlist
-app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
-app.get '/api/artists/:artist_slug/setlists/on-date/:show_date', api.setlist.on_date
-app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
+# app.get '/api/artists/:artist_slug/setlists', api.setlist.setlist
+# app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
+# app.get '/api/artists/:artist_slug/setlists/on-date/:show_date', api.setlist.on_date
+# app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 
 app.get '/api/today', api.today
 app.get '/api/poll', api.poll
