@@ -61,9 +61,11 @@ refreshData = (artist, done) ->
 
       cache_year_stats (err) ->
         if err
+          winston.info "err: #{err}"
           return done(err)
 
-        refresh_weighted_avg done
+        winston.info "reweighing averages"
+        refresh_weighted_avg artist, done
 
 refreshShow = (artist, id, done) ->
   winston.info 'requesting search url'
@@ -79,6 +81,7 @@ refreshShow = (artist, id, done) ->
 
 refresh_weighted_avg = (artist, done) ->
   models.Show.findAll(group: 'display_date', where: { artistId: artist.id }).catch(done).then (dates) ->
+    winston.info "mapping dates: #{dates.length}"
     dates.map (date) ->
       models.Show.findAll(where: { display_date: date.display_date, artistId: artist.id }).catch(done).then (tapes) ->
         averages = _.pluck tapes, 'average_rating'
@@ -97,6 +100,7 @@ refresh_weighted_avg = (artist, done) ->
 
           proms.push tape.update({ weighted_avg: weighted_avg })
         
+        winston.info "updating #{proms.length} tapes"
         Sequelize.Promise.all(proms).catch(done).then ->
           done()
 
@@ -303,12 +307,12 @@ loadPhishShow = (artist, small_show, cb) ->
           Sequelize.Promise.all(proms).catch(cb).then ->
             console.log "done! relating tracks to shows"
 
-            proms = []
+            proms2 = []
 
             for tr in tracks
-              proms.push tr.setShow(show)
+              proms2.push tr.setShow(show)
 
-            Sequelize.Promise.all(proms).catch(cb).then ->
+            Sequelize.Promise.all(proms2).catch(cb).then ->
               console.log "related"
               cb()
 
@@ -463,12 +467,12 @@ loadShow = (artist, small_show, cb) ->
           Sequelize.Promise.all(proms).catch(cb).then ->
             console.log "done! relating tracks to shows"
 
-            proms = []
+            proms2 = []
 
             for tr in tracks
-              proms.push tr.setShow(show)
+              proms2.push tr.setShow(show)
 
-            Sequelize.Promise.all(proms).catch(cb).then ->
+            Sequelize.Promise.all(proms2).catch(cb).then ->
               console.log "related"
               cb()
               # cache_year_stats cb

@@ -46,7 +46,7 @@ exports.rebuild_all = (req, res) ->
 				, (err) ->
 					throw err if err
 
-					windston.info "Done rebuilding all indexes"
+					winston.info "Done rebuilding all indexes"
 
 exports.reslug = (req, res) ->
 	res.set 'Cache-Control', 'no-cache'
