@@ -369,13 +369,12 @@ exports.today = (req, res) ->
 			ORDER BY ArtistId
 		""", {replacements: 'string': "%#{month}-#{day}"})
 						.catch(error(res))
-						.then (shows) ->
+						.spread (shows) ->
 							models.sequelize.query("SELECT * FROM Artists ORDER BY name")
 								.catch(error(res))
-								.then (artists) ->
+								.spread (artists) ->
 									shows = shows.filter (show) -> DATE_REGEX.test show.display_date
 									             .map (show) ->
-										             	show = show.toJSON()
 										             	[year, month, day] = show.display_date.split('-')
 										             	show.month = month
 										             	show.day = day
