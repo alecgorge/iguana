@@ -51,7 +51,7 @@ app.use require('morgan')("dev")
 app.use (req, res, next) ->
   res.set
     'Access-Control-Allow-Origin': '*'
-    'Access-Control-Allow-Methods': 'GET'
+    'Access-Control-Allow-Methods': 'POST, GET'
 
   next()
 
