@@ -52,6 +52,7 @@ app.use (req, res, next) ->
   res.set
     'Access-Control-Allow-Origin': '*'
     'Access-Control-Allow-Methods': 'POST, GET'
+    'Access-Control-Allow-Headers': req.get('Access-Control-Request-Headers')
 
   next()
 
