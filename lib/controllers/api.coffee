@@ -39,6 +39,12 @@ cleanup_shows = (shows, removeReviews = false) ->
 			v.reviews = JSON.parse(v.reviews)
 		return v
 
+exports.fix_artist_slug = (req, res, next) ->
+	if req.params.artist_slug is "gd"
+		req.params.artist_slug = "grateful-dead"
+
+	next()
+
 exports.status = (req, res) ->
 	res.json success: true
 

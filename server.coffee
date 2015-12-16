@@ -78,19 +78,19 @@ app.get "/importer/rebuild-weighted-avg", auth, importer.reweigh
 app.get '/api/status', api.status
 
 app.get '/api/artists', api.artists
-app.get '/api/artists/:artist_slug', api.single_artist
-app.get '/api/artists/:artist_slug/years', api.artist_years
-app.get '/api/artists/:artist_slug/years/:year', api.artist_year_shows
-app.get '/api/artists/:artist_slug/years/:year/shows/:show_date', api.artist_show_by_date
-app.get '/api/artists/:artist_slug/top_shows', api.top_shows
-app.get '/api/artists/:artist_slug/random_show', api.random_show
-app.get '/api/artists/:artist_slug/random_date', api.random_date
-app.get '/api/artists/:artist_slug/shows', api.artist_shows
-app.get '/api/artists/:artist_slug/shows/:show_id', api.single_show
-app.get '/api/artists/:artist_slug/mp3/:track_id', api.artist_mp3
-app.get '/api/artists/:artist_slug/venues', api.artist_venues
-app.get '/api/artists/:artist_slug/venues/:venue_id', api.single_venue
-app.get '/api/artists/:artist_slug/search', api.search
+app.get '/api/artists/:artist_slug', api.fix_artist_slug, api.single_artist
+app.get '/api/artists/:artist_slug/years', api.fix_artist_slug, api.artist_years
+app.get '/api/artists/:artist_slug/years/:year', api.fix_artist_slug, api.artist_year_shows
+app.get '/api/artists/:artist_slug/years/:year/shows/:show_date', api.fix_artist_slug, api.artist_show_by_date
+app.get '/api/artists/:artist_slug/top_shows', api.fix_artist_slug, api.top_shows
+app.get '/api/artists/:artist_slug/random_show', api.fix_artist_slug, api.random_show
+app.get '/api/artists/:artist_slug/random_date', api.fix_artist_slug, api.random_date
+app.get '/api/artists/:artist_slug/shows', api.fix_artist_slug, api.artist_shows
+app.get '/api/artists/:artist_slug/shows/:show_id', api.fix_artist_slug, api.single_show
+app.get '/api/artists/:artist_slug/mp3/:track_id', api.fix_artist_slug, api.artist_mp3
+app.get '/api/artists/:artist_slug/venues', api.fix_artist_slug, api.artist_venues
+app.get '/api/artists/:artist_slug/venues/:venue_id', api.fix_artist_slug, api.single_venue
+app.get '/api/artists/:artist_slug/search', api.fix_artist_slug, api.search
 
 # app.get '/api/artists/:artist_slug/setlists', api.setlist.setlist
 # app.get '/api/artists/:artist_slug/setlists/:setlist_id', api.setlist.show_id
