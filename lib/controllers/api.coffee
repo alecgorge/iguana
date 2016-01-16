@@ -276,11 +276,17 @@ exports.search = (req, res) ->
 
 		async.parallel([
 			(cb) ->
-				models.sequelize.query("""SELECT * FROM Shows WHERE ArtistId = :artist AND (
-												title LIKE :query OR date LIKE :query OR year LIKE :query OR
-												source LIKE :query OR lineage LIKE :query OR taper LIKE :query OR
-												description LIKE :query OR archive_identifier LIKE :query OR
-												reviews LIKE :query) LIMIT 15""", {replacements: {'artist': artist.id, 'query': q}})
+				models.sequelize.query("""SELECT *, v.`city` as venueCity, v.`name` as venueName, v.`slug` as venueSlug 
+                                            FROM Shows
+                                            INNER JOIN `Venues` v on `Shows`.`VenueId` = v.`id`
+                                        WHERE ArtistId = 1 AND (
+                                            title LIKE :query OR date LIKE :query OR year LIKE :query OR
+                                            source LIKE :query OR lineage LIKE :query OR taper LIKE :query OR
+                                            description LIKE :query OR archive_identifier LIKE :query OR
+                                            reviews LIKE :query)
+                                        GROUP BY `Shows`.`display_date`
+                                        ORDER BY date ASC
+                                        LIMIT 15""", {replacements: {'artist': artist.id, 'query': q}})
 								.catch(error(res))
 								.spread (shows) ->
 									cb null, {type: "shows", data: shows}
