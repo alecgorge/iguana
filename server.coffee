@@ -12,6 +12,7 @@ app         = express()
 # db
 models      = require './lib/models'
 config      = require './lib/config'
+db          = require('./lib/data/db')
 
 console.log JSON.stringify(process.env)
 
@@ -20,7 +21,7 @@ auth = (req, res, next) ->
 
   unauthorized = (res) ->
     res.set 'WWW-Authenticate', 'Basic realm=Authorization Required'
-    res.send 401
+    res.sendStatus 401
 
   user = basicAuth(req)
   if !user or !user.name or !user.pass
@@ -34,6 +35,23 @@ auth = (req, res, next) ->
 models.sync(force: false).
   then( ->
     console.log 'synced'
+    
+    db.seq.query("SELECT @@sql_mode;").spread((results, metadata) ->
+        mode = results[0]['@@sql_mode'].split(',');
+        console.log mode
+        
+        idx = mode.indexOf('ONLY_FULL_GROUP_BY');
+        if idx != -1
+            mode.splice idx, 1
+            mode = mode.join(',')
+            
+            console.log mode
+            db.seq.query("SET sql_mode = '#{mode}'").spread((results, metadata) ->
+                console.log metadata
+            )
+        else
+            console.log 'No ONLY_FULL_GROUP_BY, no need to update mode'
+    )
   ).
   catch((err) ->
     console.log err

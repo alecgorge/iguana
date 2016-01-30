@@ -29,14 +29,27 @@ cleanup_shows = (shows, removeReviews = false) ->
 		if removeReviews
 			shows.reviews = undefined
 		else if shows.reviews
-			shows.reviews = JSON.parse shows.reviews
+            try
+                shows.reviews = JSON.parse shows.reviews
+            catch e
+                shows.reviews = []
+                shows.reviews_count = 0
+                shows.average_rating = 0.0
+                console.log "Couldn't parse reviews for #{shows.id}: #{shows.reviews}"
 		return shows
 
 	return shows.map (v) ->
 		if removeReviews
 			v.reviews = undefined
 		else if v.reviews
-			v.reviews = JSON.parse(v.reviews)
+            try
+                v.reviews = JSON.parse v.reviews
+            catch e
+                v.reviews = []
+                v.reviews_count = 0
+                v.average_rating = 0.0
+                console.log "Couldn't parse reviews for #{v.id}: #{v.reviews}"
+			
 		return v
 
 exports.fix_artist_slug = (req, res, next) ->
@@ -73,7 +86,7 @@ exports.artist_years = (req, res) ->
 	models.Artist.find(where: slug: req.params['artist_slug']).catch(error(res)).then (artist) ->
 		return not_found(res) if not artist
 
-		artist.getYears().catch(error(res)).then (years) ->
+		artist.getYears(order: 'year DESC').catch(error(res)).then (years) ->
 			res.json success years
 
 exports.artist_year_shows = (req, res) ->
@@ -94,7 +107,7 @@ exports.artist_year_shows = (req, res) ->
 											INNER JOIN `Venues` on `Shows`.`VenueId` = `Venues`.`id`
 										WHERE `ArtistId` = ? AND `year` = ?
 										GROUP BY `Shows`.`display_date`
-										ORDER BY date ASC
+										ORDER BY date DESC
 										""", {replacements: [artist.id, year.year]})
 							.catch(error(res))
 							.spread (shows) ->
@@ -276,14 +289,13 @@ exports.search = (req, res) ->
 
 		async.parallel([
 			(cb) ->
-				models.sequelize.query("""SELECT *, v.`city` as venueCity, v.`name` as venueName, v.`slug` as venueSlug 
+				models.sequelize.query("""SELECT Shows.*, v.`city` as venue_city, v.`name` as venue_name 
                                             FROM Shows
                                             INNER JOIN `Venues` v on `Shows`.`VenueId` = v.`id`
                                         WHERE ArtistId = 1 AND (
                                             title LIKE :query OR date LIKE :query OR year LIKE :query OR
                                             source LIKE :query OR lineage LIKE :query OR taper LIKE :query OR
-                                            description LIKE :query OR archive_identifier LIKE :query OR
-                                            reviews LIKE :query)
+                                            description LIKE :query OR archive_identifier LIKE :query)
                                         GROUP BY `Shows`.`display_date`
                                         ORDER BY date ASC
                                         LIMIT 15""", {replacements: {'artist': artist.id, 'query': q}})
