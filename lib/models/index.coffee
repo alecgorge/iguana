@@ -21,9 +21,9 @@ Show = sequelize.define 'Show',
 	duration 			: Sequelize.INTEGER
 	track_count 		: Sequelize.INTEGER
 	is_soundboard 		: Sequelize.BOOLEAN
-	weighted_avg			: Sequelize.FLOAT
-    orig_source         : Sequelize.STRING
-
+	orig_source         : Sequelize.STRING
+	weighted_avg		: Sequelize.FLOAT
+    
 Venue = sequelize.define 'Venue',
 	name	: Sequelize.STRING
 	city 	: Sequelize.STRING

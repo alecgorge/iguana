@@ -31,11 +31,13 @@ fixSourceLink = (show) ->
         show.orig_source_link = "https://archive.org/details/#{show.archive_identifier}"
         
     else if s is "phish.in"
-        show.orig_source_link = "http://phish.in/#{show.display_date}"        
+        show.orig_source_link = "http://phish.in/#{show.display_date}"
+        
+    return show
 
 cleanup_shows = (shows, removeReviews = false) ->
 	if not Array.isArray shows
-        fixSourceLink(shows)
+        shows = fixSourceLink(shows)
 		if removeReviews
 			shows.reviews = undefined
 		else if shows.reviews
@@ -49,7 +51,7 @@ cleanup_shows = (shows, removeReviews = false) ->
 		return shows
 
 	return shows.map (v) ->
-        fixSourceLink(v)
+        v= fixSourceLink(v)
 		if removeReviews
 			v.reviews = undefined
 		else if v.reviews
@@ -110,7 +112,7 @@ exports.artist_year_shows = (req, res) ->
 			year = years[0].toJSON()
 			models.sequelize.query("""SELECT COUNT(`Shows`.`display_date`) as recording_count, `Shows`.title, Shows.date, Shows.display_date,
 													Shows.year,
-													Shows.archive_identifier, Shows.id, Shows.VenueId, Shows.ArtistId, MAX(Shows.is_soundboard),
+													Shows.archive_identifier, Shows.id, Shows.VenueId, Shows.ArtistId, Shows.is_soundboard,
 											   AVG(Shows.duration) as duration,
 											   SUM(Shows.reviews_count) as reviews_count, MAX(Shows.average_rating) as average_rating,
 											   `Venues`.`city` as venue_city, `Venues`.`name` as venue_name
@@ -221,7 +223,7 @@ exports.artist_show_by_date = (req, res) ->
 		return not_found(res) if not artist
 
 		artist.getShows(
-			where: ['display_date = ?', req.param 'show_date']
+			where: ['display_date = ?', req.params['show_date']]
 			order: 'weighted_avg DESC'
 		).catch(error(res)).then (shows) ->
 			return not_found(res) if not shows or shows.length is 0
