@@ -244,6 +244,7 @@ loadPhishShow = (artist, small_show, cb) ->
         reviews_count     : 0
         average_rating    : 0.0
         is_soundboard: body.sbd
+        orig_source: "phish.in"
 
       venueProps =
         name        : if body.venue?.name then body.venue.name else "Unknown"
@@ -396,6 +397,7 @@ loadShow = (artist, small_show, cb) ->
         reviews       : if body.reviews then JSON.stringify(body.reviews.reviews.slice(0, 30)).replace(/[Â]+/g, "Â").replace(/[Ã]+/g, "Ã") else "[]"
         reviews_count     : if body.reviews then body.reviews.info.num_reviews else 0
         average_rating    : if body.reviews then body.reviews.info.avg_rating else 0.0
+        orig_source : "archive.org"
 
       showProps.is_soundboard = showProps.archive_identifier?.toString().toLowerCase().indexOf('sbd') isnt -1 or
                     showProps.title?.toString().toLowerCase().indexOf('sbd') isnt -1 or
