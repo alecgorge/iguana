@@ -5,8 +5,8 @@ Sequelize = require('sequelize')
 
 db = config.env().db
 
-console.log 'connecting to database:', JSON.stringify db
-sequelize = new Sequelize process.env.database or db.database, process.env.username or db.username, process.env.password or db.password, { host: db.host, dialect: 'mysql' }
+console.log 'connecting to database:', JSON.stringify process.env.DATABASE_URL
+sequelize = new Sequelize process.env.DATABASE_URL, { dialect: 'mysql' }
 
 console.log "env: " + process.env.NODE_ENV
 
