@@ -403,7 +403,7 @@ exports.today = (req, res) ->
 			FROM Shows
 			WHERE display_date LIKE :string
 			GROUP BY display_date
-			ORDER BY ArtistId
+			ORDER BY ArtistId, display_date
 		""", {replacements: 'string': "%#{month}-#{day}"})
 						.catch(error(res))
 						.spread (shows) ->

@@ -15,7 +15,7 @@ if process.env.NODE_ENV == "development"
 else
   { REDIS_HOST } = process.env
 
-  redis = require("redis").createClient(6379, '127.0.0.1', {})
+  redis = require("redis").createClient(process.env.REDIS_URL, {})
 
 module.exports =
   redis: redis
