@@ -35,16 +35,16 @@ auth = (req, res, next) ->
 models.sync(force: false).
   then( ->
     console.log 'synced'
-    
+
     db.seq.query("SELECT @@sql_mode;").spread((results, metadata) ->
         mode = results[0]['@@sql_mode'].split(',');
         console.log mode
-        
+
         idx = mode.indexOf('ONLY_FULL_GROUP_BY');
         if idx != -1
             mode.splice idx, 1
             mode = mode.join(',')
-            
+
             console.log mode
             db.seq.query("SET sql_mode = '#{mode}'").spread((results, metadata) ->
                 console.log metadata
@@ -115,6 +115,7 @@ app.get '/api/artists/:artist_slug/search', api.fix_artist_slug, api.search
 # app.get '/api/artists/:artist_slug/setlists/on-date/:show_date', api.setlist.on_date
 # app.get '/api/artists/:artist_slug/song_stats', api.setlist.song_stats
 
+app.get '/api/latest-tapes', api.latest
 app.get '/api/today', api.today
 app.get '/api/poll', api.poll
 app.post '/api/play', api.live

@@ -26,13 +26,13 @@ success = (data) ->
 
 fixSourceLink = (show) ->
     s = show['orig_source']
-    
+
     if s is "archive.org"
         show.orig_source_link = "https://archive.org/details/#{show.archive_identifier}"
-        
+
     else if s is "phish.in"
         show.orig_source_link = "http://phish.in/#{show.display_date}"
-        
+
     return show
 
 cleanup_shows = (shows, removeReviews = false) ->
@@ -62,7 +62,7 @@ cleanup_shows = (shows, removeReviews = false) ->
                 v.reviews_count = 0
                 v.average_rating = 0.0
                 console.log "Couldn't parse reviews for #{v.id}: #{v.reviews}"
-			
+
 		return v
 
 exports.fix_artist_slug = (req, res, next) ->
@@ -302,7 +302,7 @@ exports.search = (req, res) ->
 
 		async.parallel([
 			(cb) ->
-				models.sequelize.query("""SELECT Shows.*, v.`city` as venue_city, v.`name` as venue_name 
+				models.sequelize.query("""SELECT Shows.*, v.`city` as venue_city, v.`name` as venue_name
                                             FROM Shows
                                             INNER JOIN `Venues` v on `Shows`.`VenueId` = v.`id`
                                         WHERE ArtistId = 1 AND (
@@ -386,6 +386,42 @@ exports.search_data = (req, res) ->
 					final.push JSON.stringify v
 
 				res.send final.join("\n")
+
+exports.latest = (req, res) ->
+	models.sequelize.query("""
+		SELECT `Show`.`id`,
+       `Show`.`title`,
+       `Show`.`date`,
+       `Show`.`display_date`,
+       `Show`.`year`,
+       `Show`.`source`,
+       `Show`.`lineage`,
+       `Show`.`transferer`,
+       `Show`.`taper`,
+       `Show`.`description`,
+       `Show`.`archive_identifier`,
+       `Show`.`reviews`,
+       `Show`.`reviews_count`,
+       `Show`.`average_rating`,
+       `Show`.`duration`,
+       `Show`.`track_count`,
+       `Show`.`is_soundboard`,
+       `Show`.`orig_source`,
+       `Show`.`weighted_avg`,
+       `Show`.`createdat`,
+       `Show`.`updatedat`,
+       `Show`.`venueid`,
+       `Show`.`ArtistId`,
+       `Artist`.`slug`,
+       `Artist`.`name`
+		FROM   `shows` AS `Show`
+		INNER JOIN Artists as `Artist` ON `Show`.`ArtistId` = `Artist`.`id`
+		ORDER  BY id DESC
+		LIMIT  50;
+	""").catch(error(res)).then (shows) ->
+		return not_found(res) if not shows
+
+		res.send success shows[0]
 
 exports.today = (req, res) ->
 	now = new Date()
