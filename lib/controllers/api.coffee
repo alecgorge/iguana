@@ -414,7 +414,7 @@ exports.latest = (req, res) ->
        `Show`.`ArtistId`,
        `Artist`.`slug`,
        `Artist`.`name`
-		FROM   `shows` AS `Show`
+		FROM   `Shows` AS `Show`
 		INNER JOIN Artists as `Artist` ON `Show`.`ArtistId` = `Artist`.`id`
 		ORDER  BY id DESC
 		LIMIT  50;
