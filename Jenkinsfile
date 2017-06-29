@@ -28,7 +28,7 @@ pipeline {
                 retry(3) {
                     sh '''set -x
                     sleep 5
-                    curl -f "http://iguana.aberforth.alecgorge.com/api-docs"
+                    curl -f "http://iguana.aberforth.alecgorge.com/api/artists"
                     '''
                 }
             }
