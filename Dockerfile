@@ -13,4 +13,4 @@ COPY . /usr/src/app
 
 EXPOSE 9000
 
-CMD npm start > /logs/iguana.log 2>&1
+CMD npm start
