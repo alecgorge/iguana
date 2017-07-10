@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment { 
-        APP_NAME = 'iguana',
+        APP_NAME = 'iguana'
         DOKKU_HOST = 'dumbledore.alecgorge.com'
     }
     stages {
