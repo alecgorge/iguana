@@ -9,7 +9,7 @@ pipeline {
             steps {
                 sh """set -x
                     git remote add dokku dokku@${env.DOKKU_HOST}:${env.APP_NAME}
-                    git push dokku master
+                    git push dokku $(git rev-parse HEAD):refs/heads/master
                 """
 
                 retry(3) {
